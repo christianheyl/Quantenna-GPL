@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ "$1" = "-proc" ]; then
+	read_proc=1
+	shift
+fi
+
+echo "$*" > /sys/devices/qdrv/control
+
+if [ "$read_proc" ]; then
+	cat /proc/qdrvdata
+fi

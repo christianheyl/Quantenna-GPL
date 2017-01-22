@@ -1,0 +1,476 @@
+#! /bin/sh
+
+
+USAGE="\
+Usage: `basename $0` [options] 'data-path'
+
+Show counters of specified data path
+
+Options:
+	-b	show counters on video bridge (VB)
+	-e	show counters on PCIe endpoint (EP)
+	-r	show counters on PCIe root complex (RC)
+	-h	show this help
+
+data-path in form as:
+	model [direction] model [direction] model [direction] ... model
+
+	direction:	< or >
+			'<' present input directiion to left
+			model and output direction to right model
+			'>' present output directiion to left
+			model and input direction to right model
+
+	model:		'|' | eth1_[0-1] | tqe | wmac | pcie
+			'|' is a special model presenting everything
+			outside of platform, so it has no counters
+
+Example 1:
+	show data path from VB eth1_0 to RC eth1_1
+	1. on VB run - data_path_counter -b '| > eth1_0 > tqe > wmac > |'
+	2. on EP run - data_path_counter -e '| > wmac > tqe > pcie > |'
+	3. on RC run - data_path_counter -r '| > pcie > tqe > eth1_1 > |'
+
+Example 2:
+	show only data path from VB tqe to wmac
+	on VB run - data_path_counter -b 'tqe > wmac'
+"
+
+VB_COUNTER=no
+EP_COUNTER=no
+RC_COUNTER=no
+
+###############################
+# help functions
+###############################
+show_ifconfig_counter()
+{
+    intf=$1
+    dirct=$2
+
+    echo "-- ifconfig $intf"
+    ifconfig $intf | grep -i $dirct | sed -n -e 's/.*\('$2' packets:.*\)/\1/p' -e 's/.*\('$2' bytes:[0-9]* ([0-9]*\.[0-9]* [a-zA-Z]*)\).*/\1/p'
+}
+
+###############################
+# emac related counter show
+###############################
+show_emac_outside()
+{
+    # EP do not has emac, so skip
+    if [ "$EP_COUNTER" = yes ]; then
+	return
+    fi
+
+    echo "emac$2 $1 outside:"
+
+    # code for show counters
+    if [ ! -e "/proc/arasan_emac$2" ]; then
+	return
+    fi
+
+    echo "-- /proc/arasan_emac$2"
+    cat "/proc/arasan_emac$2" | grep -i $1
+
+    case "$2" in
+	0)
+	    intf='eth1_1'
+	    ;;
+	1)
+	    intf='eth1_0'
+	    ;;
+    esac
+    show_ifconfig_counter $intf $1
+
+    echo
+}
+
+show_emac_tqe()
+{
+    # EP do not has emac, so skip
+    if [ "$EP_COUNTER" = yes ]; then
+	return
+    fi
+
+    # not counter for this, so skip
+    return
+}
+
+###############################
+# pcie related counter show
+###############################
+show_pcie_outside()
+{
+    # VB do not has pcie, so skip
+    if [ "$VB_COUNTER" = yes ]; then
+	return
+    fi
+
+    echo "pcie $1 outside:"
+
+    # code for show counters
+    case "$1" in
+	TX)
+	    echo "-- vmac"
+	    if [ "$RC_COUNTER" = yes ]; then
+		vmac | grep -i 'vmac_xmit_cnt\|vmac_skb_free'
+	    fi
+	    if [ "$EP_COUNTER" = yes ]; then
+		vmac | grep -i 'wdma_done_cnt\|wdma_soft_trig\|wdma_done_idle\|vmac_tx_entries'
+	    fi
+	    ;;
+	RX)
+	    echo "-- vmac"
+	    if [ "$RC_COUNTER" = yes ]; then
+		vmac
+	    fi
+	    if [ "$EP_COUNTER" = yes ]; then
+		vmac | grep -i ipc_cnt
+	    fi
+	    ;;
+    esac
+
+    if [ "$RC_COUNTER" = yes ]; then
+	intf='host0'
+    fi
+    if [ "$EP_COUNTER" = yes ]; then
+	intf='pcie0'
+    fi
+    show_ifconfig_counter "$intf" "$1"
+}
+
+show_pcie_tqe()
+{
+    # VB do not has pcie, so skip
+    if [ "$VB_COUNTER" = yes ]; then
+	return
+    fi
+
+    # no counter for this, so skip
+    return
+}
+
+###############################
+# wmac related counter show
+###############################
+show_wmac_outside()
+{
+    # RC do not has wmac, so skip
+    if [ "$RC_COUNTER" = yes ]; then
+	return
+    fi
+
+    echo "wmac $1 outside:"
+
+    # code for show counters
+    case "$1" in
+	TX)
+	    echo "-- stats auc"
+	    stats auc | grep msdu
+	    ;;
+	RX)
+	    echo "-- stats muc_rx"
+	    stats muc_rx | grep -i accel_msdu
+	    ;;
+    esac
+
+    echo
+}
+
+show_wmac_tqe()
+{
+    # RC do not has wmac, so skip
+    if [ "$RC_COUNTER" = yes ]; then
+	return
+    fi
+
+    # no counter for this, so skip
+    return
+}
+
+###############################
+# tqe related counter show
+###############################
+show_tqe_tx_emac()
+{
+    # EP do not has emac, so skip
+    if [ "$EP_COUNTER" = yes ]; then
+	return
+    fi
+
+    echo "tqe TX to emac$1:"
+
+    # code for show counters
+    if [ ! -e "/proc/topaz_tqe" ]; then
+	return
+    fi
+
+    echo "-- /proc/topaz_tqe"
+    cat /proc/topaz_tqe | grep -i "emac$1"
+
+    echo
+}
+
+show_tqe_rx_emac()
+{
+    # EP do not has emac, so skip
+    if [ "$EP_COUNTER" = yes ]; then
+	return
+    fi
+
+    # no counter for this, so skip
+    return
+}
+
+show_tqe_tx_pcie()
+{
+    # VB do not has pcie, so skip
+    if [ "$VB_COUNTER" = yes ]; then
+	return
+    fi
+
+    echo "tqe TX to pcie:"
+
+    # code for show counters
+    if [ ! -e "/proc/topaz_tqe" ]; then
+	return
+    fi
+
+    echo "-- /proc/topaz_tqe"
+    cat /proc/topaz_tqe | grep -i "dsp"
+
+    echo
+}
+
+show_tqe_rx_pcie()
+{
+    # VB do not has pcie, so skip
+    if [ "$VB_COUNTER" = yes ]; then
+	return
+    fi
+
+    # no counter for this, so skip
+    return
+}
+
+show_tqe_tx_wmac()
+{
+    # RC do not has wmac, so skip
+    if [ "$RC_COUNTER" = yes ]; then
+	return
+    fi
+
+    echo "tqe TX to wmac:"
+
+    # code for show counters
+    if [ ! -e "/proc/topaz_tqe" ]; then
+	return
+    fi
+
+    echo "-- /proc/topaz_tqe"
+    cat /proc/topaz_tqe | grep -i "wmac"
+
+    echo "-- iwpriv wifi0 auc_tx_dbg 0"
+    sleep 1
+    iwpriv wifi0 auc_tx_dbg 0
+
+    echo
+}
+
+show_tqe_rx_wmac()
+{
+    # RC do not has wmac, so skip
+    if [ "$RC_COUNTER" = yes ]; then
+	return
+    fi
+
+    # no counter for this, so skip
+    return
+}
+
+
+show_counters()
+{
+    if [ $# -lt 1 ]; then
+	echo "show_counters need 1 arg as short data-path"
+	exit 1
+    fi
+
+    short_data_path=$1
+
+    echo "##########  $short_data_path  ##########"
+
+    case "$short_data_path" in
+	'| < eth1_0' | 'eth1_0 > |')
+	    # eth1_0 mapping to emac1
+	    show_emac_outside TX 1
+	    ;;
+	'| > eth1_0' | 'eth1_0 < |')
+	    # eth1_0 mapping to emac1
+	    show_emac_outside RX 1
+	    ;;
+	'eth1_0 < tqe')
+	    # eth1_0 mapping to emac1
+	    show_emac_tqe RX 1
+	    show_tqe_tx_emac 1
+	    ;;
+	'tqe > eth1_0')
+	    # eth1_0 mapping to emac1
+	    show_tqe_tx_emac 1
+	    show_emac_tqe RX 1
+	    ;;
+	'eth1_0 > tqe')
+	    # eth1_0 mapping to emac1
+	    show_emac_tqe TX 1
+	    show_tqe_rx_emac 1
+	    ;;
+	'tqe < eth1_0')
+	    # eth1_0 mapping to emac1
+	    show_tqe_rx_emac 1
+	    show_emac_tqe TX 1
+	    ;;
+
+
+	'| < eth1_1' | 'eth1_1 > |')
+	    # eth1_1 mapping to emac0
+	    show_emac_outside TX 0
+	    ;;
+	'| > eth1_1' | 'eth1_1 < |')
+	    # eth1_1 mapping to emac0
+	    show_emac_outside RX 0
+	    ;;
+	'eth1_1 < tqe')
+	    # eth1_1 mapping to emac0
+	    show_emac_tqe RX 0
+	    show_tqe_tx_emac 0
+	    ;;
+	'tqe > eth1_1')
+	    # eth1_1 mapping to emac0
+	    show_tqe_tx_emac 0
+	    show_emac_tqe RX 0
+	    ;;
+	'eth1_1 > tqe')
+	    # eth1_1 mapping to emac0
+	    show_emac_tqe TX 0
+	    show_tqe_rx_emac 0
+	    ;;
+	'tqe < eth1_1')
+	    # eth1_1 mapping to emac0
+	    show_tqe_rx_emac 0
+	    show_emac_tqe TX 0
+	    ;;
+
+
+	'| < pcie' | 'pcie > |')
+	    show_pcie_outside TX
+	    ;;
+	'| > pcie' | 'pcie < |')
+	    show_pcie_outside RX
+	    ;;
+	'pcie < tqe')
+	    show_pcie_tqe RX
+	    show_tqe_tx_pcie
+	    ;;
+	'tqe > pcie')
+	    show_tqe_tx_pcie
+	    show_pcie_tqe RX
+	    ;;
+	'pcie > tqe')
+	    show_pcie_tqe TX
+	    show_tqe_rx_pcie
+	    ;;
+	'tqe < pcie')
+	    show_tqe_rx_pcie
+	    show_pcie_tqe TX
+	    ;;
+
+
+	'wmac < |' | '| > wmac')
+	    show_wmac_outside RX
+	    ;;
+
+	'wmac > |' | '| < wmac')
+	    show_wmac_outside TX
+	    ;;
+	'tqe < wmac' )
+	    show_tqe_rx_wmac
+	    show_wmac_tqe TX
+	    ;;
+	'wmac > tqe' )
+	    show_wmac_tqe TX
+	    show_tqe_rx_wmac
+	    ;;
+	'tqe > wmac' )
+	    show_tqe_tx_wmac
+	    show_wmac_tqe RX
+	    ;;
+	'wmac < tqe' )
+	    show_wmac_tqe RX
+	    show_tqe_tx_wmac
+	    ;;
+	*)
+	    echo "unsupported data-path: $short_data_path"
+	    exit 1
+	    ;;
+    esac
+}
+
+parse_data_path()
+{
+    DATA_PATH=$1
+
+    echo "data-path: ($DATA_PATH)"
+
+    OPERATOR=''
+    LAST_MODEL=''
+    GEN_CMD=no
+    for str in $DATA_PATH
+    do
+	case "$str" in
+	    '<'|'>')
+		OPERATOR=$str
+		;;
+	    '|' | eth1_[0-1] | tqe | wmac | pcie)
+		if [ -n "$LAST_MODEL" ]; then
+		    show_counters "$LAST_MODEL $OPERATOR $str"
+		fi
+		LAST_MODEL=$str
+		;;
+	    *)
+		echo "unknow $str in data-path"
+		exit 1
+		;;
+	esac
+    done
+}
+
+##########################################################
+#                  main
+##########################################################
+
+if [ $# -eq 0 ]; then
+    echo "$USAGE"
+    exit 1
+fi
+
+case "$1" in
+    '-b') VB_COUNTER=yes ;;
+    '-e') EP_COUNTER=yes ;;
+    '-r') RC_COUNTER=yes ;;
+    '-h'|\?)
+	echo "$USAGE";
+        exit 1
+	;;
+    *)
+	echo "bad option: $1"
+	echo "$USAGE"
+	exit 1
+	;;
+esac
+
+if [ $# -lt 2 ]; then
+    echo "missing data-path"
+    exit 1
+fi
+
+parse_data_path "$2"

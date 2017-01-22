@@ -1,0 +1,17 @@
+--- drivers/wlan/ieee80211_node.c       2016-05-12 04:08:09.000000000 +0200
++++ drivers/wlan/ieee80211_node.c       2016-06-15 13:24:34.395060563 +0200
+@@ -4102,12 +4102,14 @@
+                        !(IEEE80211_VHTCAP_GET_SU_BEAMFORMEE(vhtcap)))
+                ret = 1;
+ 
++#ifdef WLAN_VW_11N_DETECTION
+        if ((ni->ni_qtn_assoc_ie == NULL) && (IEEE80211_NODE_IS_HT(ni)) &&
+                        !IEEE80211_NODE_IS_VHT(ni) &&
+                        !(ni->ni_vendor & PEER_VENDOR_MASK) &&
+                        !(ni->ni_qtn_flags & QTN_IS_REALTEK_NODE) &&
+                        (ni->ni_raw_bintval == 0xa))
+                ret = 1;
++#endif
+ 
+        return ret;
+ }

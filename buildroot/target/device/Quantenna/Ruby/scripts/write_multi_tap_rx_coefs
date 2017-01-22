@@ -1,0 +1,7 @@
+# Ttransfer a file with muti-tap Rx-IQ coefficients from the calibration computer (it is required to be running a tftp server).
+# The ip address for the computer is specified by argument 1.
+tftp -g -l /mnt/jffs2/rxiq_coefs -r rxiq_coefs $1
+# Execute and delete the file so that the coefficients are written to BBIC registers
+chmod +x /mnt/jffs2/rxiq_coefs
+/mnt/jffs2/rxiq_coefs
+rm /mnt/jffs2/rxiq_coefs

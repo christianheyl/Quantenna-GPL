@@ -1,0 +1,8 @@
+#!/bin/ash
+
+if [ -f /sys/devices/qdrv/control ]
+then
+	echo "write addr $1 $2" > /sys/devices/qdrv/control
+else
+	echo "$1 $2" > /proc/wlanwrite
+fi

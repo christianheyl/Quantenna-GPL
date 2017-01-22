@@ -1,0 +1,71 @@
+#! /bin/sh
+
+# only applicable for Quantenna reference boards
+
+config_path=$1
+parameter_name=$2
+
+if [ ! -f $config_path ]
+then
+    touch $config_path
+fi
+
+cat $config_path | awk -v parameter_name=$parameter_name '
+BEGIN {
+    FS="&"
+    found_entry=0
+    found_line=0
+    param_value=""
+}
+{
+    found_line=1
+    for (iter = 1; iter <= NF && found_entry == 0; iter++)
+    {
+        if (parameter_name == "")
+        {
+            print $iter
+        }
+        else
+        {
+            split( $iter, fields, "=" )
+            iter_2=0
+            for (var in fields)
+            {
+                 if (iter_2 == 0 && fields[ var ] == parameter_name)
+                 {
+                     found_entry=1
+                 }
+
+                 if (iter_2 == 1 && found_entry != 0)
+                 {
+                      param_value=fields[ var ]
+                 }
+
+	         iter_2++
+            }
+        }
+    }
+
+    if (parameter_name == "")
+    {
+        exit 0
+    }
+    else if (found_entry != 0)
+    {
+        print param_value
+        exit 0
+    }
+    else
+    {
+        print "Parameter", parameter_name, "not found"
+        exit 1
+    }
+}
+END {
+    if (found_line == 0)
+    {
+        print "Parameter", parameter_name, "not found"
+        exit 1
+    }
+}
+'

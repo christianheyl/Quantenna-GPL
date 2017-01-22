@@ -1,0 +1,5 @@
+config BR2_PACKAGE_NTPCLIENT
+	bool "NTP client"
+	default n
+	help
+	  Simple, small NTP client

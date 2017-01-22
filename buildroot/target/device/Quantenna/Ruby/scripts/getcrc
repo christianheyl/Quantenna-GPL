@@ -1,0 +1,3 @@
+#!/bin/ash
+# return the number of CRC errors
+/scripts/readmem e5052044

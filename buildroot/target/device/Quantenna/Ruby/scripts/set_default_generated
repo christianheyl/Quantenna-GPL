@@ -1,0 +1,11 @@
+#!/bin/sh
+
+ssid=`call_qcsapi get_mac_addr wifi0 | generate_default_ssid`
+passphrase=`call_qcsapi get_mac_addr wifi0  | generate_default_passphrase`
+
+
+sed -i "s/ssid=.*/ssid=$ssid/" /mnt/jffs2/hostapd.conf
+sed -i "s/wpa_passphrase=.*/wpa_passphrase=$passphrase/" /mnt/jffs2/hostapd.conf
+
+sed -i "s/ssid=.*/ssid=\"$ssid\"/" /mnt/jffs2/wpa_supplicant.conf
+sed -i "s/psk=.*/psk=\"$passphrase\"/" /mnt/jffs2/wpa_supplicant.conf

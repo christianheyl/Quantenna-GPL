@@ -1,0 +1,111 @@
+#!/bin/sh
+
+interface="wifi0"
+wfa_cert_mode=$1
+
+check_wifi_interfaces()
+{
+	# If more than one wifi interface, flag a warning
+	intf_count=`ls /sys/class/net/ | grep wifi | wc -l`
+	if [ $intf_count != 1 ]; then
+		echo "Warning, more than one wifi interface present - disable it for WFA testing"
+	fi
+}
+
+disable_schedulers()
+{
+	# AC inheritance
+	iwpriv $interface setparam 253 0
+	# Airtime fairness
+	iwpriv $interface airfair 0
+}
+
+enable_schedulers()
+{
+	# AC inheritance
+	iwpriv $interface setparam 253 1
+	# Airtime fairness
+	iwpriv $interface airfair 1
+}
+
+disable_sfs()
+{
+	# Fastlane and RTS/CTS
+	iwpriv $interface dyn_wmm 0
+	iwpriv $interface peer_rts 0
+	# GI probing
+	iwpriv wifi0 gi_select 0
+}
+
+enable_sfs()
+{
+	# Default value is both dynamic WMM and dynamic peer RTS enabled
+	# Fastlane and RTS/CTS
+	iwpriv $interface dyn_wmm 1
+	iwpriv $interface peer_rts 2
+	# GI probing to third party
+	iwpriv wifi0 gi_select 2
+}
+
+reduce_sta_inact()
+{
+	# Reducing STA inactivity time into 30 seconds.
+	wifi_mode=`get_wifi_config $interface mode`
+	if [ "$wifi_mode" == "sta" ]
+	then
+		iwpriv wifi0 setparam 23 30
+	fi
+}
+
+increase_sta_inact()
+{
+	# Increasing STA inactivity time into 90 seconds.
+	wifi_mode=`get_wifi_config $interface mode`
+	if [ "$wifi_mode" == "sta" ]
+	then
+		iwpriv wifi0 setparam 23 90
+	fi
+}
+
+enable_pmf()
+{
+	check_prev_wfa=`get_wifi_config wifi0 wfa`
+	if [ $? -ne 0 -o  "$check_prev_wfa" == "0" ]; then
+		restore_default_config -nr
+		# restore wfa in config
+		call_qcsapi -q -u update_config_param wifi0 wfa "1"
+	fi
+	call_qcsapi -q -u update_config_param wifi0 pmf "1"
+	wifi_mode=`get_wifi_config wifi0 mode`
+	if [ "$wifi_mode" == "ap" ]
+	then
+		call_qcsapi -u -q set_pmf wifi0 "1"
+	else
+		call_qcsapi -u -q SSID_set_pmf wifi0 Quantenna "1"
+	fi
+}
+
+disable_wfa_cert()
+{
+        restore_default_config -nr
+}
+
+# Disable or enable the features that are not required for WFA (pre)cert testing
+if [ $wfa_cert_mode == 1 ]; then
+	enable_pmf
+	check_wifi_interfaces
+	disable_schedulers
+	disable_sfs
+	reduce_sta_inact
+	iwpriv wifi0 set_stbc 1
+
+
+	/scripts/sigma_ca restart
+else
+	disable_wfa_cert
+	enable_schedulers
+	enable_sfs
+	increase_sta_inact
+
+	/scripts/sigma_ca stop
+fi

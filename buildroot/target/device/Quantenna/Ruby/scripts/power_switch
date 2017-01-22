@@ -1,0 +1,37 @@
+#!/bin/sh
+
+base_scripts="/scripts"
+. $base_scripts/start-helpers.sh
+
+mode=`call_qcsapi -u get_mode wifi0`
+
+if [ -n $1 ]; then
+	if [ "$1" = "0" -o "$1" = "off" ]; then
+		# Stop wireless devices
+		if [ "$mode" = "Station" ]; then
+			iwpriv wifi0 fast_reassoc 1
+			wpa_cli disconnect
+		else
+			for dev in `ls -1 /sys/devices/virtual/net/ | grep -E 'wifi|wds'` ; do
+				ifconfig $dev down
+			done
+		fi
+
+		netdebug off
+		call_qcsapi pm suspend
+
+		exit 0
+	fi
+fi
+
+# Resume from suspend
+call_qcsapi pm off
+
+if [ "$mode" = "Station" ]; then
+	wpa_cli reconnect
+else
+	# Restart wireless devices
+	for dev in `ls -1 /sys/devices/virtual/net/ | grep -E 'wifi|wds'` ; do
+		ifconfig $dev up
+	done
+fi

@@ -1,0 +1,8 @@
+#!/bin/ash
+echo "Station            AID Idx  tdls_stats Qual RxPHY  TX PR  RX PR  RSSI   SNR " \
+	"Rx Frames     Rx Bytes  Tx Frames     Tx Bytes RxErr RxDrp TxErr TxDrp" \
+	"TxUCast RxUCast TxMCast RxMCast TxBCast RxBCast  MaxQ TxFail BW" \
+	"Assoc'ed Auth BA State VAP"
+echo "get 0 assoc_info" > /sys/devices/qdrv/control
+cat /proc/qdrvdata
+

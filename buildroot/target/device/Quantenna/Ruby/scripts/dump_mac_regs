@@ -1,0 +1,32 @@
+#! /bin/sh
+
+echo "Registers relating to DMA"
+readmem_multi e503ffb0 20
+
+echo "Global Control Registers"
+readmem_multi e5042000 20
+
+echo "Registers relating to Tx Prefetch"
+readmem_multi e5050300 48
+
+echo "Contention / G0 Timer / G1 Timer"
+readmem_multi e5050400 12
+
+echo "Additional Registers relating to Tx"
+readmem_multi e5050440 87
+
+echo "Rx Frame Processor Registers"
+readmem_multi e5052000 41
+
+echo "Shared Registers"
+readmem_multi e5053000 14
+
+echo "Additional Registers (SIFS, AID, etc.)"
+readmem_multi e5053048 19
+
+cat /proc/hw_revision | grep "bbic4" > /dev/null
+if [ $? -eq 0 ]
+then
+	echo "Additional Registers for BBIC4"
+	readmem_multi e50520a8 12
+fi

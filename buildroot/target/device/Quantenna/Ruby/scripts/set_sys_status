@@ -1,0 +1,47 @@
+#!/bin/sh
+SYS_STATUS_FILE="/tmp/qtn_sys_status"
+
+echo_help()
+{
+	echo "Usage:  set_sys_status  <eth | pcie_ep | pcie_rc | rpcd | wifi | calstate | complete>"
+	exit 0
+}
+
+if [ "$1" == "" ] ; then
+	echo_help
+fi
+
+if [ ! -f $SYS_STATUS_FILE ] ; then
+	status=0x0000001f
+else
+	status=`cat $SYS_STATUS_FILE`
+fi
+
+case $1 in
+eth)
+	let "status&=0xfffffffe"
+	;;
+pcie_ep)
+	let "status&=0xfffffffd"
+	;;
+pcie_rc)
+	let "status&=0xfffffffb"
+	;;
+wifi)
+	let "status&=0xfffffff7"
+	;;
+rpcd)
+	let "status&=0xffffffef"
+	;;
+calstate)
+	let "status|=0x40000000"
+	;;
+complete)
+	let "status|=0x80000000"
+	;;
+*)
+	echo_help
+	;;
+esac
+
+echo $status > $SYS_STATUS_FILE

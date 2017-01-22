@@ -1,0 +1,21 @@
+#! /bin/sh
+
+# only applicable for Quantenna reference boards
+
+# /mnt/jffs2/power_selection is for QA test only
+power_selection_file=/mnt/jffs2/power_selection
+power_table_conf=/etc/power_tables/power_table.conf
+
+if [ -f $power_selection_file ]; then
+	selection=`cat $power_selection_file`
+	call_qcsapi -q -u set_power_selection $selection
+elif [ -f $power_table_conf ]; then
+	selection=`get_power_table_config $power_table_conf power_selection`
+	if [ $? -eq 0 ]; then
+		call_qcsapi -q -u set_power_selection $selection
+	else
+		echo "didn't find power_selection from $power_table_conf"
+	fi
+else
+	echo "didn't find power table config file"
+fi

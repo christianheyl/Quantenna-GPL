@@ -1,0 +1,5 @@
+#!/bin/ash
+# Set the single argument to 0 for regular txbf
+# Set the single argument to 3 to use default spatial mapper
+# This script should only be used for *TWO STREAM* TXBF (MCS 8-15)
+echo "1 1 1 $1 0" > /proc/txbfconfig

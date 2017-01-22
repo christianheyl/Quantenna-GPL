@@ -1,0 +1,19 @@
+#!/bin/sh
+insmod /lib/modules/2.6.30/extra/i2cbus/i2cbus.ko
+insmod /lib/modules/2.6.30/extra/se95sensor/qtsens.ko
+insmod /lib/modules/2.6.30/extra/bootcfg/bootcfg.ko
+insmod /lib/modules/2.6.30/extra/radar/radar.ko
+insmod /lib/modules/2.6.30/extra/wlan/wlan.ko
+insmod /lib/modules/2.6.30/extra/qdrv/qdrv.ko
+#echo "set debug 0xffffffff" > /sys/devices/qdrv/control
+#echo "set level 8" > /sys/devices/qdrv/control
+echo "set mucfw qtn_driver.cal_ruby.0.bin" > /sys/devices/qdrv/control
+echo "set dspfw rdsp_driver.0.bin" > /sys/devices/qdrv/control
+echo "clearsram" > /sys/devices/qdrv/control
+if [ $# -ge 1 ]; then
+	echo "start" > /sys/devices/qdrv/control
+fi
+dmesg -c
+debugoff
+ifconfig eth1_0 192.168.1.200
+

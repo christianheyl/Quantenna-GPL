@@ -1,0 +1,66 @@
+#!/bin/sh
+
+channel=$1
+chip_idx=$2
+path_idx=$3
+pattern=$4
+harmonics=$5
+singleside=$6
+
+if [ "$channel" == "" ]
+then
+        echo "Missing channel Number, set to default chan 36"
+	channel=36
+fi
+
+if [ $channel -lt 15 ]
+then
+    echo "calcmd 1 0 8 0 1 0 2 $channel" > /sys/devices/qdrv/control
+else
+    echo "calcmd 1 0 8 0 1 1 2 $channel" > /sys/devices/qdrv/control
+fi
+
+
+if [ "$chip_idx" == "" ]
+then
+	chip_idx=0
+fi
+
+if [ "$path_idx" == "" ]
+then
+	path_idx=0
+fi
+
+if [ "$pattern" == "" ]
+then
+	pattern=0
+fi
+
+if [ "$harmonics" == "" ]
+then
+	harmonics=1
+elif [ "$harmonics" == "0" ]
+then
+	echo "Tone can not be set to zero!"
+	exit 0
+fi
+
+if [ "$singleside" == "" ]
+then
+	singleside=0
+fi
+
+
+echo "Test mode configuration"
+echo "============================"
+echo "Channel      -->  $channel"
+echo "RFIC         -->  $chip_idx"
+echo "Antenna path -->  $path_idx"
+echo "CW pattern   -->  $pattern"
+echo "Harmonics    -->  $harmonics"
+echo "Double side? -->  $singleside"   
+echo "============================"
+                                   
+                                   
+#echo "calcmd 1 0 8 0 1 1 2 $channel" > /sys/devices/qdrv/control
+echo "calcmd 9 0 14 0 1 $chip_idx 2 $path_idx 3 $pattern 4 $harmonics 5 $singleside" > /sys/devices/qdrv/control

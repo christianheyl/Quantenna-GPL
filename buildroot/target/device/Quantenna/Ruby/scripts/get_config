@@ -1,0 +1,97 @@
+#! /bin/sh
+
+cwmin=1
+cwmax=2
+aifs=3
+tx_op_limit=4
+
+best_effort=0
+background=1
+video=2
+voice=3
+
+get_hw_config_id()
+{
+	get_board_config board_id
+}
+
+extract_value_iwpriv()
+{
+	iwpriv_cmd=$@
+	iwpriv_value=`$iwpriv_cmd | cut -d : -f 2`
+
+	echo $iwpriv_value
+}
+
+get_qos_params()
+{
+    qos_params="$cwmin $cwmax $aifs $tx_op_limit"
+    queues="$best_effort $background $video $voice"
+
+    echo "QUEUE	CWMIN	CWMAX	AIFS	TX_OP"
+
+    for queue in $queues
+    do
+        for qos_param in $qos_params
+        do
+            getwmmparam_cmd="iwpriv wifi0 getwmmparams $qos_param $queue 0"
+            case $qos_param in
+                $cwmin) cwmin_val=`extract_value_iwpriv $getwmmparam_cmd`
+                ;;
+                $cwmax) cwmax_val=`extract_value_iwpriv $getwmmparam_cmd`
+                ;;
+                $aifs) aifs_val=`extract_value_iwpriv $getwmmparam_cmd`
+                ;;
+                $tx_op_limit) tx_op_val=`extract_value_iwpriv $getwmmparam_cmd`
+                ;;
+            esac
+        done
+
+        case $queue in
+           $best_effort) echo "BE	" $cwmin_val "	" $cwmax_val "	" $aifs_val "	" $tx_op_val
+           ;;
+           $background) echo "BK	" $cwmin_val "	" $cwmax_val "	" $aifs_val "	" $tx_op_val
+           ;;
+           $video) echo "VI	" $cwmin_val "	" $cwmax_val "	" $aifs_val "	" $tx_op_val
+           ;;
+           $voice) echo "VO	" $cwmin_val "	" $cwmax_val "	" $aifs_val "	" $tx_op_val
+           ;;
+        esac
+    done
+}
+
+
+fw_version=`call_qcsapi -u get_firmware_version`
+
+if [ $? -ne 0 ]
+then
+    fw_version=`get_rev_num`
+fi
+
+bf_config=`get_wifi_config wifi0 bf`
+if [ $? -ne 0 ]
+then
+    bf_config=1
+fi
+
+ldpc_config=`extract_value_iwpriv iwpriv wifi0 get_ldpc`
+sgi_config=`extract_value_iwpriv iwpriv wifi0 getparam 93`
+
+chan=`call_qcsapi -u get_channel wifi0`
+tx_pwr=`call_qcsapi -u get_tx_power wifi0 $chan`
+hw_config_id=`get_hw_config_id`
+if [ $? -ne 0 ]
+then
+    hw_config_id=0
+fi
+
+echo "Firmware version: $fw_version"
+echo "Beamforming: $bf_config"
+echo "LDPC: $ldpc_config"
+echo "SGI: $sgi_config"
+echo "TX power: $tx_pwr"
+echo "HW config ID: $hw_config_id"
+       
+echo   
+echo "QoS Parameters:"
+get_qos_params

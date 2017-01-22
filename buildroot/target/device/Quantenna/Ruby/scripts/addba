@@ -1,0 +1,5 @@
+#!/bin/ash
+iwpriv wifi0 setparam 80 0x$1$2
+iwpriv wifi0 setparam 81 0x$1$3
+iwpriv wifi0 setparam 82 0x$1$4
+iwpriv wifi0 setparam 83 0x$1

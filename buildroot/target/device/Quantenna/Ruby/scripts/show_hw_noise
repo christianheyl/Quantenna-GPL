@@ -1,0 +1,11 @@
+#! /bin/sh
+
+type=$1
+
+if [ "$type" == "" ]; then
+	echo "Missing required argument: state"
+elif [ "$type" -ne 0 ] && [ "$type" -ne 1 ]; then
+	echo "invalid argument, valid values = 0,1"
+else
+	echo "calcmd 68 0 6 0 1 $type" > /sys/devices/qdrv/control
+fi

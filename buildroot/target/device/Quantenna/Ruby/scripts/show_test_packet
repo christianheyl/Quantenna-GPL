@@ -1,0 +1,11 @@
+#! /bin/sh
+rssi_flag=$1
+if [ "$rssi_flag" > "0" ]
+then
+	echo "calcmd 15 0 6 0 1 $rssi_flag" > /sys/devices/qdrv/control
+else
+	echo "calcmd 15 0 6 0 1 0" > /sys/devices/qdrv/control
+fi
+
+echo "calcmd 41 0 4 0" > /sys/devices/qdrv/control
+

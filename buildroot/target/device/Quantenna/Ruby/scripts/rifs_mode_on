@@ -1,0 +1,3 @@
+#!/bin/sh
+echo rifs enable > /sys/devices/qdrv/control
+

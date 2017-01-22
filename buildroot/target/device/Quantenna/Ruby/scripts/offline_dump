@@ -1,0 +1,110 @@
+#!/bin/sh
+
+WPS_BUTTON_WIRELESS_EVENT=1	# indicate the event of wireless
+WPS_BUTTON_DBGDUMP_EVENT=2	# indicate the event of debug info dump
+
+WPS_BUTTON_DEV=''
+DUMP_CMDS_FILE='/mnt/jffs2/offline_dump'
+PID_FILE="/tmp/`basename $0`.pid"
+
+USAGE='
+usage:
+`basename $0` [on|off]
+	without arguments, `basename $0` will show current status (on or off)
+
+	on	start watching WPS button, and excute commands
+		in $DUMP_CMDS_FILE
+		when DBG dump event is detected
+
+	off	end the watching process
+'
+
+logger() {
+    echo `date` ": $*" >> /tmp/offline_dump.log
+}
+
+genPid() {
+    echo $$ > $PID_FILE
+}
+
+show_status() {
+    pid=`cat $PID_FILE`
+    ret=`ps | grep "$pid" | grep -v grep`
+
+    if [ -n "$ret" ]; then
+	echo on
+    else
+	echo off
+    fi
+}
+
+turn_on() {
+    if [ ! -e "$WPS_BUTTON_DEV" ]; then
+	logger "$WPS_BUTTON_DEV not exist"
+	exit 1
+    fi
+
+    genPid
+
+    logger "start watching WPS button"
+
+    while true
+    do
+	EVENT=`cat $WPS_BUTTON_DEV`
+	case $EVENT in
+	    "$WPS_BUTTON_WIRELESS_EVENT")
+		logger "wireless event detected"
+		;;
+	    "$WPS_BUTTON_DBGDUMP_EVENT")
+		logger "debug info dump event detected"
+		if [ -e "$DUMP_CMDS_FILE" ]; then
+		    logger "$DUMP_CMDS_FILE start execution"
+		    /bin/sh $DUMP_CMDS_FILE
+		    logger "$DUMP_CMDS_FILE completed"
+
+		    echo 1 > $WPS_BUTTON_DEV
+		else
+		    logger "$DUMP_CMDS_FILE not exist"
+		fi
+		;;
+	    *)
+		logger "unknown event ($EVENT)"
+		;;
+	esac
+    done
+}
+
+turn_off() {
+	pid=`ps | grep -v sed | sed -n 's/[ ]*\([0-9]*\).*offline_dump on/\1/p'`
+	if [ "$pid" ]; then
+		kill -9 $pid
+	fi
+	pid=`ps | grep -v sed | sed -n "s#[ ]*\([0-9]*\).*cat $WPS_BUTTON_DEV#\1#p"`
+	if [ "$pid" ]; then
+		kill -9 $pid
+	fi
+
+	logger "stop watching WPS button"
+}
+
+############################################################
+#                    main
+############################################################
+WPS_BUTTON_DEV=`find /sys -name wps_button`
+
+
+if [ $# -eq 0 ]; then
+    show_status
+    exit 0
+fi
+
+case $1 in
+    "on") turn_on ;;
+    "off") turn_off ;;
+    *)
+	echo "unknown argument ($1)"
+	echo "$USAGE"
+	;;
+esac
+
+

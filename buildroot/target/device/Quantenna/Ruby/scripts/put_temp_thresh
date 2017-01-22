@@ -1,0 +1,8 @@
+#! /bin/sh
+thresh=$1
+if [ "$thresh" == "" ]
+then
+        thresh=100
+fi
+echo "calcmd 32 0 6 0 1 $thresh" > /sys/devices/qdrv/control
+

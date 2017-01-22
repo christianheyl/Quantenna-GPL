@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# This script is to detect the ethernet port and restart the DHCP client when the ethernet port is plugged out and plugged in.
+
+# The detect interval is 3 seconds.
+interval=3
+fstat=`cat /sys/class/net/eth1_0/carrier`
+mode=`call_qcsapi get_mode wifi0`
+
+# This script is only for AP mode.
+if [ "$mode" == "Access point" ]
+then
+	while true
+	do
+		sleep $interval
+		sstat=`cat /sys/class/net/eth1_0/carrier`
+
+		# If there is no dhclient up and running, suppose it is in static IP mode, the script won`t restart the DHCP client.
+		# The DHCP client is dhclient. If any other DHCP client is using, please modify the script.
+
+		dhclient_id=`pidof dhclient`
+		if [ $dhclient_id ]
+		then
+			if [ "$sstat" == "1" -a "$fstat" == "0" ]
+			then
+				killall dhclient
+				dhclient -4 br0 &
+				echo "DHCP Client Restarted"
+			fi
+		fi
+		fstat=$sstat
+	done
+else
+	echo "Only AP mode can support DHCP restart"
+fi

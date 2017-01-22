@@ -1,0 +1,31 @@
+#! /bin/sh
+band_select=$1
+vcm_select=$2
+short_lna=$3
+debug_level=$4
+
+if [ "$band_select" == "" ]
+then
+	band_select=1
+fi
+
+if [ "$short_lna" == "" ]
+then
+	short_lna=1
+fi
+if [ "$vcm_select" == "" ]
+then
+	vcm_select=0
+fi
+if [ "$debug_level" == "" ]
+then
+	debug_level=0
+fi
+
+echo "================================"
+echo "band_select => $band_select"
+echo "vcm_select => $vcm_select"
+echo "short_lna => $short_lna"
+echo "debug_level => $debug_level"
+echo "================================"
+echo "calcmd 26 0 12 0 1 $band_select 2 $vcm_select 3 $short_lna 4 $debug_level" > /sys/devices/qdrv/control

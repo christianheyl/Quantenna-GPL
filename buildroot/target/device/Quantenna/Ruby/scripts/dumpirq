@@ -1,0 +1,6 @@
+#!/bin/ash
+
+if [ -f /sys/devices/qdrv/control ]
+then
+	echo "dump irqstatus" > /sys/devices/qdrv/control
+fi

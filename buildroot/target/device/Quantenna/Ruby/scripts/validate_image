@@ -1,0 +1,4 @@
+#!/bin/sh
+# wrapper that uses chkimage, with some default options
+chkimage -A arc -O linux -T kernel $@
+return $?

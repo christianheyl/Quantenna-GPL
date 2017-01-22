@@ -1,0 +1,4 @@
+echo "create txpower.cal 0xdc" > /proc/bootcfg/env
+echo "create dc_iq.cal 0xb6c" > /proc/bootcfg/env
+cat /mnt/jffs2/txpower.cal > /proc/bootcfg/txpower.cal
+cat /mnt/jffs2/dc_iq.cal > /proc/bootcfg/dc_iq.cal

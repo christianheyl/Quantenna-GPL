@@ -1,0 +1,5 @@
+kernel/../drivers/topaz/fwt_if.ko
+kernel/../drivers/topaz/switch_tqe.ko
+kernel/../drivers/topaz/switch_vlan.ko
+kernel/../drivers/topaz/dpi.ko
+kernel/../drivers/topaz/switch_emac.ko

@@ -1,0 +1,14 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_32_TO_v37_4_0_33 Version v37.4.0.32 to version v37.4.0.33 changes
+ *
+ * \subsection v37_4_0_32_TO_v37_4_0_33Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.32 and v37.4.0.33
+ * \li \ref qcsapi_wifi_get_supp_chans
+ * \li \ref qcsapi_get_client_mac_list
+ * \li \ref qcsapi_get_core_dump
+ * \li \ref qcsapi_get_core_dump_size
+ */
+

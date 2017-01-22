@@ -1,0 +1,38 @@
+#!/bin/sh
+PM_MODE_AUTO=1
+PM_MODE_DISABLE=0
+established=0
+opmode=$(qweconfig get mode.wlan1)
+
+if [ $opmode = 0 ]; then
+	# AP mode, set as established if any client associate to AP or VAPs interface
+	if [ "x$(qweaction wlan1 stainfo ap)" != "x" ]; then
+		established=1
+	elif [ "x$(qweaction wlan1 stainfo vap0)" != "x" ]; then
+		established=1
+	elif [ "x$(qweaction wlan1 stainfo vap1)" != "x" ]; then
+		established=1
+	elif [ "x$(qweaction wlan1 stainfo vap2)" != "x" ]; then
+		established=1
+	elif [ "x$(qweaction wlan1 stainfo vap3)" != "x" ]; then
+		established=1
+	fi
+elif [ $opmode = 1 ]; then
+	# Client mode, set as established if client interface associate to root AP
+	if [ "x$(qweaction wlan1 status rootap | grep not-associate)" = "x" ]; then
+		established=1
+	fi
+elif [ $opmode = 2 ]; then
+	# Repeater mode, set as established if client interface associate to root AP or any client associate to AP interface
+	if [ "x$(qweaction wlan1 status rootap | grep not-associate)" = "x" ]; then
+		established=1
+	elif [ "x$(qweaction wlan1 stainfo ap)" != "x" ]; then
+		established=1
+	fi
+fi
+
+if [ $established = 0 ]; then
+	echo "update qwe $PM_MODE_AUTO" > /proc/soc_pm
+else
+	echo "update qwe $PM_MODE_DISABLE" > /proc/soc_pm
+fi

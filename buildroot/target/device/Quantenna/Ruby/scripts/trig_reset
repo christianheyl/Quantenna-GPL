@@ -1,0 +1,44 @@
+#!/bin/sh
+cmd=$1
+interval=$2
+
+if [ "$cmd" = "sw" ]
+then
+	while true;
+	do
+	  echo "SW reset..."
+	  iwpriv wifi0 setparam 119 0xAAAAAAAA
+	  sleep $interval;
+	done; 
+elif [ "$cmd" = "hw" ]
+then
+	while true;
+	do
+	  echo "HW reset..."
+	  iwpriv wifi0 setparam 119 0xAAAAAAAB
+	  sleep $interval;
+	done; 
+elif [ "$cmd" = "swh" ]
+then
+	while true;
+	do
+	  echo "SW reset..."
+	  iwpriv wifi0 setparam 119 0xAAAAAAAA
+	  sleep $interval;
+	  echo "Hard reset..."
+	  iwpriv wifi0 setparam 119 0xAAAAAAAB
+	  sleep $interval;
+	done; 
+elif [ "$cmd" = "badfcs" ]
+then
+	while true;
+	do
+	  echo "triggering reset due to bad FCS..."
+	  iwpriv wifi0 setparam 120 0xBADFC5
+	  sleep $interval;
+	done; 
+else
+        echo "Usage: trig_reset [sw|hw|swh|badfcs] [interval]"
+fi
+
+

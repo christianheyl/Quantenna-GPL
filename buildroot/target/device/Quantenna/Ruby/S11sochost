@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ -f /proc/soc1 ];then
+	echo `cat /etc/soc2ipcaddr` othersoc >> /etc/hosts
+else
+	echo `cat /etc/soc1ipcaddr` othersoc >> /etc/hosts
+fi

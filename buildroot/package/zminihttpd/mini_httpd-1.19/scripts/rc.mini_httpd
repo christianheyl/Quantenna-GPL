@@ -1,0 +1,42 @@
+#!/bin/sh
+# wrapper script for mini_httpd
+HTTPD=/usr/sbin/mini_httpd
+
+mini_httpd_start() {
+    if [ -x $HTTPD ]; then
+	echo "starting mini_httpd ($HTTPD) ..."
+	if [ -r /etc/mini_httpd.conf ]; then
+  	    $HTTPD -C /etc/mini_httpd.conf
+	fi
+	if [ -r /etc/mini_https.conf ]; then
+	    $HTTPD -C /etc/mini_https.conf
+	fi
+	echo "done."
+    fi
+}
+
+mini_httpd_stop() {
+    echo "trying to kill mini_httpd ..."
+    killall mini_httpd
+    echo "done."
+}
+
+mini_httpd_restart() {
+    mini_httpd_stop
+    sleep 1
+    mini_httpd_start
+}
+
+case "$1" in
+    'start')
+	mini_httpd_start
+	;;
+    'stop')
+	mini_httpd_stop
+	;;
+    'restart')
+	mini_httpd_restart
+	;;
+    *)
+	mini_httpd_start
+esac

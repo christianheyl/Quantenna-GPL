@@ -1,0 +1,151 @@
+#! /bin/sh
+
+ipaddr_file=/mnt/jffs2/ipaddr
+wifi_vap=wifi0
+pcie_host=host0
+
+get_ip_addr()
+{
+	net_interface=$1
+	ifconfig $net_interface | grep "inet addr" | sed 's/inet addr://' | awk '{ print $1 }'
+}
+
+init_bridge()
+{
+	net_interface=$1
+
+	ip_addr_net=`get_ip_addr $net_interface`
+	if [ "$ip_addr_net" = "" ]
+	then
+		if [ -f $ipaddr_file ]
+		then
+			ip_addr_net=`cat $ipaddr_file`
+		else
+			ip_addr_net=`cat /etc/ipaddr`
+		fi
+	fi
+
+	ifconfig $net_interface 0.0.0.0
+
+	brctl addbr br0
+	# Enable DAD, and disable IPv6 operation if MAC-based duplicate link-local address has been found
+	echo "2" > /proc/sys/net/ipv6/conf/br0/accept_dad
+	brctl addif br0 $net_interface
+	brctl setfd br0 0
+
+	if [ -f /mnt/jffs2/netmask ]
+	then
+		ifconfig br0 $ip_addr_net netmask `cat /mnt/jffs2/netmask` up
+	else
+		ifconfig br0 $ip_addr_net up
+	fi
+
+	brctl setageing br0 7200
+
+	# Encode multicast_router=1 in /mnt/jffs2/wireless_conf.txt will enable ability of sending IGMP query
+	multicast_router=`sed -r 's/.*multicast_router=(\w+).*/\1/g' mnt/jffs2/wireless_conf.txt`
+	if [ "$multicast_router" != "1" ]; then
+		if [ -e /sys/devices/virtual/net/br0/bridge/multicast_router ] ; then
+			echo "0" > /sys/devices/virtual/net/br0/bridge/multicast_router
+		fi
+	fi
+}
+
+special_vap_fixups()
+{
+	vap=$1
+	mode=$2
+
+	# Use 3-address mode for interoperability testing
+	if [ -f /mnt/jffs2/iot ]
+	then
+		iwpriv $vap wds 0
+	fi
+
+	# disable 3-address mode bridging?
+	if [ "$mode" = "sta" -a -f /mnt/jffs2/3addr_bridge_disable ]
+	then
+		echo "bridge 0 disable" > /sys/devices/qdrv/control
+	fi
+}
+
+add_to_bridge()
+{
+	net_interface=$1
+	wifi_mode=$2
+
+	if [ "$net_interface" = $wifi_vap ]
+	then
+		special_vap_fixups $net_interface $wifi_mode
+	fi
+
+	echo "1" > /proc/sys/net/ipv6/conf/$net_interface/disable_ipv6
+	brctl addif br0 $net_interface
+	brctl setfd br0 0
+	brctl setageing br0 7200
+	if [ "$net_interface" = $pcie_host ]; then
+		# flood-forward all multicast packets
+		brctl igmpsnoop br0 off
+	fi
+}
+
+bb_only() {
+	ip_addr_eth1_0=`get_ip_addr eth1_0`
+	if [ "$ip_addr_eth1_0" = "" ]
+	then
+		if [ -f $ipaddr_file ]
+		then
+			ip_addr_eth1_0=`cat $ipaddr_file`
+		else
+			ip_addr_eth1_0=`cat /etc/ipaddr`
+		fi
+	fi
+
+	# Use 3-address mode for interoperability testing
+	if [ -f /mnt/jffs2/iot ]
+	then
+		iwpriv wifi0 wds 0
+	fi
+
+	# Wifi up/down managed by hostapd/supplicant
+	#ifconfig wifi0 0.0.0.0
+	ifconfig eth1_0 0.0.0.0
+	brctl addbr br0
+	brctl addif br0 eth1_0
+	if [ -e /sys/class/net/eth1_1 ] ; then
+		ifconfig eth1_1 0.0.0.0
+		brctl addif br0 eth1_1
+	fi
+	brctl addif br0 wifi0
+	brctl setfd br0 0
+
+	ifconfig br0 $ip_addr_eth1_0 up
+
+	brctl setageing br0 7200
+}
+
+# main body of script starts here.
+param=$1
+
+if [ "$param" = "init" ] || [ "$param" = "add" ]
+then
+	shift
+	net_interface=$1
+	wifi_mode=$2
+
+	if [ "$param" = "init" ] && [ "$net_interface" = $wifi_vap ]
+	then
+		echo "Cannot initialize the bridge with $wifi_vap"
+		exit 1
+	fi
+
+	if [ -e /sys/class/net/br0 ]
+	then
+		add_to_bridge $net_interface $wifi_mode
+	else
+		init_bridge $net_interface
+	fi
+else
+	bb_only
+fi
+

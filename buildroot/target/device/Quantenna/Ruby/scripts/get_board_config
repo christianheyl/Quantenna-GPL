@@ -1,0 +1,12 @@
+#!/bin/sh
+
+filepath=/proc/bootcfg/boardparam
+
+if [ "$1" == "all" ] ; then
+	cat $filepath
+elif [ "$1" == "help" -o "$1" == "" ] ; then
+	echo "usage: get_board_config { <parameter> | all }"
+else
+	reval=`cat $filepath | grep "^$1\W" | cut -f 2`
+        echo $reval
+fi

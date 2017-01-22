@@ -1,0 +1,2 @@
+#!/bin/ash
+iwpriv wifi0 setparam 68 0x11

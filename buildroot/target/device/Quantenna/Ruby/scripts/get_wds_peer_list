@@ -1,0 +1,13 @@
+#! /bin/sh
+loop=0
+primary_iface=`call_qcsapi -u get_primary_interface`
+while true
+do
+    str=`call_qcsapi -u wds_get_peer_address $primary_iface $loop`
+    if [ $? -ne 0 ]
+    then
+        break
+    fi
+    echo $str
+    loop=`expr $loop + 1`
+done

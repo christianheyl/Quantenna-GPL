@@ -1,0 +1,7 @@
+#!/bin/sh
+rm -f /mnt/jffs2/pecount.out
+rm -f /mnt/jffs2/mon.out
+rm -f /mnt/jffs2/gmon.out
+rm -f /mnt/jffs2/dcache_stats.out
+echo "set uc_flags 0" > /sys/devices/qdrv/control
+

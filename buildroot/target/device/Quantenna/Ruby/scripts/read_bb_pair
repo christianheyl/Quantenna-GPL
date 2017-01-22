@@ -1,0 +1,3 @@
+#!/bin/ash
+readmem e600$1 
+readmem e680$1

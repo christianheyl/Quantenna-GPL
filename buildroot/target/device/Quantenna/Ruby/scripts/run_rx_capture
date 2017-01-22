@@ -1,0 +1,48 @@
+#! /bin/sh
+cal_rgi=$1
+cal_index=$2
+serverip=$3;
+avg_count=$4;
+waveform=$5;
+
+destfile="rxiq_samp_${cal_index}_$waveform.txt";
+counter=0;
+
+#Disable SPI writes and fix RF gain to passed RGI(RFIC gain index)
+enable_vco_cal 0
+enable_txpow_cal 0
+writemem e6000024 2
+writemem e609103c $cal_rgi
+writemem e6091040 0
+writemem e6091040 1
+
+#Force ext LNA On. if bit1 = 1, ext_lna_ctrl= bit0;
+writemem e60905e4 3
+
+#Set DMA dest address, use CONFIG_ARC_MU_QMAT_BASE as scratch memory
+writemem 0xE60002d8 0x88070000;
+rm -f /mnt/jffs2/rxiq_samp.txt;
+
+while [  $counter -lt $avg_count ]
+do
+	#Enable DMA
+	writemem 0xE60002d0 1;
+
+	#wait and check the DMA status register
+	usleep 20;
+	readmem 0xE600032c
+
+	#disable DMA
+	writemem 0xE60002d0 0;
+
+	readmem_multi 88070000 2048 | cut -d" " -f2 >> "/mnt/jffs2/rxiq_samp.txt";
+	let counter=counter+1;
+	usleep 20;
+done
+
+tftp -p -l /mnt/jffs2/rxiq_samp.txt -r $destfile $serverip
+
+#capture done, clear settings
+enable_vco_cal 1;
+enable_txpow_cal 2;
+writemem e6000024 0;

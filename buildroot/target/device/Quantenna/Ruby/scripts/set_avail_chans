@@ -1,0 +1,85 @@
+#!/bin/sh
+region=$1
+if [ "$region" = "" ]
+then
+    region=eu
+fi
+
+bw=$2
+if [ "$bw" = "" ]
+then
+    bw=40
+fi
+
+# This script sets usable channel map according to country code
+# Regions support are: all (All channels), eu (Europe), us (USA) and jp (Japan)
+# Refer iwpriv implementation in wlan/ieee80211_wireless.c for more details
+
+# 2.4G chans (set indices 1-16)
+chans="0xFF 0xFF 0x00 0x00 "
+
+#Chans 36-64 (indices 33-68 to 1)
+chans=$chans"0xFF 0xFF 0xFF 0xFF 0x0F "
+
+#Empty middle band (indices 73-96)
+chans=$chans"0x00 0x00 0x00 "
+
+#chans 100-112 (indices 97-112)
+chans=$chans"0xFF 0xFF "
+
+#unless region is all ...
+#bw = 20 MHz: Block access to channels 120-131
+#bw = 40 MHz: Block access to channels 116-131
+#indicies 113-128
+
+if [ "$region" = "all" ]
+then
+    chans=$chans"0xFF 0xFF "
+else
+    if [ "$bw" = "40" ]
+    then
+        chans=$chans"0x00 0x00 "
+    else
+        chans=$chans"0x0F 0x00 "
+    fi
+fi
+
+if [ "$region" = "all" ] || [ "$region" = "us" ] || [ "$region" = "eu" ]
+then
+#chan 132-144 (indices 129-144) for all, us and eu
+chans=$chans"0xFF 0xFF "
+else
+#chan 132-140 (indices 129-140) for everyone else
+chans=$chans"0xFF 0x0F "
+fi
+
+#chans 149-165 (indices 145-167)
+if [ "$region" = "us" -o "$region" = "all" ]
+then
+chans=$chans"0xFF 0xFF 0xFF "
+else
+chans=$chans"0x00 0x00 0x00 "
+fi
+
+#empty upper band (indices 169-176)
+#if [ "$region" = "all" ]
+#then
+#chans=$chans"0x00 "
+#else
+chans=$chans"0x00 "
+#fi
+
+#japan 184-196 (indices 177-200)
+#if [ "$region" = "jp" -o "$region" = "all" ]
+#then
+#chans=$chans"0xF0 0xFF 0xFF "
+#else
+chans=$chans"0x00 0x00 0x00 "
+#fi
+
+#unused top (indices 201-255)
+chans=$chans"0x00 0x00 0x00 0x00 0x00 0x00 0x00"
+
+#echo "Channel Map $chans" >/tmp/setchanlist
+iwpriv wifi0 setchanlist $chans
+

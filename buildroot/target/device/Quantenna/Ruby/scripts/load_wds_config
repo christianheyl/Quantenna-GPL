@@ -1,0 +1,77 @@
+#!/bin/sh
+
+CONFIG_FILE=$1
+
+if [ ! -f ${CONFIG_FILE} ]; then
+	exit 1
+fi
+
+section_begin=0
+mac_address=""
+
+while read LINE
+do
+    line_process=$LINE
+
+    # wds section begin: wds={ skipped
+    if [ "$line_process" ==  "wds={" ]
+    then
+        section_begin=1
+        continue
+    fi
+
+    # wds section end: } skipped
+    if [ "$line_process" ==  "}" ]
+    then
+        section_begin=0
+        continue
+    fi
+
+    #in case there some content not empty outside the wds section, we do not process
+    if [ $section_begin != 1 ]
+    then
+        continue
+    fi
+
+    #comment lines are skipped here
+    comment_line=`expr substr "$line_process" 1 1`
+    if [ "$comment_line" == "#" ]
+    then
+        continue
+    fi
+
+    # till now, only 3 kinds of line are left
+    # 1. mac 2. psk 3.invalid line in the wds section,
+    # we only process the fisrt 2 kinds.
+    # echo $line_process
+
+    # split comment
+    mac_psk=`echo $line_process | awk -F"#" '{print $1}'`
+
+    #split wds config section, prex "mac" or "psk"
+    prex_setting=`echo $mac_psk | awk -F"=" '{print $1}'`
+    prex_setting=`echo $prex_setting`
+
+    if [ "$prex_setting" == "mac" ]
+    then
+        mac_address=`echo $mac_psk | awk -F"=" '{print $2}'`
+        mac_address=`echo $mac_address`
+        call_qcsapi -u wds_add_peer wifi0 "$mac_address"
+        continue
+    fi
+
+    if [ "$prex_setting" == "psk" ]
+    then
+        wds_psk=`echo $mac_psk | awk -F"=" '{print $2}'`
+        wds_psk=`echo $wds_psk`
+        psk_length=`expr length $wds_psk`
+        if [ $psk_length == 64 ]
+        then
+            call_qcsapi -u wds_set_psk wifi0 "$mac_address" "$wds_psk"
+        fi
+
+        mac_address=""
+        continue
+    fi
+
+done < ${CONFIG_FILE}

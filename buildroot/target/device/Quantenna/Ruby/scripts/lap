@@ -1,0 +1,4 @@
+for i in umsdmadrv bbrfdrv wlan qtn wlan_scan_ap wlandrv
+do
+	modprobe $i
+done

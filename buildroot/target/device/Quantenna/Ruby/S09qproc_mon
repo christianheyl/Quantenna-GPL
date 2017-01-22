@@ -1,0 +1,11 @@
+#!/bin/sh
+
+export LD_LIBRARY_PATH=/lib:/usr/lib
+
+base_scripts="/scripts"
+
+platform_id=`cat $base_scripts/platform_id`
+if [ "$platform_id" == "464" ]
+then
+	$base_scripts/qproc_mon_loop &
+fi

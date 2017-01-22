@@ -1,0 +1,11 @@
+#! /bin/sh
+
+enable=$1
+
+if [ "$enable" == "" ]; then
+	echo "Missing required argument: state"
+elif [ "$enable" -ne 0 ] && [ "$enable" -ne 1 ]; then
+	echo "invalid argument, valid values = 0,1"
+else
+	echo "calcmd 66 0 6 0 1 $enable" > /sys/devices/qdrv/control
+fi

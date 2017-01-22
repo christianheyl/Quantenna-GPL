@@ -1,0 +1,7 @@
+#! /bin/sh
+#modprobe qtsens - Commenting for now
+modprobe qdrv
+modprobe wlan_ccmp
+modprobe wlan_tkip
+modprobe wlan_xauth
+# modprobe bootcfg - Commenting for now

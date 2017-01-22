@@ -1,0 +1,70 @@
+//swdepot/bbic3/patch/patch_37_4_0_62/host/board_utils/QTN_board_customer_QHS840_5s1.txt#1 - branch change 45029 (text)
+//.txt for customer board provisioning and configurations
+//filename: board_customer.txt
+------------------ // every entry should start with this string
+0 //start, this id number needs to conform what is defined in qtn_hw_board_db.bin
+012345678 0
+------------------
+1  //bc_board_id:length
+BOARD_ID 2,65535,
+------------------
+2  //bc_name
+QHS840_5S1 0
+------------------
+3  //bc_ddr_type, 1 byte each
+DDR3_16_WINBOND 1,7
+------------------
+4  //bc_ddr_speed
+DDR3_500MHz 2,500
+------------------
+5  //bc_ddr_size
+DDR_128MB 4,134217728
+------------------
+6  //bc_emac0
+EMAC_RTL8363SB_RGMII_BONDED 4,1835027
+------------------
+7  //bc_emac1
+EMAC_RTL8363SB_RGMII_BONDED 4,1835027
+------------------
+8  //bc_phy0_addr
+EMAC_PHY_ADDR_SCAN 1,32
+------------------
+9  //bc_phy1_addr
+EMAC_PHY_ADDR_SCAN 1,32
+------------------
+10  //bc_spi1_enable
+SPI1_NOT_IN_USE 1,0
+------------------
+11  //bc_wifi_hw
+QTN_TPZ_SE5003L1 1,5
+------------------
+12 //bc_uart1
+UART1_NOT_IN_USE 1,0
+------------------
+13  //bc_pcie1
+PCIE_NOT_IN_USE 1,0
+------------------
+14 //bc_rgmii_timing
+RGMII_NODELAY 4,522133279
+------------------
+15  //bc_ln_gain
+LNA_gain_12dB 1,12
+------------------
+16 //bc_tx_antenna
+TX_ANTENNA_NUM_4 1,4
+------------------
+17 // bc_flash_cfg
+FLASH_SIZE_JEDEC 1,0
+------------------
+18 //antenna gain
+TX_ANTENNA_GAIN_1_1dB 2,4506 //unsigned short, 16.12 (4506 means 1.1)
+-------------------
+19  //bc_lna_bypass_gain, signed char
+LNA_gain_BYPASS_N5dB 4, -5
+-------------------
+20 //bc_rfic
+RFIC_V4_IN_USE 1,4
+-------------------
+21 //bc_tx_power_cal
+CALSTATE_VPD_LOG 1,0
+****************** //this string is necessory to indicate the end of .txt

@@ -1,0 +1,30 @@
+diff -au openssl-1.0.2d/Configure openssl-1.0.2d-patched/Configure
+--- openssl-1.0.2d/Configure	2014-10-15 16:45:00.000000000 +0400
++++ openssl-1.0.2d-patched/Configure	2014-10-22 13:53:05.965106566 +0400
+@@ -1,4 +1,4 @@
+-:
++#!/usr/bin/perl
+ eval 'exec perl -S $0 ${1+"$@"}'
+     if $running_under_some_shell;
+ ##
+@@ -556,6 +556,8 @@
+ ##### Compaq Non-Stop Kernel (Tandem)
+ "tandem-c89","c89:-Ww -D__TANDEM -D_XOPEN_SOURCE -D_XOPEN_SOURCE_EXTENDED=1 -D_TANDEM_SOURCE -DB_ENDIAN::(unknown):::THIRTY_TWO_BIT:::",
+ 
++########## Linux-arc ###########
++"linux-arc","gcc:-DL_ENDIAN -DTERMIO -O3 -fomit-frame-pointer -Wall::-D_REENTRANT::-ldl:BN_LLONG:${no_asm}:dlfcn:linux-shared:-fPIC:-shared:.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
+ );
+ 
+ my @MK1MF_Builds=qw(VC-WIN64I VC-WIN64A
+diff -au openssl-1.0.2d/Makefile.org openssl-1.0.2d-patched/Makefile.org
+--- openssl-1.0.2d/Makefile.org	2014-10-15 16:45:00.000000000 +0400
++++ openssl-1.0.2d-patched/Makefile.org	2014-10-22 13:54:14.249104570 +0400
+@@ -615,7 +615,7 @@
+ dist_pem_h:
+ 	(cd crypto/pem; $(MAKE) -e $(BUILDENV) pem.h; $(MAKE) clean)
+ 
+-install: all install_docs install_sw
++install: all install_sw
+ 
+ install_sw:
+ 	@$(PERL) $(TOP)/util/mkdir-p.pl $(INSTALL_PREFIX)$(INSTALLTOP)/bin \

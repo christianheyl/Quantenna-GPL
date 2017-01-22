@@ -1,0 +1,9 @@
+#!/bin/sh
+
+base_scripts="/scripts"
+
+. $base_scripts/start-helpers.sh
+
+restore_default_config -nr
+
+call_qcsapi update_persistent_param wifi0 staticip 1

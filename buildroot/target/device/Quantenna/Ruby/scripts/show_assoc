@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "get 0 show_assoc $*" > /sys/devices/qdrv/control
+cat /proc/qdrvdata

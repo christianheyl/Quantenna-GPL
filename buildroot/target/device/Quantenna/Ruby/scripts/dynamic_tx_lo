@@ -1,0 +1,15 @@
+#! /bin/sh
+chain=$1
+
+if [ "$chain" == "" ]
+then
+        chain=0
+fi
+
+if [ $chain -gt 3 ]
+then
+	echo "Not available"
+else
+	echo "calcmd 50 0 6 0 1 $chain" > /sys/devices/qdrv/control
+fi
+

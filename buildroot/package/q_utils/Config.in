@@ -1,0 +1,6 @@
+config BR2_PACKAGE_Q_UTILS
+	bool "q_utils"
+	default y
+	select BR2_PACKAGE_WIRELESS_TOOLS
+	help
+	  Quantenna Utility Applications

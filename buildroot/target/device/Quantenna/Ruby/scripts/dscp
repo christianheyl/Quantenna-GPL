@@ -1,0 +1,110 @@
+#!/bin/ash
+ETH1_1=eth1_0 # emac0 is eth1_1 and emac1 is eth1_0 in topaz
+ETH1_0=eth1_1
+EMAC0="emac0"
+EMAC1="emac1"
+UPDATE=U
+DSCP_PATH_0=/sys/class/net/$ETH1_0
+DSCP_PATH_1=/sys/class/net/$ETH1_1
+DSCP_PATH_DUMP=/sys/class/net
+DSCP_PRIORITY_SELECT=device_dscp_prio_sel
+DSCP_VALUE_SET=device_dscp_prio_val
+DSCP_UPDATE_ENTRY=device_dscp_update
+DSCP_DUMP=device_dscp_show
+ARG1=$1
+ARG2=$2
+ARG3=$3
+ARG4=$4
+ARG5=$5
+FILL=fill
+DUMP=dump
+POKE=poke
+HELP=help
+H=h
+
+
+dscp_dump()
+{
+    if [ $ARG2 = $EMAC0 ];  # you need space in between [space$ARG1....
+    then
+	cat /sys/class/net/$ETH1_0/$DSCP_DUMP
+
+    elif [ $ARG2 = $EMAC1 ];
+    then
+	cat /sys/class/net/$ETH1_1/$DSCP_DUMP
+    else
+        echo "dscp help"
+    fi
+
+
+}
+
+dscp_poke()
+{
+
+    if [ $ARG2 = $EMAC0 ];  # you need space in between [space$ARG1....
+    then
+        echo $ARG3 > /sys/class/net/$ETH1_0/$DSCP_PRIORITY_SELECT
+        echo $ARG4 > /sys/class/net/$ETH1_0/$DSCP_VALUE_SET
+        echo $UPDATE > /sys/class/net/$ETH1_0/$DSCP_UPDATE_ENTRY
+
+    elif [ $ARG2 = $EMAC1 ];
+    then
+        echo $ARG3 > /sys/class/net/$ETH1_1/$DSCP_PRIORITY_SELECT
+        echo $ARG4 > /sys/class/net/$ETH1_1/$DSCP_VALUE_SET
+        echo $UPDATE > /sys/class/net/$ETH1_1/$DSCP_UPDATE_ENTRY
+    else
+        echo "dscp help"
+    fi
+
+}
+
+dscp_fill()
+{
+
+    priority_entry=0
+    dscp_max_entry=63
+
+    while [ "$priority_entry" -le "$dscp_max_entry" ]
+    do
+
+        priority_value=$ARG3;
+        priority_value=$(($priority_value%16))
+
+        if [ $ARG2 = $EMAC0 ];  # you need space in between [space$ARG1....
+	then
+            echo $priority_entry > /sys/class/net/$ETH1_0/$DSCP_PRIORITY_SELECT
+            echo $priority_value > /sys/class/net/$ETH1_0/$DSCP_VALUE_SET
+            echo $UPDATE > /sys/class/net/$ETH1_0/$DSCP_UPDATE_ENTRY
+        elif [ $ARG2 = $EMAC1 ];
+        then
+            echo $priority_entry > /sys/class/net/$ETH1_1/$DSCP_PRIORITY_SELECT
+            echo $priority_value > /sys/class/net/$ETH1_1/$DSCP_VALUE_SET
+            echo $UPDATE > /sys/class/net/$ETH1_1/$DSCP_UPDATE_ENTRY
+
+        fi
+        priority_entry=$(($priority_entry+1))
+
+    done
+}
+
+
+case $1 in
+    $DUMP )
+      dscp_dump
+      ;;
+    $POKE )
+      dscp_poke
+      ;;
+    $FILL )
+      dscp_fill
+      ;;
+    * | $HELP | $H )
+      echo "dscp dump interface:emac0|emac1"
+      echo " - This cmd will dump the values of the dscp table"
+      echo "dscp poke interface:emac0|emac1 prio_sel:0-63 prio_val:0-15"
+      echo " - This cmd will write one entry to dscp table"
+      echo "dscp fill emac0|emac1 value:0-15"
+      echo " - This cmd will fill the dscp with a value from the arg "
+      ;;
+esac

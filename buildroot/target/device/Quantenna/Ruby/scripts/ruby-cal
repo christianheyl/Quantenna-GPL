@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# adopted from debug-qdrv script
+
+base_scripts="/scripts"
+
+. $base_scripts/start-helpers.sh
+
+
+/scripts/load-qdrv qtn_ruby cal
+
+echo "start" > /sys/devices/qdrv/control
+
+# default to ipaddr of 192.168.1.200
+
+enet_addr=`ifconfig eth1_0 2>/dev/null | grep "inet addr"`
+if [ "$enet_addr" == "" ]
+then
+	ifconfig eth1_0 192.168.1.200
+fi
+
+if hw_config_id_in_list 19 1213 1214
+then
+	echo Bridging dual emacs...
+	ifconfig eth1_0 0.0.0.0
+	brctl addbr br0
+	brctl addif br0 eth1_0
+	brctl addif br0 eth1_1
+	if [ -f /mnt/jffs2/ipaddr ]
+	then
+		if [ -f /mnt/jffs2/netmask ]
+		then
+			ifconfig br0 `cat /mnt/jffs2/ipaddr` netmask `cat /mnt/jffs2/netmask` up
+		else
+			ifconfig br0 `cat /mnt/jffs2/ipaddr` up
+		fi
+	else
+		ifconfig br0 192.168.1.100 up
+	fi
+elif hw_config_id_in_list 1009 1171 1204
+then
+        echo Bridging  br0 for pcie
+        brctl addbr br0
+        if [ -f /mnt/jffs2/ipaddr ]
+        then
+		if [ -f /mnt/jffs2/netmask ]
+		then
+			ifconfig br0 `cat /mnt/jffs2/ipaddr` netmask `cat /mnt/jffs2/netmask` up
+		else
+			ifconfig br0 `cat /mnt/jffs2/ipaddr` up
+		fi
+        else
+                ifconfig br0 192.168.1.100 up
+        fi
+else
+	echo "Disabling bridge for cal image"
+	ifconfig br0 0.0.0.0
+	brctl delif br0 eth1_0
+fi
+
+sleep 10
+dmesg -c
+echo "dbg set qdrv 0x40 6" > /sys/devices/qdrv/control
+
+set_sys_status complete

@@ -1,0 +1,15 @@
+diff -du tftp/main.c tftp_new/main.c
+--- old/tftp/main.c	2004-01-09 07:47:00.000000000 +1100
++++ new/tftp/main.c	2011-12-19 16:31:17.607780973 +1100
+@@ -191,6 +191,11 @@
+   exit(errcode);
+ }
+ 
++static inline void bcopy(const void *src, void *dest, size_t n)
++{
++	memcpy(dest, src, n);
++}
++
+ int
+ main(int argc, char *argv[])
+ {

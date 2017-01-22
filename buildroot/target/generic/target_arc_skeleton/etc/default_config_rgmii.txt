@@ -1,0 +1,1 @@
+staticip=1&mode=ap&bw=40&region=none&channel=0&bf=1&pwr=16&pwr_cal=on&staticip=1&leds=1&monitorreset=1&monitorrfenable=1

@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# Save the core dump (if it was generated) into a file
+
+# Use jffs2 if it exists, else /tmp
+
+base_jffs2="/mnt/jffs2"
+
+if [ -d $base_jffs2 ]; then
+	file_name=$base_jffs2
+else
+	file_name="/tmp"
+fi
+
+file_name=$file_name/core_dump
+
+call_qcsapi get_core_dump > $file_name
+if [ ! -e $file_name ]; then
+	echo "Could not write core dump file"
+	exit 1
+fi
+
+core_dump_size=`wc -c $file_name | awk '{print $1}'`
+if [ "$core_dump_size" != "0" ]; then
+
+	for i in 3 2 1 0; do
+		new_file="$file_name.$((i+1))"
+		old_file="$file_name.$i"
+
+		if [ -e $old_file ]; then
+			mv $old_file $new_file
+		fi
+	done
+
+	mv $file_name "$file_name.0"
+
+	echo "core dump file (compressed) saved at $file_name.0"
+else
+	rm -f $file_name
+
+	echo "No core dump generated"
+fi
+
+exit 0

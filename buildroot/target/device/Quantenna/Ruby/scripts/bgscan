@@ -1,0 +1,5 @@
+#!/bin/ash
+
+call_qcsapi -u -q start_scan wifi0 background
+call_qcsapi -u -q wait_scan_completes wifi0 30
+iwlist wifi0 scanning last

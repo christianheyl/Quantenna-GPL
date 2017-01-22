@@ -1,0 +1,3 @@
+#!/bin/sh
+
+call_qcsapi get_board_parameter hw_desc

@@ -1,0 +1,14 @@
+sched_burst.c Qdisc is debug tool to generate bursts in traffic by user request.
+
+To compile it one line in current directory Makefile can be changed from
+"obj-$(CONFIG_NET_SCHED)		+= sch_api.o sch_blackhole.o" to
+"obj-$(CONFIG_NET_SCHED)		+= sch_api.o sch_blackhole.o sch_burst.o"
+
+After kernel building Qdisc can be attached to network interface (e.g. eth1_0) this way:
+	$tc qdisc add dev eth1_0 root burst
+
+To generate burst in traffic:
+	$echo 300 > /sys/class/net/eth1_0/burst
+This command tells Qdisc to stop passing packets to ethernet device till 300 packets will be accumulated in tx queue.
+After Qdisc has 300 packets, transmission would be returned to normal mode ("burst" mode cleared),
+and all packets (including accumulated) would sent to network device as usual.

@@ -1,0 +1,15 @@
+#!/bin/sh
+cmd=$1
+
+if [ -z $cmd ]
+then
+	cmd="on"
+fi
+
+if [ "$cmd" = "on" ]
+then
+	echo "pktlogger 0 start radar" > /sys/devices/qdrv/control
+elif [ "$cmd" = "off" ]
+then
+	echo "pktlogger 0 stop radar" > /sys/devices/qdrv/control
+fi

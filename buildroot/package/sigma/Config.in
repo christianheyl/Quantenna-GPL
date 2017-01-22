@@ -1,0 +1,21 @@
+config BR2_PACKAGE_SIGMA
+	bool "sigma"
+	default n
+	depends on BR2_PACKAGE_QCSAPI
+	help
+	  Sigma control agent.
+
+config BR2_PACKAGE_SIGMA_CA_PORT
+	int "CA port"
+	default 9000
+	depends on BR2_PACKAGE_SIGMA
+	help
+	  port which will be listened by sigma CA
+
+config BR2_PACKAGE_SIGMA_DUT_PORT
+	int "DUT port"
+	default 6070
+	depends on BR2_PACKAGE_SIGMA
+	help
+	  port which will be listened by sigma DUT agent
+

@@ -1,0 +1,20 @@
+#
+
+choice
+	prompt "Toolchain type"
+	default BR2_TOOLCHAIN_BUILDROOT
+	help
+	  Select whether to use the toolchain built by the buildroot
+	  system or an external pre-built toolchain.
+
+config BR2_TOOLCHAIN_BUILDROOT
+	bool
+	prompt "Buildroot toolchain"
+
+config BR2_TOOLCHAIN_EXTERNAL
+	bool
+	prompt " External toolchain"
+endchoice
+
+source "toolchain/Config.in.2"
+source "toolchain/external-toolchain/Config.in"

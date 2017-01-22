@@ -1,0 +1,41 @@
+#! /bin/sh
+
+bootcfg_path="/proc/bootcfg"
+bootcfg_backup="/mnt/jffs2/bootcfg"
+
+if [ "$1" = "" ]
+then
+    echo -n "Enter source folder for bootcfg files: [$bootcfg_backup]: "
+    read tmpstr
+    if [ "$tmpstr" != "" ]
+    then
+        bootcfg_backup=$tmpstr
+    fi
+else
+    bootcfg_backup=$1
+fi
+
+if [ ! -d $bootcfg_backup ]
+then
+    echo "Error: $bootcfg_backup is not a folder."
+    echo "Please select the correct folder and try again."
+    exit 1
+fi
+
+echo "Restoring files in $bootcfg_path from $bootcfg_backup."
+
+cd $bootcfg_backup
+
+for bootcfg_entry in *
+do
+    if [ $bootcfg_entry != "env" ]
+    then
+        update_bootcfg_file $bootcfg_entry
+        if [ $? -ne 0 ]
+        then
+            echo "Error restoring $bootcfg_entry"
+        fi
+    fi
+done
+
+restore_bootcfg_env env

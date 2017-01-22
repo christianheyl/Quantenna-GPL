@@ -1,0 +1,3 @@
+#!/bin/sh
+# Run system activity accounting tool every 10 minutes
+/home/jwang/sourcecode/Perforce/workspace/jxwang_linux-fc8/dev/ruby/soc/branches/main4_adm/buildroot/build_arc/root/lib/sa/sa1 600 6 &

@@ -1,0 +1,10 @@
+#!/bin/ash
+
+if [ -f /sys/devices/qdrv/control ]
+then
+	echo "read addr $1 1" > /sys/devices/qdrv/control
+	cat /proc/qdrvdata
+else
+	echo "$1 1" > /proc/wlanmem
+	cat /proc/wlanmem
+fi

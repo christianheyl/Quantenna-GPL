@@ -1,0 +1,18 @@
+#! /bin/sh
+
+Nss=$1
+mcs=$2
+bfon=$3
+
+iwpriv wifi0 pppc 0
+
+if [ $bfon == 1 ]
+then
+        bfon
+	writemem e605004c 0x788
+else
+        bfoff
+	writemem e605004c 0x7c8
+fi
+let x=$Nss-1
+set_11ac_mcs 0x$x$mcs

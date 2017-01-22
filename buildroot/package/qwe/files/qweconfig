@@ -1,0 +1,123 @@
+#!/bin/sh
+defconfigfile=/etc/qwe.conf
+configfile=/mnt/jffs2/qwe.conf
+bakconfigfile=/tmp/qwe.conf.bak
+denymacfile=/mnt/jffs2/qwe.macdeny
+allowmacfile=/mnt/jffs2/qwe.macallow
+
+usage_and_exit()
+{
+	cat <<EOF
+Usage:	$0 <command> [<parameter>] [<value>]
+Commands:
+	set <parameter> <value>      : set the value to parameter
+	get <parameter>              : get the value of parameter
+	backuprunning                : backup all of the parameter to ram
+	getrunning <parameter>       : get the value of parameter from ram
+	deny_mac <mac>               : deny one device
+	allow_mac <mac>              : allow one device
+	list_deny_mac                : list all denied devices
+	list_allow_mac               : list all allowed devices
+	unset <parameter>            : set the value of one parameter to default
+	default                      : set all of the config to default
+EOF
+	exit 1
+}
+
+if [ $# -lt 1 ]; then
+	usage_and_exit
+fi
+
+action=$1
+param=$2
+value=$3
+
+[ -f $configfile ] || touch $configfile
+[ -f $denymacfile ] || touch $denymacfile
+[ -f $allowmacfile ] || touch $allowmacfile
+
+case $1 in
+    get | getrunning)
+	if [ $# != 2 ]; then
+		usage_and_exit
+	fi
+	if [ $action = "getrunning" ]; then
+		configfile=$bakconfigfile
+	fi
+	line=$(grep "^$param=" $configfile 2> /dev/null)
+	if [ "x$line" = "x" ]; then
+		line=$(grep "^$param=" $defconfigfile)
+	fi
+	if [ "x$line" = "x" ]; then
+		echo "Warning: don't find $param in $configfile and $defconfigfile" > /dev/console
+	fi
+	echo -n ${line#*=}
+	;;
+    set)
+	if [ $# != 3 ]; then
+		usage_and_exit
+	fi
+	if [ "x$(grep "^$param=" $defconfigfile)" = "x" ]; then
+		echo "Warning: current platform don't support this parameter, current platform only support below parameters:"
+		awk -F '=' '{print $1}' $defconfigfile
+		exit
+	fi
+	sed -i "/^$param=/d" $configfile
+	echo "$param=$value" >> $configfile
+	;;
+    deny_mac)
+	if [ $# != 2 ]; then
+		usage_and_exit
+	fi
+	mac=$(echo $param | awk '{print tolower($0)}')
+	sed -i "/^$mac/d" $allowmacfile
+	if [ "x$(grep "^$mac" -i $denymacfile)" = "x" ]; then
+		echo "$mac" >> $denymacfile
+	fi
+	;;
+    allow_mac)
+	if [ $# != 2 ]; then
+		usage_and_exit
+	fi
+	mac=$(echo $param | awk '{print tolower($0)}')
+	sed -i "/^$mac/d" $denymacfile
+	if [ "x$(grep "^$mac" -i $allowmacfile)" = "x" ]; then
+		echo "$mac" >> $allowmacfile
+	fi
+	;;
+    list_deny_mac)
+	if [ $# != 1 ]; then
+		usage_and_exit
+	fi
+	[ -f $denymacfile ] && cat $denymacfile | xargs echo -n | sed 's/ /,/g'
+	;;
+    list_allow_mac)
+	if [ $# != 1 ]; then
+		usage_and_exit
+	fi
+	[ -f $allowmacfile ] && cat $allowmacfile | xargs echo -n | sed 's/ /,/g'
+	;;
+    default)
+	if [ $# != 1 ]; then
+		usage_and_exit
+	fi
+	>$configfile
+	>$denymacfile
+	>$allowmacfile
+	;;
+    backuprunning)
+	if [ $# != 1 ]; then
+		usage_and_exit
+	fi
+	cp $configfile $bakconfigfile
+	;;
+    unset)
+	if [ $# != 2 ]; then
+		usage_and_exit
+	fi
+	sed -i "/^$param=/d" $configfile
+	;;
+    *)
+	usage_and_exit
+	;;
+esac

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+uboot_updater=/etc/firmware/u-boot-mini-piggy.bin.update.sh
+if [ -e $uboot_updater ] ; then
+	sh $uboot_updater
+fi
+
+uboot_updater=/etc/firmware/u-boot.bin.update.sh
+if [ -e $uboot_updater ] ; then
+	sh $uboot_updater
+fi
+
+dev_mode=`/scripts/get_bootval dev_mode`
+if [ $dev_mode == "0" ]
+then
+	echo 1 > /proc/sys/kernel/panic
+else
+	echo 0 > /proc/sys/kernel/panic
+fi
+
+spi=`/scripts/parse_cmdline spi`
+if [ "${spi}" == "no" ]; then
+	# Setup flash-less system configuration files
+	/scripts/setup-nospi
+fi

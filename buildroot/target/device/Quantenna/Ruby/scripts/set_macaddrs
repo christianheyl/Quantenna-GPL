@@ -1,0 +1,23 @@
+#! /bin/sh
+
+if [ -f /mnt/jffs2/wifi_mac_addrs ]
+then
+	mac0addr=`cat /mnt/jffs2/wifi_mac_addrs | head -1`
+	mac1addr=`cat /mnt/jffs2/wifi_mac_addrs | head -2 | tail -1`
+	echo "set mac0addr" $mac0addr > /sys/devices/qdrv/control
+	echo "set mac1addr" $mac1addr > /sys/devices/qdrv/control
+else
+	if [ -f /scripts/wifi_mac_addrs ]
+	then
+		mac0addr=`cat /scripts/wifi_mac_addrs | head -1`
+		mac1addr=`cat /scripts/wifi_mac_addrs | head -2 | tail -1`
+		mac2addr=`cat /scripts/wifi_mac_addrs | head -3 | tail -1`
+		mac3addr=`cat /scripts/wifi_mac_addrs | tail -1`
+		echo "set mac0addr" $mac0addr > /sys/devices/qdrv/control
+		echo "set mac1addr" $mac1addr > /sys/devices/qdrv/control
+		echo $mac0addr > /mnt/jffs2/wifi_mac_addrs
+		echo $mac1addr >> /mnt/jffs2/wifi_mac_addrs
+		echo $mac2addr >> /mnt/jffs2/wifi_mac_addrs
+		echo $mac3addr >> /mnt/jffs2/wifi_mac_addrs
+	fi
+fi

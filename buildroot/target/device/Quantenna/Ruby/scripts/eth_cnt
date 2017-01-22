@@ -1,0 +1,24 @@
+#! /bin/sh
+
+eth0_cnt_old=0
+eth1_cnt_old=0
+
+while [ 1 ]
+do
+	eth0_cnt_new=`cat /proc/arasan_emac0 | grep Rx#21 | awk {'print $4'}`
+	eth1_cnt_new=`cat /proc/arasan_emac1 | grep Rx#21 | awk {'print $4'}`
+
+	eth0_diff=`expr $eth0_cnt_new '-' $eth0_cnt_old`
+	eth1_diff=`expr $eth1_cnt_new '-' $eth1_cnt_old`
+
+	total_diff=`expr $eth0_diff '+' $eth1_diff`
+
+	echo $total_diff
+
+	eth0_cnt_old=$eth0_cnt_new
+	eth1_cnt_old=$eth1_cnt_new
+
+	sleep 1
+
+done
+

@@ -1,0 +1,3 @@
+#! /bin/sh
+echo "get 0 uc_rx_stats" > /sys/devices/qdrv/control
+cat /proc/qdrvdata

@@ -1,0 +1,117 @@
+#!/bin/sh
+
+base_scripts="/scripts"
+
+. $base_scripts/start-helpers.sh
+
+if [ $# -lt 1 ]
+then
+    echo "Bad command line"
+    exit 1
+else
+    wifi_mode=$1
+fi
+
+/scripts/load-qdrv bb_only runtime
+sleep 1
+
+if [ "$wifi_mode" == "ap" ]
+then
+	echo "Starting AP"
+	modprobe wlan_scan_ap
+	echo "set mac0addr 00:26:86:22:33:AA" > /sys/devices/qdrv/control
+else
+	echo "Starting STA"
+	modprobe wlan_scan_sta
+	echo "set mac0addr 00:26:86:22:33:BA" > /sys/devices/qdrv/control
+fi
+
+echo "*******************************************"
+echo "Starting qtn_driver.bb_only.0.bin..."
+echo "*******************************************"
+echo "start" > /sys/devices/qdrv/control
+sleep 2
+
+call_qcsapi -u -q set_mode wifi0 "$wifi_mode"
+
+# Store the core dump, if it exists
+$base_scripts/store_core_dump
+
+local_channel=`get_wifi_config wifi0 channel`
+if [ $? -ne 0 ]
+then
+    local_channel=36
+fi
+iwconfig wifi0 channel $local_channel
+
+local_vht=`get_wifi_config wifi0 vht`
+if [ "$local_vht" = "1" ]
+then
+    echo "Enabling 11ac"
+    call_qcsapi -q -u set_vht wifi0 1
+    iwpriv wifi0 mode 11ac
+else
+    echo "Disabling 11ac"
+    call_qcsapi -q -u set_vht wifi0 0
+    iwpriv wifi0 mode 11na
+fi
+
+local_bw=`get_wifi_config wifi0 bw`
+if [ "$local_bw" = "80" ]
+then
+    call_qcsapi -u set_bw wifi0 80
+elif [ "$local_bw" = "40" ]
+then
+    call_qcsapi -u set_bw wifi0 40
+else
+    call_qcsapi -u set_bw wifi0 20
+fi
+
+bridge=1
+tcpdump=0
+if [ $# -gt 1 ]; then
+        if [ "$2" = "no-bridge" ]; then
+                bridge=0
+        fi
+fi
+if [ $bridge -eq 1 ]; then
+        echo "starting bridging"
+        qbr
+fi
+
+if [ "$wifi_mode" = "ap" ]; then
+        if [ $bridge -eq 1 ]; then
+                cmd="hostapd /scripts/hostapd.conf"
+                if [ $tcpdump -eq 1 ]; then
+                        tcpdump -i br0 > /tmp/tcpdump.br0&
+                        tcpdump -i wifi0 > /tmp/tcpdump.wifi0&
+                fi
+        else
+                ifconfig wifi0 192.168.1.100 up
+                cmd="hostapd /scripts/hostapd-no-bridge.conf"
+                if [ $tcpdump -eq 1 ]; then
+                        tcpdump -i wifi0 > /tmp/tcpdump.wifi0&
+                fi
+        fi
+else
+        if [ $bridge -eq 1 ]; then
+                cmd="wpa_supplicant -q -iwifi0 -bbr0 -Dmadwifi -c /scripts/wpa_supplicant.conf"
+                if [ $tcpdump -eq 1 ]; then
+                        tcpdump -i br0 > /tmp/tcpdump.br0&
+                        tcpdump -i wifi0 > /tmp/tcpdump.wifi0&
+                fi
+        else
+                ifconfig wifi0 192.168.1.200 up
+                cmd="wpa_supplicant -q -iwifi0 -Dmadwifi -c /scripts/wpa_supplicant.conf"
+                if [ $tcpdump -eq 1 ]; then
+                        tcpdump -i wifi0 > /tmp/tcpdump.wifi0&
+                fi
+        fi
+fi
+$base_scripts/launch start 1 $cmd
+
+# Disable PPPC by default
+iwpriv wifi0 pppc 0
+
+# Done, free memory
+free_boot_memory

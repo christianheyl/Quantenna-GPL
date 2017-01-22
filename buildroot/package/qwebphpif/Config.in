@@ -1,0 +1,5 @@
+config BR2_PACKAGE_QWEBPHPIF
+	bool "qwebphpif"
+	default y
+	help
+	  Quantenna PHP Web interface.

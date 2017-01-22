@@ -1,0 +1,20 @@
+#!/bin/sh
+# Configure for WPS and enable PIN
+
+pin=$1
+
+# If we are in station mode
+if test -e /tmp/wpa_supplicant
+then
+	if ! test -e /scripts/wpa_supplicant.conf.def
+	then
+		cp /scripts/wpa_supplicant.conf /scripts/wpa_supplicant.conf.def
+	fi
+	cp /scripts/wpa_supplicant.conf.wps /scripts/wpa_supplicant.conf
+	wpa_cli reconfigure
+	sleep 1
+	wpa_cli wps_pin any $pin
+else
+	hostapd_cli wps_pin any $pin
+fi
+

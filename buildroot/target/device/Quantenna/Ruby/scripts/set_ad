@@ -1,0 +1,27 @@
+#!/bin/sh
+
+usage()
+{
+        echo "Usage: $0 <density value>"
+        echo "Density value is:"
+        echo "0 - unlimited"
+        echo "1 - 0.25uS"
+        echo "2 - 0.5uS"
+        echo "3 - 1uS"
+        echo "4 - 2uS"
+        echo "5 - 4uS"
+        echo "6 - 8uS"
+        echo "7 - 16uS"
+}
+
+if [ "$1" = "" ]; then
+        usage
+        exit 1
+fi
+
+if [ $1 -lt 0 -o $1 -gt 7 ]; then
+        echo "Density out of range ($1)"
+        usage
+        exit 1
+fi
+iwpriv wifi0 set_ampdu_dens $1

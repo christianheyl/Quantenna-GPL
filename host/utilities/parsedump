@@ -1,0 +1,111 @@
+#!/usr/bin/perl -w
+use strict;
+use warnings;
+
+my $instructions = "
+$0
+Usage:
+	cat dump | $0 --bin u-boot/u-boot	# read from stdin, using u-boot for symbols
+	$0 --bin linux/vmlinux dump		# read from file 'dump' using linux for symbols
+
+take any fragment of text that has pointers in it from a file or stdin; 
+load symbol table of desired file through objdump, then convert hex pointers to symbols.
+
+Arguments:	--bin <file>	executable to read symbol table from.
+";
+
+use File::Basename;
+use File::Spec;
+use Getopt::Long;
+use Cwd 'abs_path';
+BEGIN { push(@INC, abs_path(dirname(__FILE__))); }
+use arcsymbols;
+my $script_path = dirname(__FILE__);
+
+if (!caller) {
+	&main;
+}
+
+sub main {
+	my $help = undef;
+	my $bin_path = "$script_path/../../macfw/qtn_ruby";
+	my $result = GetOptions(
+		"help"		=> \$help,
+		"bin=s"		=> \$bin_path,
+	);
+
+	if ($help) {
+		die "$instructions\n";
+	}
+
+	&convert_lines($bin_path);
+}
+
+sub convert_lines {
+	my $bin_path = shift;
+
+	my @symbol_stores;
+
+	push @symbol_stores, new arcsymbols($bin_path);
+
+	if ($#ARGV >= 0) {
+		foreach my $dump_file (@ARGV) {
+			open(F, $dump_file) or die "Could not load dump file: $dump_file: $!\n";
+			read_file_convert(*F, \@symbol_stores);
+			close(F);
+		}
+	} else {
+		read_file_convert(*STDIN, \@symbol_stores);
+	}
+}
+
+sub read_file_convert {
+	my ($fh, $symbols_ref) = @_;
+
+	my @symbol_stores = @{$symbols_ref};
+
+	my $last_saw_parsedump_helper = 0;
+	my $parsedump_helper_sections = {};
+
+	while(<$fh>) {
+		if ( /^parsedump\s+([\w_]+)\s+([\.\w_]+)\s+(0x[a-fA-F0-9]+)\s*$/ ) {
+			my $module_name = $1;
+			my $section_name = $2;
+			my $section_addr = hex($3);
+			$parsedump_helper_sections->{$module_name}->{$section_name} = $section_addr;
+			$last_saw_parsedump_helper = 1;
+		} else {
+			if ($last_saw_parsedump_helper) {
+				foreach my $module_name (sort keys %{$parsedump_helper_sections}) {
+					foreach my $mod_path (<$script_path/../../drivers/*/$module_name.ko>) {
+						my $mod_rel = File::Spec->abs2rel(abs_path($mod_path));
+						warn "$0: Loading symbols from '$mod_rel'\n";
+						push @symbol_stores, new arcsymbols($mod_rel, $parsedump_helper_sections->{$module_name});
+					}
+				}
+				$last_saw_parsedump_helper = 0;
+				$parsedump_helper_sections = {};
+			}
+			s/\b(0x[\d\w]+)\b/fix_hex($1, \@symbol_stores)/eg;
+			print;
+		}
+	}
+}
+
+sub fix_hex {
+	my ($addr_str, $symbol_stores_ref) = @_;
+
+	my $addr = hex($addr_str);
+	foreach my $store (@{$symbol_stores_ref}) {
+		my $symbol = $store->find_symbol($addr);
+
+		if ($symbol) {
+			my $symbol_name = $symbol->{name};
+			my $offset = $addr - $symbol->{addr};
+			return sprintf("%s (%s+0x%x)", $addr_str, $symbol_name, $offset);
+		}
+	}
+
+	return $addr_str;
+}
+

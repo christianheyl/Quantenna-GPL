@@ -1,0 +1,6 @@
+kernel/../drivers/wlan/wlan.ko
+kernel/../drivers/wlan/wlan_scan_ap.ko
+kernel/../drivers/wlan/wlan_scan_sta.ko
+kernel/../drivers/wlan/wlan_ccmp.ko
+kernel/../drivers/wlan/wlan_tkip.ko
+kernel/../drivers/wlan/wlan_xauth.ko

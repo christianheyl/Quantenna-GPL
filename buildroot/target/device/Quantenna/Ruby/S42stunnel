@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# Start stunnel
+#
+
+start() {
+	if [ -f /proc/soc1 ]; then
+ 		echo "Starting stunnel..."
+		/usr/bin/stunnel
+	fi
+}	
+stop() {
+	if [ -f /proc/soc1 ]; then
+		echo -n "Stopping stunnel..."
+		kill -9 `pidof stunnel`
+	fi
+}
+restart() {
+	stop
+	start
+}	
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  restart|reload)
+  	restart
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

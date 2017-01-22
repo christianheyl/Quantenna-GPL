@@ -1,0 +1,236 @@
+/**@page mypage3 Environment setup and usage
+ * @section mysection3_1 Packet logger variants
+ *
+ * The following table shows the different packet logger variants available for debugging.
+ *
+ * The QHS710 command column indicates the command to be run on the embedded device under test
+ * to enable the feature.
+ *
+ * <TABLE>
+ * <TR> <TH>Name</TH><TH>Description</TH><TH>QHS710 command (brief)</TH></TR>
+ * <TR> <TD>Netdebug</TD><TD>The 'traditional' pktlogger. This packetlogger outputs statistics from
+ * the various different subsystems. The embedded DUT command also enables iwevent network debugging.
+ * </TD><TD><c>netdebug <on|off></c></TD></TR>
+ * <TR> <TD>sysmsgdebug</TD> <TD>Log messages captured by ssylogd.</TD>
+ * <TD><c>sysmsgdebug <on|off></c></TD></TR>
+ * <TR> <TD>Ratedebug</TD><TD>Specific rate retry debugging. This packetlogger outputs detailed
+ * rate adaptation information.</TD><TD><c>ratedebug <on|off></c></TD></TR>
+ * <TR> <TD>Memdebug</TD><TD>Specific memory block debugging. This packetlogger outputs detailed
+ * memory dump information.</TD><TD><c>memdebug <on|off></c></TD></TR>
+ * <TR> <TD>Radardebug</TD><TD>Specific radar memory debugging. This packetlogger outputs detailed
+ * radar memory dump information.</TD><TD><c>radardebug <on|off></c></TD></TR>
+ * </TABLE>
+ *
+ * The default interface for sending debug packet is eth1_0 on Video Bridge devices,
+ * and pcie0 on PCIe EP boards. Debug packets can be sent via wireless interface
+ * by using the following command.
+ *
+ * <c>qdrvcmd pktlogger 0 set interface wifi0</c>
+ *
+ * Debug packets are sent by default as broadcast IPv4 UDP packets. This command shows the current
+ * configuration parameters.
+ *
+ * <c>qdrvcmd pktlogger 0 show</c>
+ *
+ * The following snapshot shows other default configuration.
+ * \image latex pktlogger_dut_default_setting.png "Example of default configuration from a DUT" width=\textwidth
+ *
+ * Use the following command to display all of the pktlogger configuration parameters.
+ *
+ * <c>qdrvcmd pktlogger 0 help</c>
+ *
+ * \note
+ * At beginning of debug, it is advisable to make sure DUT can reach host PC by
+ * running a ping test from DUT to host PC.
+ *
+ * @section mysection3_2 Host side setup
+ *
+ * As noted in the diagram in the figure \ref image-of-top "Pktlogger high level setup", the packet logger is a distributed debugging
+ * facility which runs on both the embedded platform, and on a host platform connected to the same
+ * subnet.
+ *
+ * The host side application is written in Perl.
+ *
+ * @subsection mysection3_2_1 Microsoft Windows installation
+ *
+ * Download and install Perl from:
+ *
+ * \li http://www.activestate.com/activeperl/downloads
+ *
+ * Install the following packages by using the Package Manger: Start->Programs->ActivePerl->Perl Package Manager
+ * \li Config-General
+ *
+ * @subsection mysection3_2_2 Linux installation
+ *
+ * Install the following Perl packages:
+ *
+ * \li <c>Config::General</c>
+ *
+ * @subsubsection mysection3_2_2_1 Fedora Core instructions
+ *
+ * The following specific commands can be run on a Fedora Core system to install the required packages:
+ *
+ * <c>yum install perl-Config-General</c>
+ *
+ * @subsubsection mysection3_2_2_2 Ubuntu 10.10 instructions
+ *
+ * The following specific commands can be run on an Ubuntu system to install the required packages.
+ * In this case, the version is 10.10, but other versions should work in a similar way.
+ *
+ * <c>apt-get install libconfig-general-perl</c>
+ *
+ * @section mysection3_3 Generating the host tool tarball
+ *
+ * The host tool tarball will be distributed on an as-needs basis to customers.
+ *
+ * Build the Packet logger by doing make stat_parser in the swdepot/host directory. This copies the
+ * headers.txt file to the packet logger directory. Obtain the Packet Logger (including headers subdirectory)
+ * from the swdepot/host/pktlogger directory in the source tree that was used to build the image that is
+ * running netdebug. Copy the entire directory structure onto the monitoring system.
+ *
+ * Failure to use the correct header version (and checksum) will result in an error. You can force it continue
+ * even in the case of a mismatch with --force, but chances are something will be broken.
+ *
+ * @subsection mysection3_3_1 Host tool tarball contents
+ *
+ * The following list is a description of the files in the host tarball.
+ *
+ * \li <c>headers.txt</c> - system generated file containing all the structure headers.
+ * \li <c>iwevent.conf</c> - configuration file to capture iwevent logs from the network.
+ * \li <c>mem.conf</c> - configuration file to capture memory dump events from the network.
+ * \li <c>mem_track.py</c> - helper tool to parse memory dumps.
+ * \li <c>pktlogger-parser.conf</c> - configuration tool for the packet logger parser helper script.
+ * \li <c>pktlogger-parser.pl</c> - packet logger parser helper tool.
+ * \li <c>plot_all.py</c> - helper tool to plot statistics in real time.
+ * \li <c>post_analysis_tools.mk</c> - makefile to generate post-processing required for pktlogger-parser.
+ * \li <c>post_analysis_tools.tar</c> - tarball of generated code for post-processing.
+ * \li <c>pp-scan.pl</c> - perl script to scan for changed test results.
+ * \li <c>qdrv_netdebug_checksum.h</c> - checksum file to ensure the tool is receiving the correct debug
+ * packets.
+ * \li <c>qdrv_p4build.h</c> - version header.
+ * \li <c>radar.conf</c> - configuration file to capture radar memory events from the network.
+ * \li <c>rate.conf</c> - configuration file to capture rate adaptation events from the network.
+ * \li <c>stat_parser.pl</c> - main packet logger host tool.
+ * \li <c>stats.conf</c> - configuration file to capture statistics from the network.
+ * \li <c>sysmsgdebug.conf</c> - configuration to capture syslog messages from the network.
+ * \li <c>txbf.conf</c> - configuration to capture beamforming data from the network.
+ *
+ * @section mysection3_4 Running the host side tool
+ *
+ * The general format of the host side tool arguments is as follows:
+ *
+ * \verbatim
+   stat_parser.pl  [--conf <conf1>[,<conf2>[,<conf3>]] [--conf <conf4>]]
+                   [--save] [--port <port number>] [--infile <filename>]
+                   [--log <logFilePrefix>]
+                   [--console] [--conf2 <configFileName> ...]
+                   [--force] [--debug ] [--verbosity <0-10>]
+\endverbatim
+ *
+ * @param conf a set of comma delimited configuration files to use with the tool.
+ * @param save Save debug packet to a binary file instead of parsing in real-time.
+ * @param port UDP port number for receiving debug packets. The default is 6602.
+ * @param infile Parse packets from a file instead of from a network device.
+ * @param log prefix of the directory to store the log files in.
+ * @param console
+ * @param force
+ * @param debug
+ * @param verbosity
+ *
+ * @section mysection3_5 Configuration files
+ *
+ * The different configuration files are enabled using the --conf argument to the host side tool.
+ *
+ * The following default configuration files are defined:
+ *
+ * <TABLE>
+ * <TR> <TH>Config name</TH><TH>Description</TH></TR>
+ * <TR> <TD>stats.conf</TD><TD>The 'traditional' pktlogger.</TD></TR>
+ * <TR> <TD>rate.conf</TD><TD>Specific rate retry debugging.</TD></TR>
+ * <TR> <TD>mem.conf</TD><TD>Specific memory block debugging.</TD></TR>
+ * <TR> <TD>radar.conf</TD><TD>Specific radar memory debugging.</TD></TR>
+ * <TR> <TD>txbf.conf</TD><TD>Specific beamforming debugging.</TD></TR>
+ * <TR> <TD>iwevent.conf</TD><TD>Specific iwevent debugging.</TD></TR>
+ * <TR> <TD>sysmsgdebug.conf</TD><TD>Specific syslog debugging.</TD></TR>
+ * </TABLE>
+ *
+ * These files generally can be used with no alterations. The following variables can be modified in
+ * the file to customise individual setups.
+ *
+ * <TABLE>
+ * <TR> <TH>Variable</TH><TH>Description</TH><TH>Valid values</TH></TR>
+ * <TR> <TD>log_dir</TD><TD>The directory to store the log files. If it doesn't exist, the directory
+ * will be automatically created.</TD><TD>Any valid directory name.</TD></TR>
+ * <TR> <TD>log_file</TD><TD>An informative prefix for all the log file names</TD><TD>Any ASCII
+ * string.</TD></TR>
+ * <TR> <TD>create_raw_log</TD><TD>Whether to generate the unparsed raw log file.</TD><TD><c>0, 1</c></TD></TR>
+ * <TR> <TD>recs_per_file</TD><TD>The number of records to put in a single file.</TD><TD><c>1-65535</c></TD></TR>
+ * </TABLE>
+ *
+ * Pktlogger can be run in a single phase or in two phases.
+ *
+ * When run in a single phase, debug packets are captured and saved directly into
+ * various text files (depending on config types).
+ *
+ * When run in two phases, all debug packets are captured and saved into a single 'raw'
+ * binary file. After the capture is complete, the same script is invoked with different
+ * parameters to parse the binary file and generate the text file.
+ *
+ * Some of the generated text files are in readable text format, and others are in
+ * CSV (comma separated values) format, which can be viewed and processed in a
+ * spreadsheet program.
+ *
+ * @section mysection3_6 Example usage
+ *
+ * <b>Example 1: Usage on a Windows machine.</b>
+ *
+ * The host side command is:
+ *
+ * \verbatim
+stat_parser.pl --save
+\endverbatim
+ *
+ * In parallel, on the embedded platform, enable the packet logger function:
+ *
+ * \verbatim
+netdebug on
+\endverbatim
+ *
+ * After debug packet capture is complete, the following command can be used to parse the packets saved in file.
+ * \verbatim
+stat_parser.pl --conf <stats,iwevent,mem,.etc> --infile <path to the packet file>
+\endverbatim
+ *
+ * The following screenshots show the result of running these commands on the host and DUT.
+ *
+ * \anchor pktlogger-host-screenshot
+ * \image latex pktlogger_host_1.png "Example usage of pktlogger (host side)" width=\textwidth
+ *
+ * \anchor pktlogger_dut_screenshot1
+ * \image latex pktlogger_dut_1.png "Example usage of pktlogger (DUT side)" width=\textwidth
+ *
+ * After stopping capture of the debug packets, the file that contains all data can
+ * be found under the 'LOGS' directory.
+ * \anchor pktlogger_host_screenshot2
+ * \image latex pktlogger_host_2.png "Example usage of pktlogger (host side)" width=\textwidth
+ *
+ * Parse debug packets from file.
+ * \anchor pktlogger_host_screenshot3
+ * \image latex pktlogger_host_3.png "Example usage of pktlogger (Phase2 host side)" width=\textwidth
+ *
+ * \note In phase 2, to process packets from a file,
+ * if there is a mismatched version (the host tools package is not from the same
+ * build version as the embedded image), a message like the following will be displayed:<BR>
+ * \verbatim
+Receiving statistics from 00:26:86:01:37:3d
+ERROR: logger checksum (a6efa7d) does not match sender checksum (bb5a307c)
+\endverbatim<BR>
+ * To correct this condition, use a host tools package with the same build version as
+ * the embeded image.
+ *
+ * In addition to post-capture parsing, pktlogger can capture and parse live streams
+ * as per the following example.
+ * In this case, parameters <c>--save</c> and <c>--infile</c> are not used.
+ * Example:
+ * \image latex pktlogger_host_old.png "Example usage of pktlogger (host side)" width=\textwidth
+ */

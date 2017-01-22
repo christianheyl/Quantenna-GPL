@@ -1,0 +1,3 @@
+config BR2_PACKAGE_SSCLDBG
+	bool "sscldbg"
+	default y

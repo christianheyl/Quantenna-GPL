@@ -1,0 +1,29 @@
+
+#! /bin/sh
+max_tx_power=`get_bootval max_tx_power`
+min_tx_power=`get_bootval min_tx_power`
+
+power=$1
+
+val=$(echo $power | awk '{power_4=$1 * 4; print power_4}')
+if [ "$power" == "0" ]
+then
+	echo "calcmd 11 0 6 0 1 0" > /sys/devices/qdrv/control
+else
+	if [ "$power" == "255" ]
+	then
+		echo "calcmd 11 0 6 0 1 1" > /sys/devices/qdrv/control
+	else 
+		if [ "$power" -gt "$max_tx_power" ]
+		then
+			echo "power not match borad maximum transmission power limit "$max_tx_power""
+		else 
+			if [ "$power" -lt "$min_tx_power" ]
+			then
+				echo "power not match board minimum transmission limit "$min_tx_power""
+			else
+				echo "calcmd 19 0 6 0 1 $val" > /sys/devices/qdrv/control
+			fi
+		fi
+	fi
+fi

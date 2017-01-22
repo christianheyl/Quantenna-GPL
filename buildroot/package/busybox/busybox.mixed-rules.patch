@@ -1,0 +1,28 @@
+--- ./Makefile	2008-06-05 05:04:21.000000000 +0400
++++ ./Makefile.NEW	2013-12-06 14:25:14.623583921 +0400
+@@ -402,7 +402,12 @@
+ -include $(srctree)/arch/$(ARCH)/Makefile
+ export KBUILD_DEFCONFIG
+ 
+-config %config: scripts_basic outputmakefile FORCE
++%config: scripts_basic outputmakefile FORCE
++	$(Q)mkdir -p include
++	$(Q)$(MAKE) $(build)=scripts/kconfig $@
++	$(Q)$(MAKE) -C $(srctree) KBUILD_SRC= .kernelrelease
++
++config: scripts_basic outputmakefile FORCE
+ 	$(Q)mkdir -p include
+ 	$(Q)$(MAKE) $(build)=scripts/kconfig $@
+ 	$(Q)$(MAKE) -C $(srctree) KBUILD_SRC= .kernelrelease
+@@ -1245,7 +1250,10 @@
+ 	$(Q)$(MAKE) $(build)=$(build-dir) $(target-dir)$(notdir $@)
+ 
+ # Modules
+-/ %/: prepare scripts FORCE
++%/: prepare scripts FORCE
++	$(Q)$(MAKE) KBUILD_MODULES=$(if $(CONFIG_MODULES),1) \
++	$(build)=$(build-dir)
++/: prepare scripts FORCE
+ 	$(Q)$(MAKE) KBUILD_MODULES=$(if $(CONFIG_MODULES),1) \
+ 	$(build)=$(build-dir)
+ %.ko: prepare scripts FORCE

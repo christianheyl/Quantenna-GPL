@@ -1,0 +1,76 @@
+#! /bin/sh
+#
+# Quantenna Reference Board only!
+# GPIO pin configuration is for V3 single board design
+
+calstate_val=`get_bootval calstate`
+if [ "$calstate_val" != "1" ]
+then
+    echo "$0 can only be run if calstate = 1"
+    echo "correct, reboot and restart"
+    exit 1
+fi
+
+correct_security_file_path=/mnt/jffs2/
+current_security_file_path=`call_qcsapi -u get_file_path security`
+
+if [ "$current_security_file_path" != $correct_security_file_path ]
+then
+    call_qcsapi -u -q set_file_path security $correct_security_file_path
+fi
+
+if [ ! -e /proc/amber ]
+then
+	read_only_pins="4 5"
+	led_pins="2 3"
+	led_pins_other="6 7 12 13 16"
+else
+	read_only_pins="1 2"
+	led_pins="11 13"
+	led_pins_other="12 14 15 16 17"
+fi
+
+# pin 4: WPS
+# pin 5: Reset Device push button
+
+for read_only_gpio_pin in $read_only_pins
+do
+    gpio_config=`call_qcsapi -u get_gpio_config $read_only_gpio_pin`
+    if [ "$gpio_config" != "1" ]
+    then
+        call_qcsapi -u -q set_gpio_config $read_only_gpio_pin  1
+    fi
+done
+
+# pin 2: WLAN
+# pin 3: WPS
+
+for read_write_gpio_pin in $led_pins
+do
+    gpio_config=`call_qcsapi -u get_gpio_config $read_write_gpio_pin`
+    if [ "$gpio_config" != "2" ]
+    then
+        call_qcsapi -u -q set_gpio_config $read_write_gpio_pin 2
+    fi
+done
+
+# these LEDs have no assigned role and are thus available for debug
+
+for read_write_gpio_pin in $led_pins_other
+do
+    gpio_config=`call_qcsapi -u get_gpio_config $read_write_gpio_pin`
+    if [ "$gpio_config" != "2" ]
+    then
+        call_qcsapi -u -q set_gpio_config $read_write_gpio_pin 2
+    fi
+done
+
+echo "Reboot required for the changes to be saved (not just power-cycle)."
+echo -n "Reboot device now? "
+read ans
+if [ "$ans" == "y" -o  "$ans" == "Y" -o "$ans" == "" ]
+then
+    reboot
+fi
+
+exit 0

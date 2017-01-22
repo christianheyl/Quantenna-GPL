@@ -1,0 +1,6 @@
+tools_path := /usr/local/ARC/gcc/bin/
+target_prefix := arc-linux-uclibc-
+compile_prefix := ${tools_path}${target_prefix}
+CROSS_COMPILE := ${compile_prefix}
+ARCH := arc
+

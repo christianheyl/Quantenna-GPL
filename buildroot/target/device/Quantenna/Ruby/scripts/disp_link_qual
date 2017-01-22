@@ -1,0 +1,17 @@
+#! /bin/sh
+arg=$1
+
+if [ -z $arg ]
+then
+	arg="on"
+fi
+
+if [ -f /sys/devices/qdrv/control ]
+then
+	if [ "$arg" != "off" ]
+	then
+		echo "set debug 0x80000003" > /sys/devices/qdrv/control
+	else
+		echo "set debug 0x00000003" > /sys/devices/qdrv/control
+	fi
+fi

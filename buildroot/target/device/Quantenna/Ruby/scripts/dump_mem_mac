@@ -1,0 +1,95 @@
+#! /bin/sh
+
+readmem_size_32=256
+readmem_size_8=`expr $readmem_size_32 '*' 4`
+
+pkt_mem_base_addr=0xE5030000
+pkt_mem_size=8192
+
+tcm_base_addr=0xE5040000
+tcm_size=8192
+
+global_ctrl_base_addr=0xE5042000
+global_ctrl_size=256
+
+recv_frame_base_addr=0xE5052000
+recv_frame_size=4096
+
+shared_frame_base_addr=0xE5053000
+shared_frame_size=4096
+
+
+dump_block_mem()
+{
+	if [ $# -lt 2 ]
+	then
+		echo "Error calling internal routine $0, at least 2 parameters required"
+		exit 1
+	fi
+
+	base_addr=$1
+	readmem_addr=$base_addr
+	block_size=$2
+
+	if [ $block_size -lt $readmem_size_8 ]
+	then
+		limit=1
+	else
+		limit=`echo $block_size  $readmem_size_8 / p | dc`
+	fi
+	i=0
+
+	while [ $i -lt $limit ] 
+	do
+		readmem_multi $readmem_addr $readmem_size_32 4
+		let x="$readmem_addr + $readmem_size_8"
+		readmem_addr=0x`echo "$x 16 o p" | dc`
+		i=`expr $i + 1`
+	done
+}
+
+dump_mem_mac()
+{
+	echo "Packet Memory"
+	dump_block_mem $pkt_mem_base_addr $pkt_mem_size
+
+	echo "Registers relating to DMA"
+	readmem_multi e503ffb0 20
+
+	echo "Transmit Control Memory"
+	dump_block_mem $tcm_base_addr $tcm_size
+
+	echo "Global Control"
+	dump_block_mem $global_ctrl_base_addr $global_ctrl_size
+
+	echo "Registers relating to Tx Prefetch"
+	readmem_multi e5050300 48
+
+	echo "Contention / G0 Timer / G1 Timer"
+	readmem_multi e5050400 12
+
+	echo "Additional Registers relating to Tx"
+	readmem_multi e5050440 87
+
+	echo "Rx Frame Processor Registers"
+	dump_block_mem $recv_frame_base_addr $recv_frame_size
+
+	echo "Shared Registers"
+	dump_block_mem $shared_frame_base_addr $shared_frame_size
+}
+
+if [ $# -gt 0 ]
+then
+    cycle_limit=$1
+else
+    cycle_limit=3
+fi
+
+cycle_count=0
+
+while [ $cycle_count -lt $cycle_limit ]
+do
+	cycle_count=`expr $cycle_count + 1`
+	echo "Dump MAC memory cycle $cycle_count"
+	dump_mem_mac
+done

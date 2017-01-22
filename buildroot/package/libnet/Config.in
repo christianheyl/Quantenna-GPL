@@ -1,0 +1,5 @@
+config BR2_PACKAGE_LIBNET
+	bool "Lib NET"
+	default n
+	help
+		lib_net shared lib.

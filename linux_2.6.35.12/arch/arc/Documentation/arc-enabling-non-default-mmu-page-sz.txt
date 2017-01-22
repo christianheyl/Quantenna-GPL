@@ -1,0 +1,49 @@
+ARC700 4.10 supports configurable MMU page sizes:
+ARC Linux supports: 8k (default), 4k and 16k
+
+Following are the steps to add non-default page size support to kernel/tools.
+
+--------------------------------------------------------------------------
+(1) kernel
+--------------------------------------------------------------------------
+Edit arch/arc/include/asm/page.h
+
+-#define PAGE_SHIFT     13	//8k
++#define PAGE_SHIFT     14	//16k
++#define PAGE_SHIFT     12	//4k
+
+--------------------------------------------------------------------------
+(2) Tools
+--------------------------------------------------------------------------
+The system libs (uClibc/math/pthread etc) as well as the exported headers
+need to be rebuilt with modified page size.
+
+(2a) Since all the tools need not be rebuilt, clone an existing 2.4 based
+installed GNU tool-chain
+
+cp-rfd GNUINST GNUINST_stock8k
+
+(2b) As of Sept 1st 2011- You'll need to hack the installed linker scripts
+     for both shared libs as well as executables.
+     The same scripts are good for 4k/8k/16k.
+
+GNUINST/uclibc/arc-linux-uclibc/lib/ldscripts/arclinux.x
+GNUINST/uclibc/arc-linux-uclibc/lib/ldscripts/arclinux.xs
+
+-   . = ALIGN(0x2000) + (. & (0x2000 - 1));
++	. = DATA_SEGMENT_ALIGN (0x4000, 0x2000);
+
+(2c) Edit GNUSRC/2.4/uClibc-0.9.29/libc/sysdeps/linux/arc/bits/uClibc_page.h
+
+-#define PAGE_SHIFT     13	//8k
++#define PAGE_SHIFT     14	//16k
++#define PAGE_SHIFT     12	//4k
+
+(2d) Rebuild uClibc (which rebuilds other system libs as well)
+cd GNUSRC/2.4/uClibc-0.9.29
+make CROSS_COMPILE=arc-linux-uclibc-gcc && make install
+
+This will install the specific 4k or 16k variant of libs/headers in GNUINST
+
+(2e) Modify you path to point to the 8k based toolcian (GNUINST_stock8k) or
+the modified page size based one (GNUINST)

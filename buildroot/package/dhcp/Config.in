@@ -1,0 +1,20 @@
+config BR2_PACKAGE_DHCP_SERVER
+	bool "dhcp server"
+	default n
+	help
+	  DHCP server from the ISC DHCP distribution.
+
+
+config BR2_PACKAGE_DHCP_RELAY
+	bool "dhcp relay"
+	default n
+	help
+	  DHCP relay agent from the ISC DHCP distribution.
+
+
+config BR2_PACKAGE_DHCP_CLIENT
+	bool "dhcp client"
+	default y
+	help
+	  DHCP client from the ISC DHCP distribution.
+

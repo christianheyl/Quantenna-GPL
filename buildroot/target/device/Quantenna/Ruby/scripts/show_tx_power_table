@@ -1,0 +1,54 @@
+#! /bin/sh
+
+bin=${0##*/}
+
+primary_vap=$(call_qcsapi -u get_primary_interface)
+if [ $? -ne 0 ]
+then
+    echo "$bin: cannot get the primary WiFi interface"
+    exit 1
+fi
+
+region=$(call_qcsapi -u get_regulatory_region $primary_vap)
+if [ $? -ne 0 ]
+then
+    region="none"
+fi
+
+chan_list=$1
+if [ "$1" == "" ]; then
+    if [ "$region" = "none" ]
+    then
+        chan_list=$(call_qcsapi -u get_list_of_channels $primary_vap)
+    else
+        chan_list=$(call_qcsapi -u get_list_regulatory_channels $region)
+    fi
+    chan_list=$(echo $chan_list | sed 's/,/ /g')
+fi
+
+chipid=`cat /proc/hw_revision | awk -F_ '{print $1}'`
+
+echo "Regulatory Region: $region"
+
+case "$chipid" in
+	"bbic3")
+		echo "Channel   TX Power"
+		for channel in $chan_list
+		do
+		    tx_power=$(call_qcsapi -u get_tx_power $primary_vap $channel)
+		    echo " $channel $tx_power" | awk '{ printf "  %3d        %3d\n", $1, $2}'
+		done
+		;;
+	"bbic4")
+		echo "                TX Power"
+		echo "Channel   80M      40M      20M"
+		for channel in $chan_list
+		do
+			call_qcsapi -u get_chan_power_table $primary_vap $channel | tail -n 8
+		done
+		;;
+	"*")
+		echo "undefined chip $chipid"
+		;;
+esac
+

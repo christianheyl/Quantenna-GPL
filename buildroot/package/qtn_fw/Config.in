@@ -1,0 +1,56 @@
+config BR2_PACKAGE_QTN_MACFW
+	bool "Ruby MuC Firmware"
+	default y
+	help
+	  Include MuC firmware in target image
+
+config BR2_PACKAGE_QTN_DSPFW
+	bool "Ruby DSP Firmware"
+	default y
+	help
+	  Include dsp firmware in target image
+
+config BR2_PACKAGE_QTN_UBOOT
+	bool "Ruby u-boot binary"
+	default n
+	help
+	  Include u-boot binary in target image
+
+config BR2_PACKAGE_QTN_AUCFW
+	bool "Ruby AUC Firmware"
+	default n
+	help
+	  Include auc firmware in target image
+
+config BR2_PACKAGE_QTN_UBOOT_UPGRADE_SCRIPT
+	bool "Ruby full u-boot updating script"
+	default n
+	help
+	  Include full u-boot updating script in target image
+
+config BR2_PACKAGE_QTN_MINI_UBOOT_UPGRADE_SCRIPT
+	bool "Ruby mini u-boot updating script"
+	default n
+	help
+	  Include mini u-boot updating script in target image
+
+config BR2_PACKAGE_QTN_LINUX_IMG
+	bool "Ruby linux image on target"
+	default n
+	help
+	  Include a linux firmware image on the device. These
+	  would typically be served to PCIe or RGMII target modules
+	  with limited flash space of their own
+
+config BR2_PACKAGE_QTN_LINUX_IMG_CONFIG
+	string "Config to copy child image"
+	default "ruby_config"
+	depends BR2_PACKAGE_QTN_LINUX_IMG
+	help
+	  What config to use on the child image
+
+config BR2_PACKAGE_QTN_PREPOPULATE
+	bool "Prepopulate filesystem with test data"
+	default n
+	help
+	  Pre-populate filesystem with temporary data

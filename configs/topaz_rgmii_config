@@ -1,0 +1,1864 @@
+#
+# Platform
+#
+CONFIG_PLATFORM_ID=432
+CONFIG_PLATFORM_TYPE=topaz
+CONFIG_PLATFORM_DESCR="BBIC4 RGMII with 64KB flash"
+
+#
+# Filesystem & toolchain
+#
+#prefix0#buildroot/#
+BR2_HAVE_DOT_CONFIG=y
+#prefix0#buildroot/#
+# BR2_alpha is not set
+#prefix0#buildroot/#
+# BR2_arm is not set
+#prefix0#buildroot/#
+# BR2_armeb is not set
+#prefix0#buildroot/#
+# BR2_avr32 is not set
+#prefix0#buildroot/#
+# BR2_cris is not set
+#prefix0#buildroot/#
+# BR2_i386 is not set
+#prefix0#buildroot/#
+# BR2_m68k is not set
+#prefix0#buildroot/#
+# BR2_mips is not set
+#prefix0#buildroot/#
+# BR2_mipsel is not set
+#prefix0#buildroot/#
+# BR2_nios2 is not set
+#prefix0#buildroot/#
+# BR2_powerpc is not set
+#prefix0#buildroot/#
+# BR2_sh is not set
+#prefix0#buildroot/#
+# BR2_sh64 is not set
+#prefix0#buildroot/#
+# BR2_sparc is not set
+#prefix0#buildroot/#
+# BR2_x86_64 is not set
+#prefix0#buildroot/#
+BR2_arc=y
+#prefix0#buildroot/#
+BR2_ARCH="arc"
+
+#
+# Build options
+#
+#prefix0#buildroot/#
+BR2_WGET="wget --passive-ftp"
+#prefix0#buildroot/#
+BR2_SVN="svn co"
+#prefix0#buildroot/#
+BR2_ZCAT="zcat"
+#prefix0#buildroot/#
+BR2_BZCAT="bzcat"
+#prefix0#buildroot/#
+BR2_TAR_OPTIONS=""
+#prefix0#buildroot/#
+BR2_DL_DIR="$(BASE_DIR)/dl"
+#prefix0#buildroot/#
+BR2_SOURCEFORGE_MIRROR="easynews"
+#prefix0#buildroot/#
+BR2_STAGING_DIR="$(BUILD_DIR)/staging_dir"
+#prefix0#buildroot/#
+BR2_TOPDIR_PREFIX=""
+#prefix0#buildroot/#
+BR2_TOPDIR_SUFFIX=""
+#prefix0#buildroot/#
+BR2_GNU_BUILD_SUFFIX="pc-linux-gnu"
+#prefix0#buildroot/#
+BR2_GNU_TARGET_SUFFIX="linux-uclibc"
+#prefix0#buildroot/#
+BR2_JLEVEL=1
+#prefix0#buildroot/#
+# BR2_PREFER_IMA is not set
+#prefix0#buildroot/#
+# BR2_DEPRECATED is not set
+#prefix0#buildroot/#
+# BR2_TOOLCHAIN_BUILDROOT is not set
+#prefix0#buildroot/#
+BR2_TOOLCHAIN_EXTERNAL=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_GDB is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_GDB_SERVER is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_GDB_HOST is not set
+#prefix0#buildroot/#
+BR2_LARGEFILE=y
+#prefix0#buildroot/#
+BR2_TARGET_OPTIMIZATION="-Os -pipe"
+
+#
+# Toolchain Options
+#
+#prefix0#buildroot/#
+BR2_TOOLCHAIN_EXTERNAL_LIB_C="libc.so"
+#prefix0#buildroot/#
+BR2_TOOLCHAIN_EXTERNAL_LIBS="libc.so.0 ld-uClibc.so libcrypt.so libresolv.so librt.so libpthread.so libdl.so libm.so libutil.so"
+#prefix0#buildroot/#
+BR2_TOOLCHAIN_EXTERNAL_STRIP=y
+#prefix0#buildroot/#
+BR2_KERNEL_HEADERS_LOCAL=y
+#prefix0#buildroot/#
+BR2_DEFAULT_KERNEL_HEADERS="local"
+#
+
+#
+# Gdb Options
+#
+
+#
+# Common Toolchain Options
+#
+#prefix0#buildroot/#
+BR2_TOOLCHAIN_EXTERNAL_PATH="/usr/local/ARC/gcc/"
+#prefix0#buildroot/#
+BR2_TOOLCHAIN_EXTERNAL_PREFIX="arc-linux-uclibc"
+
+#
+# Package Selection for the target
+#
+
+#
+# The default minimal system
+#
+#prefix0#buildroot/#
+BR2_PACKAGE_BUSYBOX=y
+#prefix0#buildroot/#
+BR2_BUSYBOX_VERSION_1_10_3=y
+#prefix0#buildroot/#
+BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS=y
+#prefix0#buildroot/#
+BR2_PACKAGE_BUSYBOX_CONFIG="package/busybox/busybox-1.2.2.1.config"
+#prefix0#buildroot/#
+BR2_PACKAGE_BUSYBOX_HIDE_OTHERS=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_BUSYBOX_SKELETON is not set
+
+#
+# The minimum needed to build a uClibc development system
+#
+#prefix0#buildroot/#
+# BR2_PACKAGE_BASH is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_BZIP2 is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_DIFFUTILS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_FLEX is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_GCC_TARGET is not set
+#prefix0#buildroot/#
+BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS=""
+#prefix0#buildroot/#
+# BR2_PACKAGE_MAKE is not set
+
+#
+# Other development stuff
+#
+#prefix0#buildroot/#
+# BR2_PACKAGE_AUTOCONF is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_AUTOMAKE is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_BISON is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_CCACHE_TARGET is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_CVS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_DISTCC is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_DMALLOC is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_EXPAT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_FAKEROOT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_GETTEXT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBINTL is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBGMP is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBMPFR is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBTOOL is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_M4 is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MPATROL is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_PKGCONFIG is not set
+#prefix0#buildroot/#
+# BR2_READLINE is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_VDEV is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_Q_PARSE_LOG is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_RFCALTOOLS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_SSCLDBG is not set
+
+#
+# Other stuff
+#
+#prefix0#buildroot/#
+# BR2_PACKAGE_AT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_BERKELEYDB is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_BSDIFF is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_CUSTOMIZE is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_DASH is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_FILE is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_KEXEC is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_TESTIPC is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBELF is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBEVENT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBFLOAT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBSYSFS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LSOF is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LTP-TESTSUITE is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LTT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MICROCOM is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_PORTAGE is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_SQLITE is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_STRACE is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_SUDO is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_QTN_MACFW is not
+#prefix0#buildroot/#
+# BR2_PACKAGE_QTN_DSPFW is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_QTN_UBOOT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_QTN_AUCFW is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_QTN_LINUX_IMG is not set
+#prefix0#buildroot/#
+BR2_NETWORK_SUPPORT=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_ARGUS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_AVAHI is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_BOA is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_BIND is not set
+#prefix0#buildroot/#
+BR2_PACKAGE_BRIDGE=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_IGMPPROXY is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBNET is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_NEMESIS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_DHCP_SERVER is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_DHCP_RELAY is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_DHCP_CLIENT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_DNSMASQ is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_DROPBEAR is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_ETHTOOL is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_HASERL is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_HOSTAP is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_IPERF is not set
+#prefix0#buildroot/#
+BR2_PACKAGE_IPROUTE2=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_IPSEC_TOOLS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_IPTABLES is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_L2TP is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBCGI is not set
+#prefix0#buildroot/#
+#BR2_PACKAGE_LIBCURL=y
+#prefix0#buildroot/#
+#BR2_PACKAGE_JSON_C=y
+#prefix0#buildroot/#
+#BR2_PACKAGE_QHARVEST=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBCGICC is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBPCAP is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIGHTTPD is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LINKS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LRZSZ is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MIIDL is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MROUTED is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_NBD is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_NETKITBASE is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_NETKITTELNET is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_NETPLUG is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_NETSNMP is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_NFS_UTILS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_NTP is not set
+#prefix0#buildroot/#
+#BR2_PACKAGE_NTPCLIENT=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_OPENNTPD is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_OPENSSH is not set
+#prefix0#buildroot/#
+BR2_PACKAGE_OPENSSL=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_OPENSSL_TARGET_HEADERS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_OPENVPN is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_OPENSWAN is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_PORTMAP is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_PHP is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_PPPD is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_PROFTPD is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_RSYNC is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_QWEBIF is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_QWEBCGIIF is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_QWEBPHPIF is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_SAMBA is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_SOCAT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_STUNNEL is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_TCPDUMP is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_TFTPD is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_TN5250 is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_TTCP is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_VTUN is not set
+#prefix0#buildroot/#
+BR2_PACKAGE_WIRELESS_TOOLS=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_Q_UTILS is not set
+#prefix0#buildroot/#
+BR2_PACKAGE_QCSAPI=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_CALL_QCSAPI_RPC_SOCKET_CLIENT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_CALL_QCSAPI_RPC_PCIE_CLIENT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_CALL_QCSAPI_RPC_RAW_SOCKET_CLIENT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_CALL_QCSAPI_RPC_SERVER is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_QCSAPI_RPC_SOCKET_CLIENT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_QCSAPI_RPC_PCIE_CLIENT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_QCSAPI_RPC_RAW_SOCKET_CLIENT is not set
+#prefix0#buildroot/#
+BR2_PACKAGE_QCSAPI_RPC_SERVER=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_RMT_QCSAPI is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_RMT_QCSAPI_SERVER is not set
+#prefix0#buildroot/#
+BR2_PACKAGE_QCSAPI_MONITOR_RFENABLE=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_WLANCONFIG is not set
+#prefix0#buildroot/#
+BR2_PACKAGE_WPASUPPLICANT=y
+#prefix0#buildroot/#
+BR2_PACKAGE_ZHOSTAPD=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_QEVENTD is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_SYSSTAT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MINIHTTPD is not set
+#prefix0#buildroot/#
+# BR2_BLOCKDEV_SUPPORT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_DBUS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_DM is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_DMRAID is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_E2FSPROGS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_HAL is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_HWDATA is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_IOSTAT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBRAW1394 is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LIBUSB is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_LVM2 is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MDADM is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MEMTESTER is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MKDOSFS is not set
+#prefix0#buildroot/#
+BR2_PACKAGE_MTD=y
+
+#
+# MTD package selection
+#
+#prefix0#buildroot/#
+BR2_PACKAGE_MTD_ORIG=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_SNAPSHOT is not set
+#prefix0#buildroot/#
+BR2_PACKAGE_MTD_ORIG_STRING="mtd_20050122.orig.tar.gz"
+
+#
+# MTD tools selection
+#
+#prefix0#buildroot/#
+BR2_PACKAGE_MTD_FLASH_ERASE=y
+#prefix0#buildroot/#
+BR2_PACKAGE_MTD_FLASH_ERASEALL=y
+#prefix0#buildroot/#
+BR2_PACKAGE_MTD_FLASH_INFO=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_FLASH_LOCK is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_FLASH_UNLOCK is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_FLASHCP is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_ERASE is not set
+#prefix0#buildroot/#
+BR2_PACKAGE_MTD_JFFS2DUMP=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_JFFS3DUMP is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_SUMTOOL is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_FTL_CHECK is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_FTL_FORMAT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_NFTL_FORMAT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_NFTLDUMP is not set
+#prefix0#buildroot/#
+BR2_PACKAGE_MTD_MKFSJFFS2=y
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_MKFSJFFS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_NANDDUMP is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_NANDWRITE is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_MTD_DEBUG is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_DOCFDISK is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_MTD_DOC_LOADBIOS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_PCIUTILS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_RAIDTOOLS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_SETSERIAL is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_SMARTMONTOOLS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_USBMOUNT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_USBUTILS is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_WIPE is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_XFSPROGS is not set
+#prefix0#buildroot/#
+# BR2_AUDIO_SUPPORT is not set
+#prefix0#buildroot/#
+# BR2_GRAPHIC_SUPPORT is not set
+#prefix0#buildroot/#
+# BR2_COMPRESSOR_SUPPORT is not set
+#prefix0#buildroot/#
+# BR2_PACKAGE_ZLIB is not set
+#prefix0#buildroot/#
+# BR2_SCRIPTING_SUPPORT is not set
+
+#prefix0#buildroot/#
+# BR2_MSWBSP_SUPPORT is not set
+
+#
+# Target Options
+#
+
+#
+# filesystem for target device
+#
+#prefix0#buildroot/#
+# BR2_TARGET_ROOTFS_CRAMFS is not set
+#prefix0#buildroot/#
+# BR2_TARGET_ROOTFS_CLOOP is not set
+#prefix0#buildroot/#
+# BR2_TARGET_ROOTFS_EXT2 is not set
+#prefix0#buildroot/#
+# BR2_TARGET_ROOTFS_JFFS2 is not set
+#prefix0#buildroot/#
+# BR2_TARGET_ROOTFS_SQUASHFS is not set
+#prefix0#buildroot/#
+# BR2_TARGET_ROOTFS_TAR is not set
+#prefix0#buildroot/#
+# BR2_TARGET_ROOTFS_CPIO is not set
+
+#
+# bootloader for target device
+#
+
+#
+# Board Support Options
+#
+#prefix0#buildroot/#
+# BR2_PACKAGE_LINUX is not set
+
+#
+# Atmel Target
+#
+
+#
+# Add Atmel Target here
+#
+#prefix0#buildroot/#
+# BR2_TARGET_UMS88K is not set
+#prefix0#buildroot/#
+# BR2_TARGET_RUBY is not set
+
+#
+# Ruby filesystem configuration
+#
+#prefix0#buildroot/#
+BR2_TARGET_RUBY_IPC_SUBNET="192.168.101"
+#prefix0#buildroot/#
+# BR2_TARGET_RUBY_SOC1_ETH_IP_NONE is not set
+#prefix0#buildroot/#
+# BR2_TARGET_RUBY_SOC1_ETH_IP_STATIC is not set
+#prefix0#buildroot/#
+BR2_TARGET_RUBY_SOC1_ETH_IP_DHCP=y
+#prefix0#buildroot/#
+BR2_TARGET_RUBY_SOC2_ETH_IP_NONE=y
+#prefix0#buildroot/#
+# BR2_TARGET_RUBY_SOC2_ETH_IP_STATIC is not set
+#prefix0#buildroot/#
+# BR2_TARGET_RUBY_SOC2_ETH_IP_DHCP is not set
+#prefix0#buildroot/#
+BR2_TARGET_RUBY_STATELESS=y
+
+#
+# Generic System Support
+#
+#prefix0#buildroot/#
+# BR2_TARGET_GENERIC_ACCESS_POINT is not set
+#prefix0#buildroot/#
+# BR2_TARGET_GENERIC_FIREWALL is not set
+#prefix0#buildroot/#
+# BR2_TARGET_GENERIC_DEV_SYSTEM is not set
+
+#
+# Busybox configuration
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_HAVE_DOT_CONFIG=y
+
+#
+# Busybox Settings
+#
+
+#
+# General Configuration
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_NITPICK is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DESKTOP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_SHOW_USAGE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VERBOSE_USAGE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_COMPRESS_USAGE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_INSTALLER is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_LOCALE_SUPPORT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_GETOPT_LONG=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_DEVPTS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_PIDFILE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_SUID=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_SUID_CONFIG is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SELINUX is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_PREFER_APPLETS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_BUSYBOX_EXEC_PATH="/proc/self/exe"
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_SYSLOG=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_HAVE_RPC=y
+
+#
+# Build Options
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_STATIC is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_NOMMU is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_BUILD_LIBBUSYBOX is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_LFS=y
+
+#
+# Debugging Options
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DEBUG is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_WERROR is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_NO_DEBUG_LIB=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DMALLOC is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_EFENCE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_INCLUDE_SUSv2=y
+
+#
+# Installation Options
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_INSTALL_NO_USR is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_INSTALL_APPLET_SYMLINKS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_INSTALL_APPLET_HARDLINKS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_INSTALL_APPLET_SCRIPT_WRAPPERS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_INSTALL_APPLET_DONT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_PREFIX="./_install"
+
+#
+# Busybox Library Tuning
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_PASSWORD_MINLEN=6
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_MD5_SIZE_VS_SPEED=2
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_FAST_TOP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_ETC_NETWORKS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_EDITING=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_EDITING_MAX_LEN=1024
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_EDITING_VI is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_EDITING_HISTORY=15
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_EDITING_SAVEHISTORY=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_TAB_COMPLETION=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_USERNAME_COMPLETION is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_EDITING_FANCY_PROMPT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_VERBOSE_CP_MESSAGE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_COPYBUF_KB=4
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_MONOTONIC_SYSCALL=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_IOCTL_HEX2STR_ERROR=y
+
+#
+# Applets
+#
+
+#
+# Archival Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_AR is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_BUNZIP2=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_BZIP2 is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CPIO is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DPKG is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DPKG_DEB is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_GUNZIP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_GUNZIP_UNCOMPRESS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_GZIP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_RPM2CPIO is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_RPM is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_TAR=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_TAR_CREATE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_TAR_GZIP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_TAR_BZIP2=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_TAR_LZMA is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_TAR_COMPRESS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_TAR_AUTODETECT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_TAR_FROM is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_TAR_OLDGNU_COMPATIBILITY is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_TAR_OLDSUN_COMPATIBILITY is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_TAR_GNU_EXTENSIONS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_TAR_LONG_OPTIONS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_TAR_UNAME_GNAME is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_UNCOMPRESS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_UNLZMA is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_UNZIP=y
+
+#
+# Common options for cpio and tar
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_UNARCHIVE_TAPE is not set
+
+#
+# Coreutils
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_BASENAME=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CAL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_CAT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CATV is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_CHGRP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_CHMOD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_CHOWN=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_CHROOT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CKSUM is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_COMM is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_CP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_CUT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_DATE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_DATE_ISOFMT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_DD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_DD_SIGNAL_HANDLING is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_DD_IBS_OBS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_DF=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_DF_INODE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_DIRNAME=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_DOS2UNIX=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_UNIX2DOS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_DU=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_DU_DEFAULT_BLOCKSIZE_1K=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ECHO=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FANCY_ECHO=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ENV=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_ENV_LONG_OPTIONS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_EXPAND is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_EXPR=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_EXPR_MATH_SUPPORT_64=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FALSE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FOLD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_HEAD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_FANCY_HEAD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_HOSTID=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ID=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_INSTALL=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_INSTALL_LONG_OPTIONS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_LENGTH is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_LN=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_LOGNAME=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_LS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_LS_FILETYPES=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_LS_FOLLOWLINKS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_LS_RECURSIVE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_LS_SORTFILES=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_LS_TIMESTAMPS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_LS_USERNAME=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_LS_COLOR=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_LS_COLOR_IS_DEFAULT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_MD5SUM=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_MKDIR=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_MKDIR_LONG_OPTIONS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_MKFIFO is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_MKNOD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_MV=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_MV_LONG_OPTIONS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_NICE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_NOHUP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_OD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_PRINTENV is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_PRINTF is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_PWD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_READLINK=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_READLINK_FOLLOW=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_REALPATH is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_RM=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_RMDIR=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_RMDIR_LONG_OPTIONS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SEQ is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_SHA1SUM=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_SLEEP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_FANCY_SLEEP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_SORT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_SORT_BIG=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SPLIT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_STAT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_STTY=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SUM is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_SYNC=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_TAC is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_TAIL=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FANCY_TAIL=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_TEE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_TEE_USE_BLOCK_IO=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_TEST=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_TEST_64=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_TOUCH=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_TR is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_TRUE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_TTY=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_UNAME=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_UNEXPAND is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_UNIQ=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_USLEEP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_UUDECODE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_UUENCODE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_WC=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_WC_LARGE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_WHO is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_WHOAMI=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_YES=y
+
+#
+# Common options for cp and mv
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_PRESERVE_HARDLINKS=y
+
+#
+# Common options for ls, more and telnet
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_AUTOWIDTH=y
+
+#
+# Common options for df, du, ls
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_HUMAN_READABLE=y
+
+#
+# Common options for md5sum, sha1sum
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_MD5_SHA1_SUM_CHECK=y
+
+#
+# Console Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_CHVT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_CLEAR=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_DEALLOCVT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DUMPKMAP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_KBD_MODE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_LOADFONT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_LOADKMAP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_OPENVT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_RESET=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_RESIZE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SETCONSOLE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SETKEYCODES is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SETLOGCONS is not set
+
+#
+# Debian Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_MKTEMP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_PIPE_PROGRESS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_RUN_PARTS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_RUN_PARTS_LONG_OPTIONS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_RUN_PARTS_FANCY is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_START_STOP_DAEMON=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_START_STOP_DAEMON_FANCY=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_START_STOP_DAEMON_LONG_OPTIONS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_WHICH=y
+
+#
+# Editors
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_AWK=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_AWK_MATH is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_CMP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DIFF is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ED is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_PATCH is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_SED=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_VI=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VI_MAX_LEN=4096
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VI_8BIT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VI_COLON=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VI_YANKMARK=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VI_SEARCH=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VI_USE_SIGNALS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VI_DOT_CMD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VI_READONLY=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VI_SETOPTS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VI_SET=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VI_WIN_RESIZE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_VI_OPTIMIZE_CURSOR=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_ALLOW_EXEC=y
+
+#
+# Finding Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FIND=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_PRINT0=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_MTIME=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_FIND_MMIN is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_PERM=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_TYPE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_XDEV=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_MAXDEPTH=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_FIND_NEWER is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_FIND_INUM is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_EXEC=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_USER=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_GROUP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_NOT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_DEPTH=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_PAREN=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_SIZE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_PRUNE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_FIND_DELETE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_PATH=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FIND_REGEX=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_GREP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_GREP_EGREP_ALIAS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_GREP_FGREP_ALIAS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_GREP_CONTEXT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_XARGS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_XARGS_SUPPORT_CONFIRMATION is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_XARGS_SUPPORT_QUOTES=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_XARGS_SUPPORT_TERMOPT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_XARGS_SUPPORT_ZERO_TERM=y
+
+#
+# Init Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_INIT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DEBUG_INIT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_USE_INITTAB=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_KILL_REMOVED=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_KILL_DELAY=0
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_INIT_SCTTY=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_INIT_SYSLOG is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_EXTRA_QUIET=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_INIT_COREDUMPS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_INITRD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_HALT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_MESG is not set
+
+#
+# Login/Password Management Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_SHADOWPASSWDS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_USE_BB_PWD_GRP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ADDGROUP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_ADDUSER_TO_GROUP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DELGROUP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_DEL_USER_FROM_GROUP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_CHECK_NAMES is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ADDUSER is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_ADDUSER_LONG_OPTIONS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DELUSER is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_GETTY=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_UTMP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_WTMP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_LOGIN=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_PAM is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_LOGIN_SCRIPTS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_NOLOGIN=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_SECURETTY=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_PASSWD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_PASSWD_WEAK_CHECK is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CRYPTPW is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CHPASSWD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_SU=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_SU_SYSLOG=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_SU_CHECKS_SHELLS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_SULOGIN=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_VLOCK=y
+
+#
+# Linux Ext2 FS Progs
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CHATTR is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FSCK is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_LSATTR is not set
+
+#
+# Linux Module Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_INSMOD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_INSMOD_LOAD_MAP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_RMMOD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_LSMOD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_LSMOD_PRETTY_2_6_OUTPUT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_MODPROBE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_MODPROBE_MULTIPLE_OPTIONS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_MODPROBE_FANCY_ALIAS=y
+
+#
+# Options common to multiple modutils
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_CHECK_TAINTED_MODULE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_2_4_MODULES is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_2_6_MODULES=y
+
+#
+# Linux System Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_DMESG=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_DMESG_PRETTY=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FBSET is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FDFLUSH is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FDFORMAT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FDISK is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FDISK_SUPPORT_LARGE_DISKS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_FDISK_WRITABLE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_AIX_LABEL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_SGI_LABEL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_SUN_LABEL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_OSF_LABEL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_FDISK_ADVANCED is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FINDFS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FREERAMDISK is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FSCK_MINIX is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_MKFS_MINIX is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_GETOPT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_HEXDUMP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HEXDUMP_REVERSE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_HD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_HWCLOCK=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HWCLOCK_LONG_OPTIONS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HWCLOCK_ADJTIME_FHS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_IPCRM is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_IPCS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_LOSETUP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_MDEV is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_MKSWAP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_MORE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_USE_TERMIOS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_VOLUMEID is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_MOUNT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_MOUNT_FAKE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_MOUNT_VERBOSE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_MOUNT_HELPERS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_MOUNT_LABEL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_MOUNT_NFS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_MOUNT_CIFS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_MOUNT_FLAGS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_MOUNT_FSTAB=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_PIVOT_ROOT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_RDATE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_READPROFILE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_RTCWAKE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SETARCH is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_SWAPONOFF=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_SWITCH_ROOT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_UMOUNT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_UMOUNT_ALL=y
+
+#
+# Common options for mount/umount
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_MOUNT_LOOP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_MTAB_SUPPORT is not set
+
+#
+# Miscellaneous Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ADJTIMEX is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_BBCONFIG is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CHAT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CHRT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CROND is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CRONTAB is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_DC=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DEVFSD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_DEVFS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_EJECT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_LAST is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_LESS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_LESS_MAXLINES=9999999
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_LESS_BRACKETS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_LESS_FLAGS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_LESS_FLAGCS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_LESS_MARKS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_LESS_REGEXP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_HDPARM is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_MAKEDEVS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_MICROCOM is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_MOUNTPOINT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_MT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_RAIDAUTORUN is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_READAHEAD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_RUNLEVEL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_RX is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SCRIPT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_STRINGS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SETSID is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_TASKSET is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_TIME=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_TTYSIZE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_WATCHDOG is not set
+
+#
+# Networking Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_IPV6=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_PREFER_IPV4_ADDRESS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_VERBOSE_RESOLUTION_ERRORS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ARP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ARPING is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_BRCTL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_BRCTL_FANCY is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DNSD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ETHER_WAKE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FAKEIDENTD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FTPGET=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FTPPUT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_FTPGETPUT_LONG_OPTIONS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_HOSTNAME=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_HTTPD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HTTPD_RANGES is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HTTPD_USE_SENDFILE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HTTPD_RELOAD_CONFIG_SIGHUP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HTTPD_SETUID is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_HTTPD_BASIC_AUTH=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HTTPD_AUTH_MD5 is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HTTPD_CONFIG_WITH_MIME_TYPES is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_HTTPD_CGI=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HTTPD_CONFIG_WITH_SCRIPT_INTERPR is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HTTPD_SET_REMOTE_PORT_TO_ENV is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_HTTPD_ENCODE_URL_STR=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HTTPD_ERROR_PAGES is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_HTTPD_PROXY is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_IFCONFIG=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_IFCONFIG_STATUS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_IFCONFIG_SLIP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_IFCONFIG_MEMSTART_IOADDR_IRQ is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_IFCONFIG_HW=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_IFCONFIG_BROADCAST_PLUS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_IFENSLAVE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_IFUPDOWN=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_IFUPDOWN_IFSTATE_PATH="/var/run/ifstate"
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_IFUPDOWN_IP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_IFUPDOWN_IFCONFIG_BUILTIN=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_IFUPDOWN_IPV4=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_IFUPDOWN_IPV6 is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_IFUPDOWN_MAPPING is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_IFUPDOWN_EXTERNAL_DHCP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_INETD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_INETD_SUPPORT_BUILTIN_ECHO=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_INETD_SUPPORT_BUILTIN_DISCARD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_INETD_SUPPORT_BUILTIN_TIME=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_INETD_SUPPORT_BUILTIN_DAYTIME=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_INETD_SUPPORT_BUILTIN_CHARGEN=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_INETD_RPC is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_IP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_IP_ADDRESS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_IP_LINK=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_IP_ROUTE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_IP_TUNNEL=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_IP_RULE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_IP_SHORT_FORMS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_IP_RARE_PROTOCOLS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_IPCALC is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_NAMEIF is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_NC is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_NETSTAT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_NETSTAT_WIDE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_NSLOOKUP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_PING=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_PING6 is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_FANCY_PING=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_PSCAN is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ROUTE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SENDMAIL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FETCHMAIL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SLATTACH is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_TELNET=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_TELNET_TTYPE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_TELNET_AUTOLOGIN is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_TELNETD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_TELNETD_STANDALONE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_TFTP=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_TFTPD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_TRACEROUTE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_APP_UDHCPD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_APP_UDHCPC is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_UDHCPC_ARPING is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_UDHCP_PORT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_UDHCP_DEBUG is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_RFC3397 is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_DHCPC_DEFAULT_SCRIPT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_UDHCPC_SLACK_FOR_BUGGY_SERVERS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_VCONFIG=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_WGET=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_WGET_STATUSBAR is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_WGET_AUTHENTICATION=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_WGET_LONG_OPTIONS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ZCIP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_TCPSVD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_UDPSVD is not set
+
+#
+# Process Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FREE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FUSER is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_KILL=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_KILLALL=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_KILLALL5 is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_NMETER is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_PGREP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_PIDOF=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_PIDOF_SINGLE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_PIDOF_OMIT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_PKILL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_PS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_PS_WIDE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_RENICE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_BB_SYSCTL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_TOP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_UPTIME=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_WATCH is not set
+
+#
+# Shells
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_SH_IS_ASH=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_SH_IS_HUSH is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_SH_IS_MSH is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_SH_IS_NONE is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ASH=y
+
+#
+# Ash Shell Options
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ASH_JOB_CONTROL=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ASH_READ_NCHARS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ASH_READ_TIMEOUT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ASH_ALIAS=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ASH_MATH_SUPPORT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ASH_MATH_SUPPORT_64=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ASH_GETOPTS is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ASH_BUILTIN_ECHO=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ASH_BUILTIN_TEST=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ASH_CMDCMD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ASH_MAIL is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ASH_OPTIMIZE_FOR_SIZE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ASH_RANDOM_SUPPORT is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_ASH_EXPAND_PRMT=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_HUSH is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_LASH is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_MSH is not set
+
+#
+# Bourne Shell Options
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_SH_EXTRA_QUIET is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CTTYHACK is not set
+
+#
+# System Logging Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_SYSLOGD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_ROTATE_LOGFILE=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_FEATURE_REMOTE_LOG=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_SYSLOGD_DUP is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_FEATURE_IPC_SYSLOG is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_KLOGD=y
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+CONFIG_LOGGER=y
+
+#
+# Runit Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_RUNSV is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_RUNSVDIR is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SV is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SVLOGD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_CHPST is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SETUIDGID is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ENVUIDGID is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_ENVDIR is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_SOFTLIMIT is not set
+
+#
+# Print Utilities
+#
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_LPD is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_LPR is not set
+#prefix7#buildroot/package/busybox/busybox-1.10.3/#
+# CONFIG_LPQ is not set

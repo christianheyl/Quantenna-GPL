@@ -1,0 +1,16 @@
+#!/bin/sh
+
+while read data ; do
+	let mac0=0x`echo $data | cut -d ":" -f1`
+	let mac1=0x`echo $data | cut -d ":" -f2`
+	let mac2=0x`echo $data | cut -d ":" -f3`
+	let mac3=0x`echo $data | cut -d ":" -f4`
+	let mac4=0x`echo $data | cut -d ":" -f5`
+	let mac5=0x`echo $data | cut -d ":" -f6`
+	let x1=0x1000000
+	let x2=0x10000
+	let x3=0x100
+
+	num=`echo $mac5$mac4$mac3$mac2$mac1$mac0 | cut -c 1-10`
+	echo $num
+done

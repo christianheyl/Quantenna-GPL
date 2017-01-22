@@ -1,0 +1,41 @@
+Only in igmpproxy-0.1-orig/: config.h
+Only in igmpproxy-0.1-orig/: config.log
+Only in igmpproxy-0.1-orig/: config.status
+Only in igmpproxy-0.1-orig/: .configured
+Only in igmpproxy-0.1-orig/doc: igmpproxy.8
+Only in igmpproxy-0.1-orig/doc: igmpproxy.conf.5
+Only in igmpproxy-0.1-orig/doc: Makefile
+Only in igmpproxy-0.1-orig/: Makefile
+Only in igmpproxy-0.1-orig/src: callout.o
+Only in igmpproxy-0.1-orig/src: config.o
+Only in igmpproxy-0.1-orig/src: confread.o
+Only in igmpproxy-0.1-orig/src: ifvc.o
+Only in igmpproxy-0.1-orig/src: igmp.o
+Only in igmpproxy-0.1-orig/src: igmpproxy
+diff -dur igmpproxy-0.1/src/igmpproxy.c igmpproxy-0.1-orig/src/igmpproxy.c
+--- igmpproxy-0.1/src/igmpproxy.c	2009-08-28 05:32:28.000000000 +1000
++++ igmpproxy-0.1-orig/src/igmpproxy.c	2011-09-26 15:15:22.710982288 +1000
+@@ -71,8 +71,9 @@
+ */    
+ int main( int ArgCn, char *ArgVc[] ) {
+ 
++    int c;
+     // Parse the commandline options and setup basic settings..
+-    for (int c; (c = getopt(ArgCn, ArgVc, "vdh")) != -1;) {
++    for (; (c = getopt(ArgCn, ArgVc, "vdh")) != -1;) {
+         switch (c) {
+         case 'd':
+             Log2Stderr = true;
+Only in igmpproxy-0.1-orig/src: igmpproxy.o
+Only in igmpproxy-0.1-orig/src: kern.o
+Only in igmpproxy-0.1-orig/src: lib.o
+Only in igmpproxy-0.1-orig/src: Makefile
+Only in igmpproxy-0.1-orig/src: mcgroup.o
+Only in igmpproxy-0.1-orig/src: mroute-api.o
+Only in igmpproxy-0.1-orig/src: os.h
+Only in igmpproxy-0.1-orig/src: request.o
+Only in igmpproxy-0.1-orig/src: rttable.o
+Only in igmpproxy-0.1-orig/src: syslog.o
+Only in igmpproxy-0.1-orig/src: udpsock.o
+Only in igmpproxy-0.1-orig/: stamp-h1
+Only in igmpproxy-0.1-orig/: .unpacked

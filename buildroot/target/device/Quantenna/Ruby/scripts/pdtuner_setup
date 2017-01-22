@@ -1,0 +1,60 @@
+#!/bin/sh
+
+# Tune power detector by sending some data frames
+# Called with two arguments wifi mode and regulatory region
+# It is called at the end of start-prod when the channel is
+# already chosen and if the channel happens to be DFS channel
+# radar CAC may be under way.  Power detector training packets
+# cannot be sent during CAC, so we need to wait until CAC
+# is done
+
+if [ $# -ne 2 ] ; then
+	echo "Usage: $0 <wifi_mode> <reg_region>"
+	exit 1
+fi
+
+is_topaz=`grep -c "bbic4" /proc/hw_revision`
+if [ "$is_topaz" = "1" ]; then
+	exit 0 # Gracefully exit if platform is Topaz
+fi
+
+# Save SCS original configuration and
+# Disable off channel measurements while sending training packets
+scs_status=`call_qcsapi get_scs_status wifi0|cut -d' ' -f1`
+call_qcsapi enable_scs wifi0 0
+
+wifi_mode=$1
+reg_region=$2
+if [ "$wifi_mode" = "ap" ] ; then
+	chan=`call_qcsapi get_channel wifi0`
+	if [ "$reg_region" = "none" ]; then
+		is_dfs=0
+	else
+		is_dfs=`call_qcsapi is_channel_dfs $reg_region $chan`
+	fi
+
+	if [ $is_dfs -eq 1 ] ; then
+		echo "Waiting for RADAR CAC to complete to send power detector learning packets...."
+		while [ 1 ]; do
+			cacstatus=`call_qcsapi get_cacstatus wifi0`
+			if [ "$cacstatus" -eq 0 ]; then
+				break
+			fi
+			sleep 10
+		done
+	fi
+
+	N=100
+	echo "Sending power detector learning packets...."
+	count=0
+	while [ $count -le $N ]; do
+		iwpriv wifi0 tunepd 1
+		count=`expr $count \+ 1`
+	done
+	iwpriv wifi0 tunepd_done 1
+fi
+
+# Restore SCS to original configuration.
+if [ "$scs_status" = "Enabled" ]; then
+	call_qcsapi enable_scs wifi0 1
+fi

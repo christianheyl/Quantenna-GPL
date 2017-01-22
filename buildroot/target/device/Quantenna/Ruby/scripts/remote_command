@@ -1,0 +1,97 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+	exit 0
+fi
+
+do_update_regulatory_db()
+{
+	if [ $# -lt 1 ]; then
+		db_file=/etc/qtn_regulatory_db.bin
+	elif [ -f $1 ]; then
+		db_file=$1
+	else
+		echo "$1 not found."
+		exit 1
+	fi
+
+	if [ "${db_file##*/}" != "qtn_regulatory_db.bin" ]; then
+		echo "invalid file $db_file"
+		exit 1
+	fi
+
+	update_bootcfg_file $db_file
+}
+
+do_update_uboot()
+{
+	cd /tmp
+	tftp -g -r u-boot-mini-piggy.bin 1.1.1.1
+	if [ -e "u-boot-mini-piggy.bin" ] ; then
+		echo "##Upgrading u-boot.bin!Please do not turn off power!" > /dev/console
+		flash_eraseall /dev/mtd0
+		cat u-boot-mini-piggy.bin > /dev/mtd0
+#		set_bootval dual_rgmii 1
+		sync
+		reboot
+	fi
+
+}
+
+
+do_update_power_table()
+{
+	cd /tmp
+	tftp -g -r tx_power_QSR1000_de.txt 1.1.1.1
+	if [ -e "tx_power_QSR1000_de.txt" ] ; then
+		echo "##Updating Power table!" > /dev/console
+		update_bootcfg_file tx_power_QSR1000_de.txt
+	fi
+
+}
+
+case "$1" in
+	reboot)
+		reboot
+		;;
+	update_db)
+		shift
+		do_update_regulatory_db $*
+		;;
+	keepalive_inf)
+		ifconfig br0:1 1.1.1.3 netmask 255.255.255.0
+		;;
+	update_uboot)
+		do_update_uboot
+		;;
+	update_power_table)
+		do_update_power_table
+		;;
+	hostapd_cli)
+		if [ $# -lt 2 ]; then
+			echo "Invalid arguments! hostapd_cli requires at least 1 arguments!"
+			exit 0
+		fi
+
+		if [ $# == 3 ]; then
+			hostapd_cli $2 $3
+		else
+			hostapd_cli $2
+		fi
+		;;
+	set_bootval)
+		if [ $# -lt 3 ]; then
+			echo "Invalid arguments! set_bootval requires 2 arguments!"
+			exit 0
+		fi
+		getValue=`get_bootval $2`
+		if [ $getValue != $3 ]; then
+			echo "Setting boot variables $2 $3"
+			set_bootval $2 $3
+		else
+			echo "The value of boot variable $2 is already $3! Skip setting ....."
+		fi
+		;;
+	*):
+		exit 1
+esac

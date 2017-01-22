@@ -1,0 +1,51 @@
+#!/bin/sh
+# Get carrier ID from uboot env or any customer specific ID
+# 'NA' means North America in this script
+######## carrier_id mapping table ########
+#
+#	Carrier Name	carrier_id
+#	QTN(default)	0
+#	ATT		1
+#	Altibox		2
+#	Bell Canada	3
+#	Bell Alliant	4
+#	Century Link	5
+#	EU Generic	6
+#	EMEA Generic	7
+#	Etislat		8
+#	France Telecom	9
+#	Hawiian Telcom	10
+#	NA Generic	11
+#	Rostelcom	12
+#	Swisscom	13
+#	Telefonica	14
+#	Telus		15
+#	UK Generic	16
+#	Verizon		17
+#	Vimplecom	18
+#	DTV		19
+#	SureWest	20
+#	TDC(Telekom Denmark)	21
+#	Sakatel		22
+#	MTS		23
+#
+#########################################
+
+scripts_dir="/scripts"
+
+carrier=`cat /proc/bootcfg/env | grep carrier_id= | sed -e 's/.*=//g'`
+if [ -z "$carrier" ]
+then
+	$scripts_dir/carrier_convert
+	carrier=$?
+fi
+
+if [ $(($carrier)) -eq 0 ]
+then
+	customer=0
+else
+	customer=`echo $carrier | sed  -e 's/^[0 \t]*//' `
+fi
+
+call_qcsapi -u -q set_carrier_id $(($customer)) 0
+

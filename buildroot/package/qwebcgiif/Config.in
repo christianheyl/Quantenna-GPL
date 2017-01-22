@@ -1,0 +1,5 @@
+config BR2_PACKAGE_QWEBCGIIF
+	bool "qwebcgiif"
+	default y
+	help
+	  Quantenna CGI Web interface.

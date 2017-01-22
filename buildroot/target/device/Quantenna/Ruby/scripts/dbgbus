@@ -1,0 +1,39 @@
+#!/bin/sh
+
+onoff="on"
+ETH_MDIO_PATH=/sys/devices/emac_eth_eth1_0/mdio_use_noops
+I2C_PATH=/sys/bus/platform/drivers/qtn-i2c/i2c_xfer_noop
+
+if [ $1 ] ; then
+	onoff=$1
+fi
+
+if [ "$onoff" == "on" ]; then
+	if [ -e ${ETH_MDIO_PATH} ]; then
+		echo 1 > /sys/devices/emac_eth_eth1_0/mdio_use_noops
+	else
+		echo "Not disabling Ethernet MDIO (${ETH_MDIO_PATH} not present"
+	fi
+	if [ -e ${I2C_PATH} ]; then
+		echo 1 > /sys/bus/platform/drivers/qtn-i2c/i2c_xfer_noop
+	else
+		echo "Not disabling I2C (${I2C_PATH} not present"
+	fi
+	echo "Remounting SPI flash read-only"
+	mount -o remount,ro /mnt/jffs2/
+else
+	if [ -e ${ETH_MDIO_PATH} ]; then
+		echo "Enabling Ethernet MDIO"
+		echo 0 > /sys/devices/emac_eth_eth1_0/mdio_use_noops
+	else
+		echo "Not enabling Ethernet MDIO (${ETH_MDIO_PATH} not present"
+	fi
+	if [ -e ${I2C_PATH} ]; then
+		echo "Enabling i2c"
+		echo 0 > /sys/bus/platform/drivers/qtn-i2c/i2c_xfer_noop
+	else
+		echo "Not enabling I2C (${I2C_PATH} not present"
+	fi
+	echo "Remounting SPI flash read-write"
+	mount -o remount,rw /mnt/jffs2/
+fi

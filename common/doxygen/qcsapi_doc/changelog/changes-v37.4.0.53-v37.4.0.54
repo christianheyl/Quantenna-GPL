@@ -1,0 +1,11 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_53_TO_v37_4_0_54 Version v37.4.0.53 to version v37.4.0.54 changes
+ *
+ * \subsection v37_4_0_53_TO_v37_4_0_54Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.53 and v37.4.0.54
+ * \li \ref qcsapi_wifi_set_current_tx_power_level
+ */
+

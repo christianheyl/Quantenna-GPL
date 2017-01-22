@@ -1,0 +1,3 @@
+#! /bin/sh
+echo "get 0 dsp_stats" > /sys/devices/qdrv/control
+cat /proc/qdrvdata

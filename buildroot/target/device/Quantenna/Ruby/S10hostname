@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ -f /etc/hostname ] ; then
+	hostname `cat /etc/hostname`
+else
+	hostname soc1
+fi

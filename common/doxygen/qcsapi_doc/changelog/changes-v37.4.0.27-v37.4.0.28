@@ -1,0 +1,13 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_27_TO_v37_4_0_28 Version v37.4.0.27 to version v37.4.0.28 changes
+ *
+ * \subsection v37_4_0_27_TO_v37_4_0_28Proto Function prototype changes
+ *
+ * The following function prototypes were modified between versions v37.4.0.27 and v37.4.0.28
+ *  - \ref qcsapi_wifi_get_node_param
+ *    - Old prototype: int qcsapi_wifi_get_node_param(const char *ifname, const uint32_t node_index, qcsapi_per_assoc_param param_type, int local_remote_flag, string_128 input_param_str, qcsapi_measure_report_result *report_result);
+ *    - New prototype: int qcsapi_wifi_get_node_param(const char *ifname, const uint32_t node_index, qcsapi_per_assoc_param param_type, int local_remote_flag, const string_128 input_param_str, qcsapi_measure_report_result *report_result);
+ */
+

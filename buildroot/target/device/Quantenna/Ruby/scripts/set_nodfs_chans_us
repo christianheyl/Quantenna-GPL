@@ -1,0 +1,39 @@
+#!/bin/sh
+
+bw=$1
+if [ "$bw" = "" ]
+then
+    bw=40
+fi
+
+# This script blocks access to DFS channels in the US.
+# Refer iwpriv implementation in wlan/ieee80211_wireless.c for more details  
+
+# 2.4G chans (set indices 1-32 to zero) 
+chans="0x00 0x00 0x00 0x00 "
+
+#Chans 36-64 (indices 33-72)
+#Chans 36 to 48 are OK; 52 to 64 are not.
+chans=$chans"0xFF 0xFF 0x00 0x00 0x00 "
+
+#Empty middle band (indices 73-96)
+chans=$chans"0x00 0x00 0x00 "
+
+#chans 100-112 (indices 97-144) 
+chans=$chans"0x00 0x00 0x00 0x00 0x00 0x00 "
+
+#chans 149-165 (indices 145-168)
+chans=$chans"0xFF 0xFF 0xFF "
+
+#empty upper band (indices 169-176)
+chans=$chans"0x00 "
+
+#japan 184-196 (indices 177-200)
+chans=$chans"0x00 0x00 0x00 "
+
+#unused top (indices 201-255)
+chans=$chans"0x00 0x00 0x00 0x00 0x00 0x00 0x00"
+
+#echo "Channel Map $chans" >/tmp/setchanlist
+iwpriv wifi0 setchanlist $chans
+

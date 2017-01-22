@@ -1,0 +1,4 @@
+readmem e6000300
+readmem e600025c
+readmem e6800300
+readmem e680025c

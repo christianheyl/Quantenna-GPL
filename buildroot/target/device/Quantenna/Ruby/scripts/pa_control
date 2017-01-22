@@ -1,0 +1,37 @@
+#!/bin/sh
+
+usage() {
+	echo "Usage:
+	pa_control <regtype> <regvalue>
+Parameters:
+	<regtype>	register type:
+				pa_ictrl (ictrl)
+				pa_ectrl (ectrl)
+				pa_conf  (conf)
+	<regvalue>	register value from 0x0000 to 0xffff"
+	exit 1
+}
+
+base_scripts="/scripts"
+. $base_scripts/start-helpers.sh
+
+[ $# -ne 2 ] && usage
+
+reg_type=$1
+reg_value=$2
+
+# reg_type is chosen according to "macfw/cal/utils/common/calcmd.h"
+case $reg_type in
+	ictrl) reg_type=1;;
+	ectrl) reg_type=2;;
+	conf)  reg_type=3;;
+	*) usage;;
+esac
+
+reg_hex=`echo $reg_value|sed 's@0x@@'`
+reg_dec=`hex2dec $reg_hex`
+reg_hi=$(($reg_dec/256))
+reg_lo=$(($reg_dec%256))
+calcmd=`echo "calcmd 65 0 9 0 1 $reg_type 2 $reg_lo $reg_hi"`
+echo $calcmd > /sys/devices/qdrv/control
+

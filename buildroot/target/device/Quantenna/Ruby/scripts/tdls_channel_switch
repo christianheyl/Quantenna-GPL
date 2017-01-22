@@ -1,0 +1,39 @@
+#!/bin/sh
+
+usage() {
+	echo "Usage: "
+	echo "    tdls_channel_swtich <start|stop> <peer_mac> [interval] [tar_chan] [tar_chan_bw]"
+	echo ""
+	echo "Parameters"
+	echo "    <start|stop>    start/stop the periodical channel switch"
+	echo "    <peer_mac>      TDLS peer mac address which want to switch channel"
+	echo "    [interval]      channel switch interval in millseconds unit"
+	echo "    [tar_chan]      target channel number(0 ~ 255). 0 means the clearest channel would be choosen as target channel"
+	echo "    [tar_chan_bw]   target channel bandwidth(0/20/40/80). 0 means the widest bandwidth supported would be choosen"
+	exit 1
+}
+
+if [ "$2" = "" ]; then
+	usage
+else
+	if [ "$4" != "" ]; then
+		call_qcsapi set_tdls_params wifi0 chan_switch_off_chan $4
+	fi
+
+	if [ "$5" != "" ]; then
+		call_qcsapi set_tdls_params wifi0 chan_switch_off_chan_bw $5
+	fi
+
+
+	if [ "$1" == "start" ]; then
+		if [ "$3" != "" ]; then
+			call_qcsapi tdls_operate wifi0 switch_chan $2 $3
+		else
+			call_qcsapi tdls_operate wifi0 switch_chan $2 1000
+		fi
+	else
+		call_qcsapi set_tdls_params wifi0 chan_switch_off_chan 0
+		call_qcsapi set_tdls_params wifi0 chan_switch_off_chan_bw 0
+		call_qcsapi tdls_operate wifi0 switch_chan $2 0
+	fi
+fi

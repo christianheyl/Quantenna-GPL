@@ -1,0 +1,118 @@
+#!/bin/sh
+
+QTN_REGULATORY_DB_PATH=/tmp/qtn_regulatory_db_path
+QTN_REGULATORY_DB_VER=/tmp/qtn_regulatory_db_version
+
+if [ -f $QTN_REGULATORY_DB_PATH ]; then
+	if [ -f `cat $QTN_REGULATORY_DB_PATH` ]; then
+		echo "$QTN_REGULATORY_DB_PATH already exists!"
+		echo "Using `cat $QTN_REGULATORY_DB_PATH`"
+		exit 0
+	else
+		echo "`cat $QTN_REGULATORY_DB_PATH` not found!"
+	fi
+fi
+
+region_db=`get_wifi_config wifi0 region_db 2>/dev/null`
+if [ $? -ne 0 ]; then
+	region_db=0
+fi
+
+if [ $region_db -eq 0 ]; then
+	if [ -f /proc/bootcfg/qtn_regulatory_db.bin ]; then
+		echo "/proc/bootcfg/qtn_regulatory_db.bin" > $QTN_REGULATORY_DB_PATH
+		db_version_proc=`call_qcsapi get_regulatory_db_version`
+		echo "Version of /proc/bootcfg/qtn_regulatory_db.bin is $db_version_proc"
+	fi
+	if [ -f /etc/qtn_regulatory_db.bin ]; then
+		echo "/etc/qtn_regulatory_db.bin" > $QTN_REGULATORY_DB_PATH
+		db_version_etc=`call_qcsapi get_regulatory_db_version`
+		echo "Version of /etc/qtn_regulatory_db.bin is $db_version_etc"
+	fi
+
+	if [ -n "$db_version_proc" -a -n "$db_version_etc" ]; then
+		db_v_proc=${db_version_proc#*: v}
+		db_v_etc=${db_version_etc#*: v}
+
+		db_v_proc1=${db_v_proc%%.*}
+		if [ $db_v_proc1 = $db_v_proc ]; then
+			db_v_proc=0
+		fi
+		db_v_proc=${db_v_proc#*.}
+		db_v_etc1=${db_v_etc%%.*}
+		if [ $db_v_etc1 = $db_v_etc ]; then
+			db_v_etc=0
+		fi
+		db_v_etc=${db_v_etc#*.}
+
+		db_v_proc2=${db_v_proc%%.*}
+		if [ $db_v_proc2 = $db_v_proc ]; then
+			db_v_proc=0
+		fi
+		db_v_proc=${db_v_proc#*.}
+		db_v_etc2=${db_v_etc%%.*}
+		if [ $db_v_etc2 = $db_v_etc ]; then
+			db_v_etc=0
+		fi
+		db_v_etc=${db_v_etc#*.}
+
+		db_v_proc3=${db_v_proc%%.*}
+		if [ $db_v_proc3 = $db_v_proc ]; then
+			db_v_proc=0
+		fi
+		db_v_proc=${db_v_proc#*.}
+		db_v_etc3=${db_v_etc%%.*}
+		if [ $db_v_etc3 = $db_v_etc ]; then
+			db_v_etc=0
+		fi
+		db_v_etc=${db_v_etc#*.}
+
+		db_v_proc4=${db_v_proc%%.*}
+		if [ $db_v_proc4 = $db_v_proc ]; then
+			db_v_proc=0
+		fi
+		db_v_proc=${db_v_proc#*.}
+		db_v_etc4=${db_v_etc%%.*}
+		if [ $db_v_etc4 = $db_v_etc ]; then
+			db_v_etc=0
+		fi
+		db_v_etc=${db_v_etc#*.}
+
+		if [ $db_v_proc1 -gt $db_v_etc1 ]; then
+			select=$db_version_proc
+		elif [ $db_v_proc1 -lt $db_v_etc1 ]; then
+			select=$db_version_etc
+		elif [ $db_v_proc2 -gt $db_v_etc2 ]; then
+			select=$db_version_proc
+		elif [ $db_v_proc2 -lt $db_v_etc2 ]; then
+			select=$db_version_etc
+		elif [ $db_v_proc4 -gt $db_v_etc4 ]; then
+			select=$db_version_proc
+		elif [ $db_v_proc4 -lt $db_v_etc4 ]; then
+			select=$db_version_etc
+		elif [ $db_v_proc3 -ge $db_v_etc3 ]; then
+			select=$db_version_proc
+		elif [ $db_v_proc3 -lt $db_v_etc3 ]; then
+			select=$db_version_etc
+		fi
+
+		echo "Selected database version: $select"
+		if [ "$select" == "$db_version_etc" ]; then
+			region_db=1
+		else
+			region_db=2
+		fi
+	elif [ -n "$db_version_etc" ]; then
+		region_db=1
+	elif [ -n "$db_version_proc" ]; then
+		region_db=2
+	fi
+fi
+
+if [ $region_db -eq 1 ]; then
+	echo "Using /etc/qtn_regulatory_db.bin"
+	echo "/etc/qtn_regulatory_db.bin" > $QTN_REGULATORY_DB_PATH
+elif [ $region_db -eq 2 ]; then
+	echo "Using /proc/bootcfg/qtn_regulatory_db.bin"
+	echo "/proc/bootcfg/qtn_regulatory_db.bin" > $QTN_REGULATORY_DB_PATH
+fi

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+base_scripts="/scripts"
+core_path="/var/log/core"
+
+platform_file=$base_scripts/platform_id
+
+if [ -f $platform_file ]
+then
+	platform_id=`cat $platform_file`
+
+	if [ "$platform_id" == "464" ]
+	then
+		# Set the CORE DUMP kernel parameters
+		mkdir -p $core_path
+		echo "$core_path/core_t%t_%e" > /proc/sys/kernel/core_pattern
+	fi
+fi
+

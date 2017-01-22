@@ -1,0 +1,1 @@
+echo "calcmd 16 0 4 0" > /sys/devices/qdrv/control

@@ -1,0 +1,127 @@
+#! /bin/sh
+#
+# Quantenna QBOX710 only!
+# GPIO pin configuration from Louis C
+
+calstate_val=`get_bootval calstate`
+if [ "$calstate_val" != "1" ]
+then
+    echo "$0 can only be run if calstate = 1"
+    echo "correct, reboot and restart"
+    exit 1
+fi
+
+max_tx_power_qbox710=20
+correct_security_file_path=/mnt/jffs2/
+current_security_file_path=`call_qcsapi -u get_file_path security`
+
+if [ "$current_security_file_path" != $correct_security_file_path ]
+then
+    call_qcsapi -u -q set_file_path security $correct_security_file_path
+fi
+
+# pin 4: WPS
+# pin 5: Reset Device push button
+
+for read_only_gpio_pin in 4 5 12 13
+do
+    gpio_config=`call_qcsapi -u get_gpio_config $read_only_gpio_pin`
+    if [ "$gpio_config" != "1" ]
+    then
+        call_qcsapi -u -q set_gpio_config $read_only_gpio_pin  1
+    fi
+done
+
+# pin 2: WLAN
+# pin 3: WPS
+# pin 6: WiFi mode
+# pin 7: Link quality
+
+for read_write_gpio_pin in 2 3 6 7
+do
+    gpio_config=`call_qcsapi -u get_gpio_config $read_write_gpio_pin`
+    if [ "$gpio_config" != "2" ]
+    then
+        call_qcsapi -u -q set_gpio_config $read_write_gpio_pin 2
+    fi
+done
+
+set_bootval max_tx_power ${max_tx_power_qbox710}
+
+cat >/tmp/eirp_info_eu.txt <<EOF
+# TX power database table for QBox710, region eu
+36 18 16
+40 18 16
+44 18 16
+48 18 16
+52 18 16
+56 18 16
+60 17 16
+64 17 14
+100 20 20
+104 20 20
+108 20 20
+112 20 20
+132 21 20
+136 21 21
+140 21 21
+EOF
+
+cat >/tmp/eirp_info_us.txt <<EOF
+# TX power database table for QBox710, region us
+36 11 11
+40 11 11
+44 11 11
+48 11 11
+52 18 18
+56 18 18
+60 14 18
+64 14 9
+100 13 16
+104 13 18
+108 18 18
+112 18 18
+132 18 18
+136 18 18
+149 20 20
+153 20 20
+157 20 20
+161 20 20
+EOF
+
+cat >/tmp/eirp_info_au.txt <<EOF
+# TX power database table for QBox710, region au
+36 16 16
+40 16 16
+44 16 16
+48 16 16
+52 16 16
+56 16 16
+60 16 16
+64 16 16
+100 21 21
+104 21 21
+108 21 21
+112 21 21
+116 21 21
+132 21 21
+136 21 21
+149 21 21
+153 21 21
+157 21 21
+161 21 21
+EOF
+
+update_bootcfg_file /tmp/eirp_info_eu.txt
+update_bootcfg_file /tmp/eirp_info_us.txt
+update_bootcfg_file /tmp/eirp_info_au.txt
+
+echo "Reboot required for the changes to be saved (not just power-cycle)."
+echo -n "Reboot device now? "
+read ans
+if [ "$ans" == "y" -o  "$ans" == "Y" -o "$ans" == "" ]
+then
+    reboot
+fi
+
+exit 0

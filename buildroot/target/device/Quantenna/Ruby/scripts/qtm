@@ -1,0 +1,6 @@
+#!/bin/sh
+# Configure Quantenna Traffic Management
+
+wifi_if=wifi0
+
+call_qcsapi -u qtm $wifi_if $*

@@ -1,0 +1,19 @@
+#!/bin/ash
+
+mu_enabled=`call_qcsapi -u get_enable_mu wifi0`
+
+for arg in $@
+do
+        if [ "$arg" == "mu" ] && [ "$mu_enabled" == "0" ]; then
+                echo "MU not enabled"
+                exit 1
+        fi
+done
+
+qdrvcmd get 0 muc_stats $* title
+while [ 1 ]
+do
+	iwpriv wifi0 set_crc_error 1
+	qdrvcmd get 0 muc_stats $*
+	sleep 2
+done

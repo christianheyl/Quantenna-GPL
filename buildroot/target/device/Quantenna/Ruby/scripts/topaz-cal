@@ -1,0 +1,43 @@
+#!/bin/sh
+#
+# adopted from debug-qdrv script
+
+base_scripts="/scripts"
+
+. $base_scripts/start-helpers.sh
+
+default_ipaddr=1.1.1.2
+
+if [ $# -gt 1 -a x$1 = x-ip ]; then
+	default_ipaddr=$2
+	shift 2
+fi
+
+/scripts/load-qdrv qtn_ruby cal $en_tqe_sem
+
+echo "start" > /sys/devices/qdrv/control
+
+enet_addr=`ifconfig eth1_0 2>/dev/null | grep "inet addr"`
+if [ "$enet_addr" != "" ]
+then
+	ifconfig eth1_0 0.0.0.0
+fi
+
+calstate=`get_bootval calstate`
+if [ $calstate == "1" ]
+then
+	if [ -f /mnt/jffs2/ipaddr ]
+        then
+                ifconfig br0 `cat /mnt/jffs2/ipaddr`
+        else
+                ifconfig br0 $default_ipaddr
+        fi
+		call_qcsapi update_persistent_param wifi0 staticip 1
+fi
+
+sleep 10
+
+dmesg -c
+echo "dbg set qdrv 0x40 6" > /sys/devices/qdrv/control
+
+/scripts/set_sys_status complete

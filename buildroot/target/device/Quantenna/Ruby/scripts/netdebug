@@ -1,0 +1,36 @@
+#!/bin/sh
+
+cmd=$1
+interval=$2
+
+if [ -z $cmd ]; then
+	cmd="on"
+fi
+
+if [ -z $interval ]; then
+	interval="1"
+fi
+
+case $cmd in
+"on")
+	echo "Enabling netdebug for iwevents"
+	echo "pktlogger 0 start iwevent" > /sys/devices/qdrv/control
+	iwedebug
+
+	echo "Enabling netdebug for statistics"
+	echo "pktlogger 0 start stats $interval" > /sys/devices/qdrv/control
+	;;
+"off")
+	echo "Disabling netdebug for iwevents"
+	iwedebug off
+	echo "pktlogger 0 stop iwevent" > /sys/devices/qdrv/control
+
+	echo "Disabling netdebug for statistics"
+	echo "pktlogger 0 stop stats" > /sys/devices/qdrv/control
+	;;
+*)
+	echo "Usage: netdebug [ on | off ]"
+	exit 1
+	;;
+esac
+

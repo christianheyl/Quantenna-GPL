@@ -1,0 +1,53 @@
+#! /bin/sh
+
+bootcfg_path="/proc/bootcfg"
+bootcfg_backup="/mnt/jffs2/bootcfg"
+
+if [ "$1" = "" ]
+then
+    echo -n "Enter destination folder for bootcfg files: [$bootcfg_backup]: "
+    read tmpstr
+    if [ "$tmpstr" != "" ]
+    then
+        bootcfg_backup=$tmpstr
+    fi
+else
+    bootcfg_backup=$1
+fi
+
+if [ -e $bootcfg_backup -a ! -d $bootcfg_backup ]
+then
+    echo "Error: $bootcfg_backup exists but is not a folder."
+    echo "Please correct and try again."
+    exit 1
+elif [ ! -e $bootcfg_backup ]
+then
+    mkdir $bootcfg_backup
+fi
+
+if [ ! -d $bootcfg_backup ]
+then
+    echo "Cannot create $bootcfg_backup."
+    echo "Please correct and try again."
+    exit 1
+fi
+
+checklist=`ls ${bootcfg_backup}/* 2>/dev/null`
+if [ "$checklist" != "" ]
+then
+    echo "Error: $bootcfg_backup is not empty."
+    echo "Please correct and try again."
+    exit 1
+fi
+
+echo "Backing up files in $bootcfg_path to $bootcfg_backup."
+
+for bootcfg_entry in $bootcfg_path/*
+do
+    cp $bootcfg_entry $bootcfg_backup
+    if [ $? -ne 0 ]
+    then
+        echo "Error backing up $bootcfg_entry"
+        exit 1
+    fi
+done

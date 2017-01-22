@@ -1,0 +1,10 @@
+config BR2_TARGET_RUBY
+	bool "Ruby filesystem patches"
+	default n
+	help
+	  Amend the filesystem with configurable patches.
+
+if BR2_TARGET_RUBY
+	source "target/device/Quantenna/Ruby/Config.in"
+endif
+

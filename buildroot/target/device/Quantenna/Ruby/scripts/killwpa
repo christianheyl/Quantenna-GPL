@@ -1,0 +1,9 @@
+#!/bin/sh
+
+for procname in 'cmdloop hostapd' 'cmdloop wpa_supplicant' 'hostapd' 'wpa_supplicant' ; do
+        for pid in `ps | grep "$procname" | grep -v "grep $procname" | awk '{print $1}'` ; do
+                echo killing $procname with pid: $pid
+                kill $pid
+        done
+done
+

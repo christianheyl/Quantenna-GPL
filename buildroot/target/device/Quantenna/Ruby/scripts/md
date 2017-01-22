@@ -1,0 +1,13 @@
+#!/bin/sh
+
+MEMDBG=/sys/devices/mem_dbg/command
+
+if [ ! -f $MEMDBG ]
+then
+	modprobe mem_dbg
+fi
+
+CMD=$(echo $0 | awk -F "/" '{print $NF}')
+
+echo "$CMD $*" > $MEMDBG
+

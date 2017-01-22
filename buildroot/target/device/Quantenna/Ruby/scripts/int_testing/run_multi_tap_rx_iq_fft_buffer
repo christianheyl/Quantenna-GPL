@@ -1,0 +1,62 @@
+enable_vco_cal 0
+enable_txpow_cal 0
+
+fname="gain_$1";
+echo $fname;
+
+writemem e6000024 2
+writemem e6091040 0
+writemem e609103c $1
+writemem e6091040 1
+
+writemem e60002d8 10000
+writemem e6000004 1000040
+COUNT=5;
+while [ $COUNT -gt 0 ];
+do
+	writemem e60002d0 1
+	usleep 1000
+	writemem e60002d0 0
+
+	readmem_multi 80010000 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80010200 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80010400 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80010600 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80010800 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80010a00 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80010c00 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80010e00 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80011000 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80011200 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80011400 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80011600 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80011800 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80011a00 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80011c00 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80011e00 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80012000 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80012200 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80012400 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80012600 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80012800 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80012a00 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80012c00 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80012e00 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80013000 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80013200 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80013400 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80013600 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80013800 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80013a00 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80013c00 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+	readmem_multi 80013e00 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}";
+
+	let COUNT=COUNT-1;
+	usleep 20000;
+done
+
+writemem e6000024 0
+
+tftp -p -l /mnt/jffs2/$fname -r $fname $2
+rm -f /mnt/jffs2/$fname
+

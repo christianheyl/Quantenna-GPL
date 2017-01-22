@@ -1,0 +1,6 @@
+# Aliases extracted from modules themselves.
+alias rtnl-link-bond bonding
+alias ip6t_MARK xt_mark
+alias ipt_MARK xt_mark
+alias ip6t_mark xt_mark
+alias ipt_mark xt_mark

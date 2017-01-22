@@ -1,0 +1,4 @@
+#!/bin/ash
+# used to set up transmit in 11g
+# argument is 1 for 11g and 0 for HT
+iwpriv wifi0 setparam 73 $1

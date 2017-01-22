@@ -1,0 +1,20 @@
+#! /bin/sh
+
+if [ "x$1" = x ]
+then
+    echo "$0 requires a WiFi channel number as a parameter"
+    exit 1
+fi
+
+chan=$1
+paramval=`expr $1 '*' 65536 + 106`
+
+iwpriv_output=`iwpriv wifi0 getparam $paramval`
+if [ $? -ne 0 ]
+then
+    echo "Cannot get TX power for channel $chan"
+    exit 1
+fi
+
+tx_power=`echo $iwpriv_output | cut -d ":" -f 2`
+echo "Channel: $chan, TX power: $tx_power dBm"

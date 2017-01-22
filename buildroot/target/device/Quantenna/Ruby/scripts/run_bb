@@ -1,0 +1,7 @@
+load-qdrv cal_ruby
+sleep 1
+echo "calcmd 0 1" > /sys/devices/qdrv/control
+sleep 1
+debugoff
+sleep 1
+set_test_mode 40 127 0 20 10 1

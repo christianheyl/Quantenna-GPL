@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# Set local bit of MAC address
+#
+
+for octet in `cat /mnt/jffs2/eth_macaddr | sed 's/\:/ /g'` ; do
+	echo -n $((0x$octet + 0)) " " ;
+done | awk '{ printf "%02x:%02x:%02x:%02x:%02x:%02x\n", $1 + 2, $2, $3, $4, $5, $6 }'

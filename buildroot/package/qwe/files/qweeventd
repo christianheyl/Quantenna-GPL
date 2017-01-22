@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# iwevent will receive event and print out as below when wireless driver send event with function wireless_send_event
+# 01:18:08.602380   wifi0    Custom driver event:WPS-BUTTON.indication
+# 01:19:13.018092   wlan0    Registered node:F0:7D:68:71:29:17
+# 01:20:02.940008   wlan0    Expired node:F0:7D:68:71:29:17
+
+iwevent | while read time dev message; do
+	event=${message%%:*}
+	extra=${message#*:}
+
+	case $event in
+		"Custom driver event")
+			case $extra in
+				"WPS-BUTTON.indication")
+					qweaction wlan1 wps pbc
+					;;
+				"QWE:Connected to AP"*|\
+				"QWE:Disconnected from AP"*|\
+				"QWE:Client connected"*|\
+				"QWE:Client disconnected"*)
+					update_pm_state
+					;;
+				*)
+					;;
+			esac
+			;;
+		"Set ESSID")
+			# event "wifi0    Set ESSID:"SSID of 5G"" means 5G configuration is changed
+			if [ "$dev" = "wifi0" ]; then
+				sync_wps_band
+			fi
+			;;
+		*)
+			;;
+	esac
+done
+

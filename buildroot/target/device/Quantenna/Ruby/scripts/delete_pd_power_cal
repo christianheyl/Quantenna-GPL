@@ -1,0 +1,16 @@
+#! /bin/sh
+num_arg=$#
+if [ "$num_arg" == "0" ]
+then
+	echo 'band selection missing, deleting 5G'
+	echo "delete pdetector.cal" > /proc/bootcfg/env
+else
+     band_sel=$1
+     if [ "$band_sel" == "0" ]
+     then
+           echo "delete pdetector_2g.cal" > /proc/bootcfg/env
+     else
+           echo "delete pdetector.cal" > /proc/bootcfg/env
+     fi
+fi
+

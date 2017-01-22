@@ -1,0 +1,17 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_40_TO_v37_4_0_41 Version v37.4.0.40 to version v37.4.0.41 changes
+ *
+ * \subsection v37_4_0_40_TO_v37_4_0_41Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.40 and v37.4.0.41
+ * \li \ref qcsapi_get_igmp_snooping_state
+ * \li \ref qcsapi_wifi_remove_mac_address_list
+ * \li \ref qcsapi_wifi_is_ready
+ * \li \ref qcsapi_get_ep_status
+ * \li \ref qcsapi_wifi_authorize_mac_address_list
+ * \li \ref qcsapi_set_igmp_snooping_state
+ * \li \ref qcsapi_wifi_deny_mac_address_list
+ */
+

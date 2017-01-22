@@ -1,0 +1,3 @@
+/* Automatically generated - do not edit */
+#include <configs/ruby_mini.h>
+#include <asm/config.h>

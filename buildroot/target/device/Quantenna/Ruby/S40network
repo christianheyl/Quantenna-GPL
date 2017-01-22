@@ -1,0 +1,161 @@
+#!/bin/sh
+#
+# Start the network....
+#
+
+base_scripts="/scripts"
+
+. $base_scripts/start-helpers.sh
+. $base_scripts/eth_switch_auto_detect.sh
+
+start() {
+	export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/scripts:/usr/local/bin
+	export LD_LIBRARY_PATH=/lib:/usr/lib
+
+	echo "Starting network..."
+
+	emac0_cfg=`get_board_config emac0`
+	emac1_cfg=`get_board_config emac1`
+	bonding_flag=$((($emac0_cfg & $emac1_cfg & (1 << 20)) > 0))
+	if [ "$bonding_flag" = "0" ] ; then
+		bonding=0
+	else
+		bonding=1
+	fi
+	#overide bonding setting here
+	if [ "$bonding" = "1" ] ; then
+		bonding_mode=balance-xor
+	elif [ "$bonding" = "2" ] ; then
+		bonding_mode=802.3ad
+	else
+		bonding=0
+	fi
+	switch_emac_en=`/scripts/parse_cmdline switch_emac_en`
+	mdio_use_noops=`/scripts/parse_cmdline debug_bus`
+	if [ "$mdio_use_noops" = "" ] ; then
+		mdio_use_noops=0
+	fi
+
+	modprobe emaclib mdio_use_noops=$mdio_use_noops
+	if [ "$switch_emac_en" = "0" ] ; then
+		modprobe emac
+	else
+		modprobe switch_vlan
+		modprobe switch_tqe tqe_sem_en=$en_tqe_sem
+		modprobe switch_emac bonding=$bonding
+	fi
+
+	# rename interfaces created by arasan driver
+	if [ -e /sys/class/net/eth1_emac0 -a -e /sys/class/net/eth1_emac1 ]
+	then
+		ip link set eth1_emac0 down
+		ip link set eth1_emac1 down
+		ip link set eth1_emac1 name eth1_0
+		ip link set eth1_emac0 name eth1_1
+		echo "1" > /proc/sys/net/ipv6/conf/eth1_0/disable_ipv6
+		echo "1" > /proc/sys/net/ipv6/conf/eth1_1/disable_ipv6
+		echo "emac0 is eth1_1, emac1 is eth1_0"
+	elif [ -e /sys/class/net/eth1_emac0 ]
+	then
+		ip link set eth1_emac0 down
+		ip link set eth1_emac0 name eth1_0
+		echo "1" > /proc/sys/net/ipv6/conf/eth1_0/disable_ipv6
+		echo "emac0 is eth1_0, emac1 is unused"
+	elif [ -e /sys/class/net/eth1_emac1 ]
+	then
+		ip link set eth1_emac1 down
+		ip link set eth1_emac1 name eth1_0
+		echo "1" > /proc/sys/net/ipv6/conf/eth1_0/disable_ipv6
+		echo "emac0 is unused, emac1 is eth1_0"
+	else
+		echo "No Ethernet interfaces found"
+	fi
+
+	if [ "$STATELESS" = "y" ]
+	then
+		get_configuration_ip > ${base_persistent_files}/ipaddr
+		echo "Stateless mode. Using temporary ip address: ${ipaddress}"
+	fi
+
+	ipaddr_process
+
+	eth_addr="0"
+
+	if [ "$STATELESS" = "y" ]
+	then
+		eth_addr=`get_bootval ethaddr`
+	fi
+
+	if [ "$eth_addr" = "0" -a -f /mnt/jffs2/eth_macaddr ]
+	then
+		eth_addr=`cat /mnt/jffs2/eth_macaddr`
+	fi
+
+	if [ "$eth_addr" != "0" ]
+	then
+		/sbin/ifconfig eth1_0 down
+		/sbin/ifconfig eth1_0 hw ether $eth_addr
+
+		if [ -e /sys/class/net/eth1_1 ]
+		then
+			eth_addr2=`echo $eth_addr | /scripts/mac_setlocal`
+			/sbin/ifconfig eth1_1 down
+			/sbin/ifconfig eth1_1 hw ether $eth_addr2
+		fi
+
+	fi
+
+	if [ "$bonding" != "0" ] ; then
+		modprobe bonding mode=$bonding_mode miimon=10000
+		ifconfig eth1_0 0.0.0.0 down
+		ifconfig eth1_1 0.0.0.0 down
+		ifconfig bond0 $ipaddress up
+		echo '+eth1_0' > /sys/class/net/bond0/bonding/slaves
+		echo '+eth1_1' > /sys/class/net/bond0/bonding/slaves
+		qbr add bond0
+	else
+		if [ -e /sys/class/net/eth1_0 ]
+		then
+			qbr add eth1_0
+			ifconfig | grep eth > /dev/null 2>&1 || set_sys_status eth
+		fi
+
+		if [ -e /sys/class/net/eth1_1 ]
+		then
+			qbr add eth1_1
+			ifconfig | grep eth > /dev/null 2>&1 || set_sys_status eth
+		fi
+	fi
+
+	echo "/sbin/ifup -a"
+	/sbin/ifup -a
+
+	eth_switch_auto_detect
+}
+
+stop() {
+	echo -n "Stopping network..."
+	/sbin/ifdown -a
+}
+
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart|reload)
+		restart
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart}"
+		exit 1
+esac
+
+exit $?

@@ -1,0 +1,5 @@
+readmem_multi $1 $2 > file1
+cat file1 | awk '{print $2}' > file_hex
+
+/usr/lib/cgi-bin/php-cgi -q /var/www/readdec.php
+

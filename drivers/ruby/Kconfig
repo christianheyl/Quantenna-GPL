@@ -1,0 +1,126 @@
+#
+# Quantenna Ruby board
+#
+
+menu "Quantenna"
+
+config QUANTENNA_RUBY
+	bool "Quantenna Ruby board support"
+	select WEXT_PRIV
+	select WIRELESS_EXT
+
+config ARCH_RUBY_NUMA
+	bool "Support of Ruby non-unified memory architecture"
+
+config QVSP
+	bool "Video Stream Protection"
+	help
+	  Advanced stream protection feature.
+
+config RUBY_PCIE_TARGET
+	bool "Include the PCIe target driver for board with a PCIe interface"
+	help
+	  A build for a board with a PCIe interface must select this option
+
+config RUBY_PCIE_HOST
+	bool "Include the PCIe host driver for board with a PCIe interface"
+	help
+	  A build for a board with a PCIe RootComplex support must select this option
+
+config TOPAZ_PCIE_TARGET
+	bool "Include the topaz PCIe target driver for board with a PCIe interface"
+	help
+	  A build for a board with a topaz PCIe interface must select this option
+
+config TOPAZ_PCIE_HOST
+	bool "Include topaz PCIe host interface for TOPAZ RC Host"
+		help
+			  A build for a board with a topaz PCIe RC Host support must select this option
+config PCIEPORTBUS
+	depends on TOPAZ_PCIE_HOST
+	bool "Include generic PCIe driver"
+	default y
+
+config TOPAZ_DBDC_HOST
+	bool "include topaz DBDC host interface for TOPAZ RC Host"
+	help
+	  A build for a board with a topaz RC Host support for DBDC must select this option
+
+config ARCH_RUBY_SRAM_IRQ_STACK
+	bool "Use dedicated SRAM stack for interrupts" if (!ARCH_ARC_LV2_INTR && ARCH_ARC_CURR_IN_REG && !PREEMPT)
+
+config KERNEL_TEXT_SNAPSHOTS
+	bool "Take snapshots of kernel text section to detect corruption"
+	default n
+	help
+	  Create /proc/kdump, which is a human readable hex readout
+	  of the kernel text section. Reading this several times then
+	  using diff utilities on the output can show which kernel
+	  text is being corrupted. Also allows kernel text section
+	  snapshots to be taken for analysis in the troubleshooting
+	  crash handler.
+
+config KERNEL_TEXT_SNAPSHOT_COUNT
+	int "Number of snapshots to hold"
+	default 2
+	depends on KERNEL_TEXT_SNAPSHOTS
+	help
+	  How many kernel text section snapshots to keep. More can be
+	  added if suspicious of particular areas of code corrupting
+	  and before and after shots are desired to check. Each snapshot
+	  adds several MB of data size.
+
+config ARCH_RUBY_EMAC_LIB
+	tristate "Common Arasan EMAC routines for Ruby / Topaz"
+	default y
+	help
+	  Routines common to Ruby and Topaz EMAC drivers. Includes PHY
+	  routines, initialization, PHY/MII/MDIO routines.
+
+config ARCH_RUBY_EMAC
+	tristate "Ruby Arasan EMAC driver"
+	default y
+	select ARCH_RUBY_EMAC_LIB
+	help
+	  Ruby Arasan EMAC AHB driver
+
+config ARCH_RUBY_EMAC_SMOOTHING
+	bool "Enable Arasan EMAC traffic bursts smoothing"
+	default y
+	depends on ARCH_RUBY_EMAC
+
+config ARCH_RUBY_EMAC_SMOOTHING_BURST_SIZE
+	int "Number of packets per burst"
+	default 48
+	depends on ARCH_RUBY_EMAC_SMOOTHING
+
+config ARCH_RUBY_EMAC_SMOOTHING_RATE
+	int "Number of packets per second"
+	default 50000
+	depends on ARCH_RUBY_EMAC_SMOOTHING
+
+config QUANTENNA_RESTRICT_WLAN_IP
+	bool "Restrict incoming IP packets on the WLAN interface for RGMII bridge operation"
+	default n
+	help
+	Restrict the incoming IP traffic on the WLAN interface to prevent access to the
+	bridge interface on RGMII boards.
+
+config SWITCH_RTL8365MB
+	tristate "Realtek RTL8365MB switch"
+	default n
+	depends on ARCH_RUBY_EMAC
+	help
+	  Realtek RTL8365MB driver
+
+config SWITCH_RTL8363SB
+	tristate "Realtek RTL8363SB switch"
+	default n
+	depends on ARCH_RUBY_EMAC
+	help
+	  Realtek RTL8363SB driver
+
+endmenu
+
+source "drivers/pci/pcie/Kconfig"
+

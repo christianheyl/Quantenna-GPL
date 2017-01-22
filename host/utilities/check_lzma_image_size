@@ -1,0 +1,84 @@
+#!/usr/bin/perl -w
+use strict;
+use File::Temp qw/tempfile/;
+
+# check the lzma image size against the limit specified in common/ruby_partitions.h,
+# and complain loudly if it is too big
+
+my $header_file = "common/ruby_partitions.h";
+my $sizedef = "IMG_SIZE_LIMIT_PLATFORM";
+my $tmppath;
+my $csrc = "
+#include <stdio.h>
+#include <common/ruby_config.h>
+#include <$header_file>
+int main(int argc, char **argv)
+{
+	printf(\"0x%lx\\n\", (unsigned long)($sizedef));
+	return 0;
+}
+";
+
+END {
+	if ($tmppath) {
+		unlink ($tmppath);
+		unlink ($tmppath.".out");
+	}
+}
+
+my $image_file = `ls -1tr tftp/*-linux*lzma* | tail -n 1`;
+my $maxsize = 0;
+
+if ($#ARGV >= 0) {
+	$image_file = $ARGV[0];
+}
+$image_file =~ s/^\s*(.*?)\s*$/$1/g;
+
+if ($#ARGV >= 1) {
+	$maxsize = $ARGV[1];
+}
+
+unless (-e $image_file) {
+	die "Cannot find appropriate image file! $image_file\n";
+}
+unless (-e $header_file) {
+	die "Cannot find header file: $header_file\n";
+}
+my $imagesize = -s $image_file;
+if ($maxsize == 0) {
+	# create C file to get the preprocessor value
+	my ($fh, $tmppath) = tempfile();
+	print $fh $csrc or die "$0: could not write to $tmppath: $!\n";
+	close $fh;
+
+	my $val = `cat $tmppath | gcc -I. -xc - -o $tmppath.out && $tmppath.out`;
+	$val =~ s/^\s*(.*?)\s*$/$1/g;
+	$maxsize = hex($val);
+	unlink ($tmppath);
+	unlink ($tmppath.".out");
+
+}
+
+if (!($maxsize > 1)) {
+	die "Invalid max_size or could not find '$sizedef' in file '$header_file'\n";
+}
+
+my $diff = $maxsize - $imagesize;
+if ($diff < 0) {
+	warn "#############################################################################\n";
+	warn "#############################################################################\n";
+	warn "####\n";
+	warn "#### WARNING!!!! $image_file is oversize!\n";
+	warn "####\n";
+	warn "#### limit: $maxsize\n";
+	warn "#### size: $imagesize\n";
+	warn "#### difference: $diff\n";
+	warn "####\n";
+	warn "#############################################################################\n";
+	warn "#############################################################################\n";
+	die "\n";
+}
+else {
+	print "$0: $image_file fits, size: $imagesize < maxsize: $maxsize, spare: $diff\n";
+}
+

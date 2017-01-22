@@ -1,0 +1,16 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_51_TO_v37_4_0_52 Version v37.4.0.51 to version v37.4.0.52 changes
+ *
+ * \subsection v37_4_0_51_TO_v37_4_0_52Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.51 and v37.4.0.52
+ * \li \ref qcsapi_set_log_level
+ * \li \ref qcsapi_get_log_level
+ * \li \ref qcsapi_get_app_core_dump
+ * \li \ref qcsapi_wifi_set_threshold_of_neighborhood_type
+ * \li \ref qcsapi_get_app_core_dump_size
+ * \li \ref qcsapi_wifi_get_neighborhood_type
+ */
+

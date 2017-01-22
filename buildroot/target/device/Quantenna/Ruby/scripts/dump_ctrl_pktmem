@@ -1,0 +1,14 @@
+#!/bin/sh
+
+dmesg -c > /dev/null
+
+echo "Response frames:"
+md e5031f00
+dmesg -c
+
+echo "Response frame FDs:"
+md e50415c0
+md e50416c0
+md e50417c0
+
+dmesg -c

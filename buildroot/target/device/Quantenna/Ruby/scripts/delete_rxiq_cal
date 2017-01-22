@@ -1,0 +1,1 @@
+echo "delete rx_iq.cal" > /proc/bootcfg/env

@@ -1,0 +1,56 @@
+#!/bin/sh
+
+vbr_name_pref="vbr"
+vbr_dirs="/sys/devices/virtual/net/vbr*/"
+
+cmd=$1
+interface=$2
+vid=$3
+
+usage()
+{
+	echo "Usage:"
+	echo "	qvlan {bind | unbind} <wifi interface> <vlan id>"
+	echo ""
+}
+
+bind()
+{
+	ifconfig ${vbr_name_pref}$vid
+	if [ $? -ne 0 ]
+	then
+		vconfig add br0 $vid
+		brctl addbr ${vbr_name_pref}$vid
+		brctl addif ${vbr_name_pref}$vid br0.$vid
+		ifconfig ${vbr_name_pref}$vid up
+		ifconfig br0.$vid up -promisc
+		echo "set vlan_promisc 1" > /sys/devices/qdrv/control
+	fi
+
+	brctl delif br0 $interface
+	brctl addif ${vbr_name_pref}$vid $interface
+}
+
+unbind()
+{
+	brctl delif ${vbr_name_pref}$vid br0.$vid
+	brctl delif ${vbr_name_pref}$vid $interface
+	brctl addif br0 $interface
+	ifconfig ${vbr_name_pref}$vid down
+	brctl delbr ${vbr_name_pref}$vid
+	vconfig rem br0.$vid
+	if [ ! -d ${vbr_dirs} ]; then
+		echo "set vlan_promisc 0" > /sys/devices/qdrv/control
+	fi
+}
+
+
+if [ "$cmd" = "bind" ]
+then
+	bind $interface $vid
+elif [ "$cmd" = "unbind" ]
+then
+	unbind $interface $vid
+else
+	usage
+fi

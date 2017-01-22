@@ -1,0 +1,49 @@
+#!/bin/sh
+# Configure dynamic rts cts feature
+
+usage()
+{
+	echo "Usage: enable_dyn_rtscts min max dur [debug]" 1>&2
+	echo "" 1>&2
+	echo "Parameters" 1>&2
+	echo "	min: Minimum percent of retries at/after which dynamic rts is turned on" 1>&2
+	echo "	max: Maximum percent of retries at/below which dynamic rts is turned off" 1>&2
+	echo "	dur: duration in seconds, over which stats for this feature are collected" 1>&2
+	echo "	debug: set to 1 to enable debug prints" 1>&2
+}
+
+if [ $# -lt 3 ]; then
+	usage
+	exit 1
+fi
+
+# Minimum and Maximum values
+if [ $1 -gt 100 -o $1 -lt 0 ]; then
+	min=12
+else
+	min=$1
+fi
+
+if [ $2 -gt 100 -o $2 -lt 0 ]; then
+	max=5
+else
+	max=$2
+fi
+
+# duration
+if [ -z "$3" ]; then
+	dur=2
+else
+	dur=$3
+fi
+
+# debug enable or disable
+if [ -z "$4" ]; then
+	debug=0
+else
+	debug=$4
+fi
+
+echo min: $min, max: $max, dur: $dur, debug: $debug
+param=$(( min | (max << 8) | (dur << 16) | (debug << 24) ))
+iwpriv wifi0 setparam 271 $param

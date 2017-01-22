@@ -1,0 +1,23 @@
+# Run the rx_iq_cal command to capture the received waveform for the gain setting specified as argument 1,
+# and transfer the files to the calibration computer (which is required to be running a tftp server). The ip address 
+# for this computer is specified by argument 2. The files are deleted from the board after being transferred.
+enable_vco_cal 0
+enable_txpow_cal 0
+ANT=0;
+while [ $ANT -lt 4 ]; 
+do
+	fname="ant${ANT}_gain$1";
+	COUNT=10;
+	while [ $COUNT -gt 0 ];
+	do
+		echo $fname;
+		echo "calcmd 30 0 10 0 1 ${ANT} 2 $1 3 16" > /sys/devices/qdrv/control
+		readmem_multi e60a6000 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}"; 
+		readmem_multi e60a6200 128 | cut -d" " -f2 >> "/mnt/jffs2/${fname}"; 
+		let COUNT=COUNT-1;
+		usleep 20000;
+	done
+	let ANT=ANT+1;
+	tftp -p -l /mnt/jffs2/$fname -r $fname $2
+	rm -f /mnt/jffs2/$fname
+done

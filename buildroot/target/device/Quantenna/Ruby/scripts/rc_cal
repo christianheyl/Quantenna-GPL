@@ -1,0 +1,16 @@
+#!/bin/sh
+# Enable or disable RC Cal
+
+arg=$1
+
+if [ $arg == "enable" ]; then
+	echo "Enable and then disable the RC Cal for creation of RC Cal code"
+	writerfmem 0 91 D581
+	writerfmem 1 91 D581
+	writerfmem 0 91 D580
+	writerfmem 1 91 D580
+else
+	echo "Disable the RC Cal"
+	writerfmem 0 91 D582
+	writerfmem 1 91 D582
+fi

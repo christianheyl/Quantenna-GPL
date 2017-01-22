@@ -1,0 +1,42 @@
+#!/bin/sh
+
+base_scripts="/scripts"
+
+# disable SCS
+call_qcsapi -q -u enable_scs wifi0 0
+call_qcsapi -q -u set_scs_stats wifi0 0
+
+call_qcsapi -q -u stop_dfs_s_radio wifi0
+
+# disable TDLS
+call_qcsapi -q -u enable_tdls wifi0 0
+
+# disable repeater
+wifi_repeater=`iwpriv wifi0 get_repeater | awk -F 'get_repeater:' '{print $2}'`
+if [ $wifi_repeater = "1" ]
+then
+	killall hostapd
+	# Sleep long enough to make sure hostapd no longer uses repeater AP
+	sleep 2
+	ifconfig wifi1 down
+	echo "stop 0 wifi1" >/sys/devices/qdrv/control
+	iwpriv wifi0 repeater 0
+fi
+
+$base_scripts/rfenable off
+
+# Scheduling algorithms cause reference count of involved VAPs to increase
+$base_scripts/tc_prio -del
+
+# Sleep 2 seconds to ensure security daemon has ended.
+sleep 2
+
+#stop BA SETUP detector
+iwpriv wifi0 rssi_for_ba_set 0
+
+# Remove all wireless interfaces
+echo "stop 0 all" > /sys/devices/qdrv/control
+
+# Remove scan module
+rmmod `lsmod | awk '{print $1}' | grep wlan_scan_`
+

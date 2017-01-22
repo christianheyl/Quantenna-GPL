@@ -1,0 +1,26 @@
+# Checksum of page 0 (NULL) to ensure no corruption
+
+platform_main=$1
+
+pg0=`dd if=/dev/mem bs=8192 count=1 2>/dev/null | md5sum | cut -b0-32`
+pg0_check=""
+
+if [ "$platform_main" != "bbic3" -a "$platform_main" != "bbic4" ]; then
+	echo "Unknown platform - no checksum done"
+	exit
+fi
+
+echo "Checking page zero on $platform_main"
+if [ "$platform_main" == "bbic3" ]; then
+	pg0_check="76c13de0cf1913bbd73f6ee02e530f20"
+elif [ "$platform_main" == "bbic4" ]; then
+	pg0_check="c450b73dac380ad97b9e3a09b4be1fd1"
+fi
+
+if [ "$pg0" != "$pg0_check" ] ; then
+	echo "...INVALID (NULL pointer corruption?) $pg0"
+	dd if=/dev/mem bs=8192 count=1 > /tmp/pg0
+	hexdump -v -C  /tmp/pg0
+else
+	echo "...ok"
+fi

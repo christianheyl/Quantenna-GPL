@@ -1,0 +1,72 @@
+#!/bin/sh
+
+# This script is to start and stop httpd service.
+
+kill_process() {
+        pid_name=$1
+        pid=`ps | grep "$pid_name" | grep -v "grep $name" | awk '{print $1}'`
+        # Checking pid is empty
+        if [ -n "$pid" ]; then
+        kill $pid
+        fi
+}
+
+start() {
+	export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/scripts:/usr/local/bin
+	export LD_LIBRARY_PATH=/lib:/usr/lib
+
+	platform_file=/scripts/platform_id
+	if [ -f $platform_file ]; then
+		platform_id=`cat $platform_file`
+	else
+		platform_id=00
+	fi
+
+	# do not start httpd if it is Ericsson MSMR production build
+
+	if [ "$platform_id" != "425" ]; then
+		if [ ! -f /mnt/jffs2/httpd-disabled ]; then
+			echo "Starting httpd"
+			if [ ! -f /mnt/jffs2/minihttpd.conf ] ; then
+				cp -f /etc/minihttpd.conf /mnt/jffs2/minihttpd.conf
+			fi
+
+			if [ ! -f /mnt/jffs2/admin.conf ] ; then
+				cp -f /etc/admin.conf /mnt/jffs2/admin.conf
+			fi
+
+			if [ -f /sbin/mini_httpd ] ; then
+				/sbin/mini_httpd -r -u root -C /mnt/jffs2/minihttpd.conf
+			fi
+		else
+			echo "httpd is not enabled"
+		fi
+	fi
+}
+
+stop() {
+        echo "Stopping httpd"
+        kill_process "mini_httpd"
+}
+
+restart() {
+        stop
+        start
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        restart
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

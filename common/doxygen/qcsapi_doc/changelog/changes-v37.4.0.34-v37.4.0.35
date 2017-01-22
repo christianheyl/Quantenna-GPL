@@ -1,0 +1,12 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_34_TO_v37_4_0_35 Version v37.4.0.34 to version v37.4.0.35 changes
+ *
+ * \subsection v37_4_0_34_TO_v37_4_0_35Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.34 and v37.4.0.35
+ * \li \ref qcsapi_wifi_get_per_assoc_data
+ * \li \ref qcsapi_wifi_sample_all_clients
+ */
+

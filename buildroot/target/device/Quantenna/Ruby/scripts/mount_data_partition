@@ -1,0 +1,19 @@
+#!/bin/sh
+
+base_scripts=${0%/*}
+
+. ${base_scripts}/start-helpers.sh
+
+if [ "${STATELESS}" = "y" ]; then
+	return
+fi
+
+# look for a partition with 'data' in the name
+partition_num=`cat /proc/mtd | grep data | head -n 1 | sed s/\:.*// | sed s/[a-z]*//`
+if [ $? -ne 0 -o "$partition_num" == "" ] ; then
+	# otherwise just use the last partition
+	partition_num=`cat /proc/mtd | tail -n 1 | awk '{print $1}' | sed 's/[^0-9]//g'`
+fi
+
+/bin/mount -t jffs2 /dev/mtdblock$partition_num /mnt/jffs2
+

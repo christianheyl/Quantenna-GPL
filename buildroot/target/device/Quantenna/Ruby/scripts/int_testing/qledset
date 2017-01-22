@@ -1,0 +1,5 @@
+#! /bin/sh
+
+[ $# -eq 2 ] || { echo "Usage: `basename $0` <association_status_gpio> <link_status_gpio>" ; exit 1;}
+
+echo "ledcmd $1 $2" > /sys/devices/qdrv/control

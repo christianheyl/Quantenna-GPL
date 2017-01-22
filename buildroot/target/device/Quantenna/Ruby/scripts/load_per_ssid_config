@@ -1,0 +1,44 @@
+#!/bin/sh
+
+default_persistent_path=/mnt/jffs2
+config_file=per_ssid_config.txt
+default_config_file=/etc/default_per_ssid_config
+
+path_to_persistence=`call_qcsapi -u get_file_path security`
+error_check=`echo $path_to_persistence | cut -b 1-13`
+if [ "$error_check" == "QCS API error" ];then
+	config_path=${default_persistent_path}/${config_file}
+else
+	config_path=${path_to_persistence}/${config_file}
+fi
+
+if [ ! -f ${config_path} ]; then
+	cp $default_config_file $config_path
+fi
+
+# Must enable (?) VLAN on wifi0 first or below application won't happen.
+vlans_configured=`grep 'vlan=' ${config_path}`
+if [ "${vlans_configured}" != "" ]; then
+	call_qcsapi -u -q vlan_config wifi0 enable
+fi
+
+while read LINE
+do
+	line_process=$LINE
+
+	interface=`echo $line_process | awk -F":" '{print $1}'`
+	priority=`echo $line_process | awk -F"priority=" '{print $2}' | awk -F"&" '{print $1}'`
+	vlan=`echo $line_process | awk -F"vlan=" '{print $2}' | awk -F"&" '{print $1}' `
+
+	if [ $priority ];then
+		if [ $priority -ge 0 -a $priority -le 3 ];then
+			call_qcsapi -u -q set_priority $interface $priority
+		fi
+	fi
+
+	if [ $vlan ];then
+		if [ $vlan -ge 1 -a $vlan -le 4095 ];then
+			call_qcsapi -u -q vlan_config $interface bind $vlan
+		fi
+	fi
+done < ${config_path}

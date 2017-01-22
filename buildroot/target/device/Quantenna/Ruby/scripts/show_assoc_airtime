@@ -1,0 +1,20 @@
+#!/bin/ash
+
+BIN=/sbin/call_qcsapi
+CMD=get_txrx_airtime
+
+
+if [ $# -ge 1 ]; then
+	if [ "$1" == "start" ]; then
+		$BIN $CMD wifi0 all start
+	elif [ "$1" == "stop" ]; then
+		$BIN $CMD wifi0 all stop
+	else
+		echo "The argument \"$1\" is invalid";
+		echo "Usage: $0 [start | stop]"
+		exit
+	fi
+else
+	$BIN $CMD wifi0 all
+fi
+

@@ -1,0 +1,45 @@
+#! /bin/sh
+
+if [ $# -lt 3 ]
+then
+    echo "Usage: $0 <baseband index> <register offset> <register value>"
+    echo "where <register offset> is in the range 64 - 255"
+    exit 1
+fi
+
+bb_index=$1
+rf_reg=$2
+rf_val=$3
+
+calcmd_str=`echo $bb_index $rf_reg $rf_val | sed 's%0x%%' | awk '
+
+function hex2dec( hexadecimal_string )
+{
+    hexdigits="0123456789ABCDEF";
+
+    len = length( hexadecimal_string );
+    retval = 0;
+
+    for (iter = 1; iter <= len; iter++)
+    {
+        current_hex_digit = substr( hexadecimal_string, iter, 1 );
+        retval = retval * 16 + index( hexdigits, current_hex_digit ) - 1;
+    }
+
+    return( retval );
+}
+{
+    CONVFMT = "u";
+    rfval_hex = toupper( $3 );
+    rfval_dec = hex2dec( rfval_hex );
+
+    rfval1 = rfval_dec % 256;
+    rfval_dec = rshift( rfval_dec, 8 );
+    rfval2 = rfval_dec % 256;
+    rfval_dec = rshift( rfval_dec, 8 );
+    rfval3 = rfval_dec % 256;
+
+    print "calcmd 34 0 14 0 1", $1, "2", $2, "3", rfval3, "4", rfval2, "5", rfval1;
+}'`
+
+echo "$calcmd_str" > /sys/devices/qdrv/control

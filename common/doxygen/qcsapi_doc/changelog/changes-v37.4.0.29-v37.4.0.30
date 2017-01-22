@@ -1,0 +1,18 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_29_TO_v37_4_0_30 Version v37.4.0.29 to version v37.4.0.30 changes
+ *
+ * \subsection v37_4_0_29_TO_v37_4_0_30Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.29 and v37.4.0.30
+ * \li \ref qcsapi_wifi_get_block_bss
+ * \li \ref qcsapi_qtm_safe_get_rule
+ * \li \ref qcsapi_qtm_safe_get_stats
+ * \li \ref qcsapi_qtm_safe_del_rule
+ * \li \ref qcsapi_qtm_safe_get_strm
+ * \li \ref qcsapi_qtm_safe_get_config_all
+ * \li \ref qcsapi_qtm_safe_add_rule
+ * \li \ref qcsapi_qtm_safe_get_state_all
+ */
+

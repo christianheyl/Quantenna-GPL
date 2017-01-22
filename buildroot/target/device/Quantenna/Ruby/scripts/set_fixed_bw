@@ -1,0 +1,36 @@
+#!/bin/sh
+
+bw=0
+
+usage() {
+	echo "Usage: set_fixed_bw -b <20|40|80|auto>"
+	echo "    'auto' will return bw to autorate(unfixed)."
+}
+
+while [ "$1" != "" ]; do
+	case "$1" in
+		-b) bw="$2"
+			shift
+			;;
+		*) usage
+			exit 1
+			;;
+	esac
+	shift
+done
+
+
+case "$bw" in
+	auto) iwpriv wifi0 bw_fixed 0x00
+		;;
+	20) iwpriv wifi0 bw_fixed 0x10
+		;;
+	40) iwpriv wifi0 bw_fixed 0x11
+		;;
+	80) iwpriv wifi0 bw_fixed 0x12
+		;;
+	*) echo "bandwidth $bw is invalid"
+		exit 1
+		;;
+esac
+

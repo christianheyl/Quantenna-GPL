@@ -1,0 +1,3 @@
+iwpriv wifi0 enable_11ac 1
+set_11ac_mcs 0x39
+iwpriv wifi0 bwselect_muc 80

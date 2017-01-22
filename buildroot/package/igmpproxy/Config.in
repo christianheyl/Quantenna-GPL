@@ -1,0 +1,5 @@
+config BR2_PACKAGE_IGMPPROXY
+	bool "igmpproxy"
+	default n
+	help
+		IGMP proxy code

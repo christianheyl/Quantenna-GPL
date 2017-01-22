@@ -1,0 +1,83 @@
+#!/bin/sh
+
+# This script is to enable/disable remote logging to the NPU
+
+kill_process() {
+        pid=`pidof "$1"`
+        # Checking pid is empty
+        if [ -n "$pid" ]
+        then
+                kill $pid
+        fi
+}
+
+start_syslogd() {
+	if [ -f $syslogd_path/$syslogd ]
+	then
+		if [ "$1" == "remote" ]
+		then
+			$syslogd -n -L -R $2:514
+		else
+			$syslogd -n -L
+		fi
+	else
+		echo "$syslogd_path/$syslogd not found"
+		exit 1
+	fi
+}
+
+start() {
+	export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/scripts:/usr/local/bin
+	export LD_LIBRARY_PATH=/lib:/usr/lib
+
+	if [ -f $syslogd_npu_ipaddr ]
+	then
+		ip_addr=""
+
+		read -r ip_addr < $syslogd_npu_ipaddr
+		if [ $? -eq 0 ] && [ "$ip_addr" != "" ]
+		then
+			start_syslogd remote $ip_addr
+		else
+			start_syslogd local
+		fi
+	else
+		start_syslogd local
+	fi
+}
+
+enable() {
+	echo $1 > $syslogd_npu_ipaddr
+	kill_process "$syslogd"
+}
+
+disable() {
+	if [ -f $syslogd_npu_ipaddr ]
+	then
+		rm  $syslogd_npu_ipaddr
+		kill_process "$syslogd"
+	else
+	    echo "Remote logging already disabled"
+	fi
+}
+
+syslogd_path="/sbin"
+syslogd="syslogd"
+syslogd_npu_ipaddr="/mnt/jffs2/syslogd_npu_ipaddr.txt"
+
+case "$1" in
+  start)
+       start
+        ;;
+  enable)
+      enable $2
+        ;;
+  disable)
+      disable
+        ;;
+  *)
+        echo $"Usage: $0 <start | enable ipaddr | disable>"
+        exit 1
+esac
+
+exit $?

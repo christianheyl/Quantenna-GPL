@@ -1,0 +1,177 @@
+/**@page mypage4 QCSAPI concepts
+ * @section mysection4_1 Overview of the QCSAPIs
+ * The QCSAPI set shares a common set of parameters as described below.
+ * @subsection mysection4_1_1 Names of the QCSAPIs
+ * The name of each QCSAPI starts with "qcsapi".  The underscore character ('_') serves as a separator and punctuation.
+ * The kind of interface the QCSAPI is designed for typically follows "qcsapi" - e.g. "interface" for a general (network) interface
+ * or "wifi" for an API that only applies for WiFI devices (wifi0, etc.).  Next usually is "get" or "set" to show whether
+ * the API returns a parameter value or configures the parameter value.
+ * The last part of the name describes the parameter the API works with.
+ * 
+ * @subsection mysection_4_1_2 QCSAPIs data types and data structs
+ * Many of the QCSAPI data types and data structs follow the definitions in the TR-098 standards.
+ * Each datatype is introduced using its literal name or definition as found in the qcsapi.h header file,
+ * followed by a description or explanation.<br>
+ * The first API data type provides a platform independent definition of an unsigned 32-bit integer:<br>
+ * <c>qcsapi_unsigned_int</c><br>
+ * This tracks the "unsignedInt" data type from TR-098 and should match the uint32_t type defined in the C99 standard.
+ * 
+ * The next data type is an enumeration that represents the possible modes of a WiFi device, Access Point or Station.<br>
+ * 	@code 
+	typedef enum {
+		qcsapi_mode_not_defined = 1,
+		qcsapi_access_point,
+		qcsapi_station,
+		qcsapi_nosuch_mode = 0
+	} qcsapi_wifi_mode;
+  	@endcode
+ * 
+ * Mode not defined is valid; it means the WiFi device has not been configured as an AP or a Station.
+ * No such mode is a placeholder for invalid WiFi modes.
+ * 
+ * The next enumeration represents possible configuration options:<br>
+ * 	@code
+	typedef enum {
+		qcsapi_DFS,
+        	qcsapi_wmm,
+        	qcsapi_beacon_advertise,
+        	qcsapi_wifi_radio,
+        	qcsapi_autorate_fallback,
+        	qcsapi_security,
+        	qcsapi_SSID_broadcast,
+        	qcsapi_802_11d,
+        	qcsapi_wireless_isolation,
+        	qcsapi_short_GI,
+        	qcsapi_dfs_fast_channel_switch,
+        	qcsapi_dfs_no_dfs_scan,
+        	qcsapi_nosuch_option = 0
+	} qcsapi_option_type;
+	@endcode
+ * 
+ * These are parameters with only two values, yes or true, represented as 1 (actually any non-zero value);
+ * and no or false, represented as 0.  Only the Get Option and Set Option APIs work with this enum.<br>
+ * The next enumeration represents counters available through the Get Counter API:
+ * 	@code
+ * 	typedef enum {
+ * 		qcsapi_nosuch_counter = 0,
+ * 		qcsapi_total_bytes_sent = 1,
+ * 		qcsapi_total_bytes_received,
+ * 		qcsapi_total_packets_sent,
+ * 		qcsapi_total_packets_received,
+ *		qcsapi_discard_packets_sent,
+ * 		qcsapi_discard_packets_received,
+ * 		qcsapi_error_packets_sent,
+ * 		qcsapi_error_packets_received,
+ * 	} qcsapi_counter_type;
+ * 	@endcode
+ * This enum is one of the required arguments to qcsapi_interface_get_counter.
+ * 
+ * The next data type represents a 48-bit (6-byte) MAC address:<br>
+ * <c>qcsapi_mac_addr</c>
+ * 
+ * This is NOT a string; a MAC address can have an embedded NUL (value is 0) byte;
+ * nor is it required that a NUL byte be present.  When setting a MAC address,
+ * the 1st 6 bytes will be used to set the MAC address; when getting a MAC address, 6 bytes must be available to accept the address.<br>
+ * These datatypes describe strings of various lengths:
+ * 	@code
+ * 	typedef char    string_16[ 17 ];
+ * 	typedef char    string_32[ 33 ];
+ * 	typedef char    string_64[ 65 ];
+ * 	typedef char    string_128[ 129 ];
+ * 	typedef char    string_256[ 257 ];
+ * 	typedef char    string_1024[ 1025 ];
+ * 	@endcode
+ * They are provided as a convenience.  The reference standards define selected parameters to be strings of fixed length.
+ * The internal definition adds one character to insure room for the terminating NUL character; e.g. a string_32 actually has 33 characters.
+ * 
+ * All string parameters passed to the QCSAPIs are required to be terminated with a NUL character.
+ * This includes SSIDs and MCS rates.  Any string returned by a QCSAPI will be terminated with a NUL character.
+ * 
+ * This datatype represents a Service Set identifier:<br>
+ * <c>qcsapi_SSID</c>
+ * 
+ * One additional character is allocated to provide space for a NUL byte to terminate the string.
+ * By standard, the SSID can have up to 32 characters.  An SSID passed to an API is required to be terminated with a NUL byte.
+ * 
+ * Next is a datatype to represent the 802.11n paradigm for specifying and setting rates:<br>
+ * <c>qcsapi_mcs_rate</c>
+ * 
+ * It is a string that starts with the letters "MCS", followed by the MCS rate selection.
+ * Currently MCS0 to MCS76 (excluding MCS32) are available. Embedded '0's are NOT permitted; "MCS01" is NOT valid.
+ * 
+ * @subsection mysection4_1_3 API signature
+ * "Signature" here refers to a QCSAPI's return value and its arguments.
+ * 
+ * The return value is always an integer, and always represents the status of the operation.
+ * Following the POSIX standard a return value of 0 or positive reports success; a value less that 0 reports an error.
+ * If the value is less than 0, it will represent the error.  By changing the algebraic sign - by rendering the return value positive,
+ * the nature of the error can be determined from the "errno" facility.
+ * 
+ * An API that returns a parameter value, typically a get API, will return that value in one of the arguments in the argument list.
+ * A parameter value will not ever be returned as the value from a QCSAPI.
+ * 
+ * The first argument is usually the interface, the device the API is to work with.
+ * An interface is required to distinguish between an ethernet interface - "eth1_0" and a WiFi interface - "wifi0".
+ * And even those APIs targeted for the WiFi interface require the actual interface to distinguish between different Virtual Access Points (VAP).
+ * 
+ * Several QCSAPIs are generic, in that the API itself works with a class of parameter.  Examples include options - parameters with two values,
+ * "yes" and "no" or "true" and "false" - and counters - the number of bytes received, or packets transmitted, etc.
+ * For these APIs, the second parameter selects the exact parameter - the desired option or counter.
+ * 
+ * The final argument is usually the value of the parameter the API is working with.  For most QCSAPIs, the API itself selects this parameter.
+ * For the generic APIs, the second argument selects this parameter.  For a SET API, an API that  configures a new value,
+ * the parameter argument is passed by value; for a GET API, an API that returns the current value of a parameter,
+ * the parameter argument is passed by reference.
+ * 
+ * The following code fragment illustrates a recommended way of calling a QCSAPI and
+ * processing the result (notice because this is a GET API, the parameter argument is a reference).<br>
+ * 	@code
+ * 	qcsapi_result = qcsapi_interface_get_status( "eth1_0", &eth1_status );
+
+ * 	if (qcsapi_result < 0) {
+ * 		qcsapi_errno = -qcsapi_result;
+ * 	} else {
+ * 		/* call was successful*/
+ * 	}
+ * 	@endcode
+ *
+ * @anchor QCSAPI_Return_Values
+ * @subsection mysection4_1_4 QCSAPI return values
+ * As stated previously, a return value of 0 or greater than 0 reports success.  A return value less than 0 reports an error.
+ * The nature of the error is encoded in the return value, and is based on the ERRNO facility from the POSIX standard.
+ * 
+ * \note ERRNO values and other API error definitions are positive integers,
+ * so programming will need to change the sign of a QCSAPI error return value before
+ * comparing with any predefined error definitions.
+ * 
+ * Please see \ref QCSAPI_ERRNO "enum qcsapi_errno" for details of all the different error return values that QCSAPI
+ * calls may return.
+ *
+ * @subsection mysection4_1_5 Production mode vs calibration mode
+ * The WiFi device can operate in 2 different modes. Usually the device operates in production mode.
+ * In this mode the AP broadcasts beacons and accepts associations from properly qualified STA devices,
+ * snd the STA scans the WiFi channels searching for an AP to associate with.
+ * 
+ * An additional runtime mode, bringup and calibration mode (or calibration mode for short), is available
+ * for testing and calibrating the RF stage of the device during the development phase as well as during the
+ * manufacturing phase.
+ * 
+ * The choice between production and calibration mode is made when the device first starts up,
+ * based on the value of the boot configuration environmental variable, <c>calstate</c>.
+ *
+ * If calstate is set to 1, the device operates in calibration mode; otherwise, the device
+ * operates in production mode.
+ * 
+ * Selected APIs that assist with configuring the system are only available in calibration mode.
+ * This is noted in the detailed description for each API that has this restriction.
+ * Also note that in calibration mode, many of the APIs will not be available.
+ *
+ * Please review the writeup on individual APIs before using a particular API in this mode.
+ * 
+ * In calibration mode, the expected error code for an API that is not available is <c>-ENODEV</c>,
+ * since those APIs require the name of the WiFi interface, or VAP (Virtual Access Point),
+ * which will not be present if the device is running in calibration mode.
+ *
+ * @subsection mysection4_1_6 Permissions and Access
+ * Selected APIs require root access; that is the user ID of the calling process must be 0.
+ */

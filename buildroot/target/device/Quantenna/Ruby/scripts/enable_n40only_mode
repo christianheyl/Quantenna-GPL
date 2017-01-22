@@ -1,0 +1,1 @@
+iwpriv wifi0 set_40only_mode 1

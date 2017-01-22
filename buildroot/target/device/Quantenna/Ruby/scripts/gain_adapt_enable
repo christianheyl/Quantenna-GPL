@@ -1,0 +1,7 @@
+#! /bin/sh
+flag=$1
+if [ -z $flag ]
+then 
+	flag=1
+fi
+iwpriv wifi0 setparam 89 $flag

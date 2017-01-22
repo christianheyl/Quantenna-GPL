@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -f /sys/devices/qdrv/control ]
+then
+	if [ "$1" = "" ]
+		then
+			echo "dump rrt e5041818" > /sys/devices/qdrv/control
+		else	
+			echo "dump rrt $1" > /sys/devices/qdrv/control
+	fi
+fi

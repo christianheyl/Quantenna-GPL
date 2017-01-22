@@ -1,0 +1,17 @@
+# !/bin/sh
+# This script lists the total channels along with the
+# number of channels currently in use.
+
+# Print the total channels that are in use
+iwlist wifi0 frequency > /mnt/jffs2/chanusage.txt
+# Enable printing of unique channels after channel scan
+iwpriv wifi0 setparam 164 1
+# Start the scan
+iwlist wifi0 scanning
+sleep 11
+echo "Channels in Use:" >> /mnt/jffs2/chanusage.txt
+# List the unique scan entries in reverse order and print the lines
+# between the pattern which is the channels currently in use.
+dmesg | sed -n '1!G;h;$p' | awk ' /CHINUSE_END/ {flag=1;next} /CHINUSE_START/{flag=0;exit} flag { print }' | cut -f2 -d ] >> /mnt/jffs2/chanusage.txt
+# Disable printing of unique channels after channel scan
+iwpriv wifi0 setparam 164 0

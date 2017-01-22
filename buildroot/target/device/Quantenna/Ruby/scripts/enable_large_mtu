@@ -1,0 +1,5 @@
+ifconfig eth1_0 mtu 3500
+ifconfig eth1_1 mtu 3500
+ifconfig wifi0 mtu 3500
+ifconfig br0 mtu 3500
+

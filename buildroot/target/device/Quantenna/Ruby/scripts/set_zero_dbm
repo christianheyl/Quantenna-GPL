@@ -1,0 +1,7 @@
+#!/bin/sh
+writerfmem 0 103 6c96c9
+writerfmem 0 107 1ef0
+writerfmem 0 110 14a0
+writerfmem 1 103 6c96c9
+writerfmem 1 107 1ef0
+writerfmem 1 110 14a0

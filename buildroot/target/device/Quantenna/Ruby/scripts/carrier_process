@@ -1,0 +1,58 @@
+#!/bin/sh
+# Interprete carrier ID to a set of configurations and apply them
+# Write carrier ID back to uboot based on the update flag
+
+if [ $# -ne 2 ]
+then
+	exit 1
+fi
+
+filepath=/proc/hw_revision
+reval=`cat $filepath | cut -f 1 -d_`
+
+carrier=$1
+flag=$2
+echo "Carrier ID $carrier, uboot update flag $flag"
+
+case $(($carrier)) in
+	1 |5) # ATT | Century link
+		if [ $reval = bbic3 ]
+		then
+			call_qcsapi -u -q set_dscp_8021p_map wifi0 64 0
+			call_qcsapi -u -q set_dscp_8021p_map wifi0 8,12,14,32,34,36,38,56 0
+			call_qcsapi -u -q set_dscp_8021p_map wifi0 29 1
+			call_qcsapi -u -q set_dscp_8021p_map wifi0 10,16,18,20,22,24,48 5
+			call_qcsapi -u -q set_dscp_8021p_map wifi0 40,46 6
+		fi
+		vendor=0x1b
+		;;
+	3 |15) # Bell Canada | Telus
+		if [ $reval = bbic3 ]
+		then
+			call_qcsapi -u -q set_dscp_8021p_map wifi0 64 0
+			call_qcsapi -u -q set_dscp_8021p_map wifi0 8,12,14,32,34,36,38,56 0
+			call_qcsapi -u -q set_dscp_8021p_map wifi0 29 1
+			call_qcsapi -u -q set_dscp_8021p_map wifi0 10,16,18,20,22,24,48 5
+			call_qcsapi -u -q set_dscp_8021p_map wifi0 40,46 6
+		fi
+		vendor=0x0
+		;;
+	*)
+		if [ $reval = bbic3 ]
+		then
+			call_qcsapi -u -q set_dscp_8021p_map wifi0 64 0
+		fi
+		vendor=0x0
+		;;
+esac
+
+echo "set vendor_fix $vendor" > /sys/devices/qdrv/control
+
+case $(($flag)) in
+	1)
+		set_bootval carrier_id $(($carrier))
+		;;
+	*)
+		;;
+esac
+

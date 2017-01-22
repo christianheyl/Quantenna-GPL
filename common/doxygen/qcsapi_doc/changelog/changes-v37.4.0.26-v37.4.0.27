@@ -1,0 +1,12 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_26_TO_v37_4_0_27 Version v37.4.0.26 to version v37.4.0.27 changes
+ *
+ * \subsection v37_4_0_26_TO_v37_4_0_27Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.26 and v37.4.0.27
+ * \li \ref qcsapi_qwe_command
+ * \li \ref qcsapi_wifi_get_scan_IEs
+ */
+

@@ -1,0 +1,1 @@
+iwpriv wifi0 setparam 30 1

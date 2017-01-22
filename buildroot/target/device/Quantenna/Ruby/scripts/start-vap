@@ -1,0 +1,740 @@
+#!/bin/sh
+
+base_scripts="/scripts"
+
+. $base_scripts/start-helpers.sh
+
+get_default_channel()
+{
+	if [ "$rf_chipid" = "2" ] && [ "$wifi_mode" = "sta" ]
+	then
+		if [ "$band" = "11ac" ]
+		then
+			echo 36
+		else
+			echo 6
+		fi
+	else
+		echo 36
+	fi
+}
+
+check_interface_in_hostapd()
+{
+	iface_name=$(call_qcsapi -u -q get_ap_interface_name)
+	if [ $? -ne 0 ]
+	then
+		echo "Failed to get AP interface name"
+		return 1
+	fi
+	if [ "$1" = "wifi0" ]
+	then
+		if ! [ "$iface_name" = "wifi0" ]
+		then
+			call_qcsapi -u -q set_ap_interface_name wifi0
+			if [ $? -ne 0 ]
+			then
+				echo "Failed to set AP interface name"
+				return 1
+			fi
+		fi
+	elif [ "$1" = "wifi1" ]
+	then
+		if [ "$iface_name" = "wifi0" ]
+		then
+			call_qcsapi -u -q set_ap_interface_name wifi1
+			if [ $? -ne 0 ]
+			then
+				echo "Failed to set AP interface name"
+				return 1
+			fi
+		fi
+	else
+		echo "Invalid Arguement"
+		return 1
+	fi
+}
+
+check_mbss_configured()
+{
+	get_security_path
+	check_default_security_files "ap"
+	mbss_found=$(grep ^bss= $security_config_file)
+	if [ -n "$mbss_found" ]
+	then
+		return 1
+	fi
+}
+
+wifi_mode=$1
+wifi_repeater=0
+
+if [ "$wifi_mode" != "ap" -a "$wifi_mode" != "sta" -a "$wifi_mode" != "repeater" ]
+then
+	echo $0 called with no wifi mode parameter
+	exit 1
+fi
+
+if [ "$wifi_mode" == "ap" ]
+then
+	$(check_interface_in_hostapd "wifi0")
+	if [ $? -ne 0 ]
+	then
+		exit 1
+	fi
+	modprobe wlan_scan_ap
+elif [ "$wifi_mode" == "sta" ]
+then
+	modprobe wlan_scan_sta
+elif [ "$wifi_mode" == "repeater" ]
+then
+	$(check_interface_in_hostapd "wifi1")
+	if [ $? -ne 0 ]
+	then
+		exit 1
+	fi
+	check_mbss_configured
+	if [ $? -eq 1 ]
+	then
+		echo "MBSS is not supported in repeater mode, remove MBSS or repeater config"
+		modprobe wlan_scan_sta
+		wifi_mode="sta"
+	else
+		modprobe wlan_scan_ap
+		modprobe wlan_scan_sta
+		wifi_mode="sta"
+		wifi_repeater=1
+	fi
+fi
+
+call_qcsapi -u -q set_mode wifi0 "$wifi_mode"
+
+debugmuc=`get_bootval debugmuc`
+if [ "$debugmuc" != "0" ]
+then
+	iwpriv wifi0 setparam 130 $debugmuc
+fi
+
+local_band=`get_wifi_config wifi0 band`
+if [ $? -ne 0 ]
+then
+	local_band="11ac"
+fi
+
+# RFIC version 1 is 5GHz only, 2 is dual 5GHz and 2.4GHz
+is_24=$(is_2_4_ghz_mode "$local_band")
+rf_chipid=`call_qcsapi -u get_board_parameter rf_chipid`
+if [ $? -ne 0 ]
+then
+	rf_chipid="1"
+fi
+if [ "$rf_chipid" == "1" ]
+then
+	if [ "$is_24" == "1" ]
+	then
+		echo_with_logging "Forcing mode to 11ac - invalid mode for 5GHz chip ($local_band)"
+		local_band="11ac"
+		update_wifi_config wifi0 band "11ac"
+		update_wifi_config wifi0 vht "1"
+		update_wifi_config wifi0 bw "80"
+	fi
+fi
+
+local_vht=`get_wifi_config wifi0 vht`
+local_bw=`get_wifi_config wifi0 bw`
+local_vht_24g=`get_wifi_config wifi0 vht_24g`
+if [ "$local_bw" == "80" ] || [ "$local_bw" == "40" ] || [ "$local_bw" == "20" ]
+then
+	if [ "$local_vht" == "0" ] && [ "$local_bw" == "80" ]
+	then
+		local_bw=40
+		echo_with_logging "VHT is disabled; setting bandwidth to 40MHz"
+	fi
+	if [ "$local_band" == "11ng" ]
+	then
+		if [ "$local_bw" == "80" ]
+		then
+			local_bw=40
+			update_wifi_config wifi0 bw "40"
+		fi
+		if [ "$local_vht" == "1" ]
+		then
+			local_vht=0
+			update_wifi_config wifi0 vht "0"
+		fi
+	fi
+	call_qcsapi -u -q set_bw wifi0 $local_bw
+
+	if [ "$local_vht_24g" == "1" ]
+	then
+		iwpriv wifi0 set_vht_24g $local_vht_24g
+	fi
+else
+	echo_with_logging "Bandwidth not set; using 80MHz for 11ac and 40MHz for 11n"
+fi
+
+local_channel=`get_wifi_config wifi0 channel`
+if [ $? -ne 0 ]
+then
+	# If in station mode and Dual Band RF, set preferred channel as per preferred band.
+	local_channel=$(get_default_channel)
+fi
+
+default_tx_pwr=`get_bootval max_tx_power`
+if [ "$default_tx_pwr" -eq 0 -o "$default_tx_pwr" = "" ]
+then
+	default_tx_pwr=19
+fi
+
+pwr=`get_wifi_config wifi0 pwr`
+if [ $? -ne 0 ]
+then
+	pwr=$default_tx_pwr
+elif [ "$pwr" -gt "$default_tx_pwr" ]
+then
+	pwr=$default_tx_pwr	# Boot config parameter max_tx_power is an upper limit on TX power.
+fi
+
+reg_region=`get_wifi_config wifi0 region`
+if [ $? -ne 0 ]
+then
+	reg_region="none"
+	echo_with_logging "Setting region to $reg_region"
+fi
+
+# Radar detection
+cat /proc/hw_revision | grep "bbic4" > /dev/null
+if [ $? -eq 0 ]
+then
+	topaz_board=1
+else
+	topaz_board=0
+fi
+
+radar_bw=`get_wifi_config wifi0 bw`
+
+# 2.4G has no Radar detection requirement
+if [ "$local_band" == "11ng" ]
+then
+	echo_with_logging "2.4ghz band has no radar detection requirement"
+else
+	if [ "$radar_bw" == "80" ] && [ $topaz_board -eq 1 ]
+	then
+		echo_with_logging "radar in 80MHZ mode"
+		iwpriv wifi0 radar_bw 80
+	else
+		iwpriv wifi0 radar_bw 40
+	fi
+fi
+
+if [ "$local_band" == "11ac" ] && [ "$local_bw" == "20" ]
+then
+	local_band="11ac"
+elif [ "$local_band" == "11ac" ] && [ "$local_bw" == "40" ]
+then
+	local_band="11ac40"
+elif [ "$local_band" == "11ac" ] && [ "$local_bw" == "80" ]
+then
+	local_band="11ac80"
+elif [ "$local_band" == "11na" ] && [ "$local_bw" == "40" ]
+then
+	local_band="11na40"
+elif [ "$local_band" == "11ng" ] && [ "$local_bw" == "40" ]
+then
+	local_band="11ng40"
+elif [ "$local_band" == "11acOnly" ] && [ "$local_bw" == "20" ]
+then
+	local_band="11acOnly"
+elif [ "$local_band" == "11acOnly" ] && [ "$local_bw" == "40" ]
+then
+	local_band="11acOnly40"
+elif [ "$local_band" == "11acOnly" ] && [ "$local_bw" == "80" ]
+then
+	local_band="11acOnly80"
+elif [ "$local_band" == "11nOnly" ] && [ "$local_bw" == "20" ]
+then
+	local_band="11nOnly"
+elif [ "$local_band" == "11nOnly" ] && [ "$local_bw" == "40" ]
+then
+	local_band="11nOnly40"
+fi
+
+# Switch to alternative band to initialize RX DC calibration in advance
+# since the first band switch needs to take a much longer time
+if [ "$rf_chipid" == "2" ]
+then
+	if [ "$is_24" == "1" ]
+	then
+		iwpriv wifi0 mode 11ac80
+
+		# Initializte RX DC calibration for 5G subbands
+		iwconfig wifi0 channel 52
+		iwconfig wifi0 channel 132
+		iwconfig wifi0 channel 157
+	else
+		# Initializte RX DC calibration for 5G subbands
+		iwconfig wifi0 channel 52
+		iwconfig wifi0 channel 132
+		iwconfig wifi0 channel 157
+
+		iwpriv wifi0 mode 11ng40
+	fi
+fi
+
+# set phymode as per local band.
+echo_with_logging "Setting mode to $local_band"
+iwpriv wifi0 mode $local_band
+
+config_qtn_regulatory_db
+
+# Check if configured channel is in the channel list of regulatory region
+if [ "$reg_region" != "none" -a "$local_channel" -ne 0 ]
+then
+	auto_channel=1
+	reg_chan_list=`call_qcsapi -u get_list_regulatory_channels $reg_region`
+	if [ $? -ne 0 ]
+	then
+		echo_with_logging "Couldn't get channel list for $reg_region regulatory region"
+		echo_with_logging "Check that qtn_regulatory_db.bin is loaded in /proc/bootcfg"
+	else
+		for ch in `echo $reg_chan_list | sed 's/,/ /g'`
+		do
+			if [ "$ch" = "$local_channel" ]
+			then
+				auto_channel=0
+				break
+			fi
+		done
+	fi
+
+	if [ "$auto_channel" -eq 1 ]
+	then
+		local_channel=0
+	fi
+fi
+
+# Get DFS seamless entry configuration
+dfs_s_radio=0
+if [ "$wifi_mode" == "ap" -a "$reg_region" != "none" ]
+then
+	dfs_s_radio=`get_wifi_config wifi0 dfs_s_radio`
+	if [ $? -ne 0 ]
+	then
+		# For backward compatibility
+		dfs_s_radio=`get_wifi_config wifi0 ocac`
+		if [ $? -ne 0 ]
+		then
+			dfs_s_radio=0
+		fi
+	fi
+fi
+
+# Get DFS seamless entry non-DFS channel configuration
+need_scan_channel=0
+non_dfs_channel=0
+non_dfs_channel=`get_wifi_config wifi0 non_dfs_channel`
+if [ $? -ne 0 ]
+then
+	non_dfs_channel=0
+fi
+
+# Verify this non-DFS channel
+non_dfs_chan_valid=0
+tmp_non_dfs_channel=0
+non_dfs_chan_list=`call_qcsapi -u get_list_DFS_channels $reg_region 0 $local_bw`
+if [ $? -ne 0 -o "$non_dfs_chan_list" == "" ]
+then
+	# no non-DFS channel, disable DFS seamless radio
+	dfs_s_radio=0
+else
+	for ch in `echo $non_dfs_chan_list | sed 's/,/ /g'`
+	do
+		if [ "$ch" == "$non_dfs_channel" ]
+		then
+			non_dfs_chan_valid=1
+			break
+		fi
+		if [ $tmp_non_dfs_channel -eq 0 ]
+		then
+			tmp_non_dfs_channel=$ch
+		fi
+	done
+	if [ "$non_dfs_chan_valid" -eq 0 ]
+	then
+		non_dfs_channel=$tmp_non_dfs_channel
+		# need channel scanning to pick the best non-DFS automatically
+		need_scan_channel=1
+	fi
+fi
+
+# Get DFS seamless entry DFS channel configuration
+dfs_channel=0
+
+dfs_channel=$local_channel
+
+# Verify this DFS channel
+dfs_chan_valid=0
+dfs_chan_list=`call_qcsapi -u get_list_DFS_channels $reg_region 1 $local_bw`
+if [ $? -ne 0 -o "$dfs_chan_list" == "" ];
+then
+	# no DFS channel, disable DFS seamless radio
+	dfs_s_radio=0
+else
+	for ch in `echo $dfs_chan_list | sed 's/,/ /g'`
+	do
+		if [ "$ch" == "$dfs_channel" ]
+		then
+			dfs_chan_valid=1
+			break
+		fi
+	done
+	if [ "$dfs_chan_valid" -eq 0 ]
+	then
+		# pick DFS channel automatically
+		dfs_channel=0
+	fi
+fi
+
+if [ $wifi_mode = 'sta' -a $local_channel -eq 0 ]
+then
+	local_channel=$(get_default_channel)
+fi
+
+# Set the avail channels for operation region
+if [ "$reg_region" = "none" ]
+then
+	set_avail_chans all $bw
+	cfg_txpower_val=`expr 255 '*' 65536 + $pwr '*' 256 + 1`
+	iwpriv wifi0 init_txpower $cfg_txpower_val
+	echo "pwr: $pwr, init_txpower: $cfg_txpower_val" >>/tmp/api.log
+else
+	call_qcsapi -u -q set_regulatory_region wifi0 "$reg_region"
+	call_qcsapi -u -q set_option wifi0 802_11h 1
+	if [ $wifi_mode == "ap" -o $wifi_repeater == "1" ]; then
+		iwpriv wifi0 dfs_fast_switch 1
+	fi
+fi
+
+# Transmit Power Control
+if [ "$reg_region" != "none" ]; then
+	tpc_enable=`get_wifi_config wifi0 tpc`
+	if [ $? -eq 0 ]; then
+		iwpriv wifi0 tpc $tpc_enable
+	fi
+fi
+# Work-around for Web-based GUI
+echo $reg_region >/etc/region
+
+get_reg_is_eu=`iwpriv wifi0 get_reg_is_eu`
+is_etsi=`echo $get_reg_is_eu | cut -d : -f 2`
+max_boot_cac=`get_wifi_config wifi0 max_boot_cac`
+if [ $? -eq 0 ]; then
+	# Allow the setting only when region=EU or one of the countries in EU
+	if [ "$is_etsi" -eq 0 -a $max_boot_cac -gt 0 ]; then
+		max_boot_cac=-1
+		echo "ICAC: parameter max_boot_cac cannot be greater than 0 in non-EU regulatory domain. ICAC will be disabled";
+	fi
+else
+	if [ $dfs_s_radio -eq 1 ];then
+		echo "ICAC: no initial CAC is performed since SDFS is enabled and max_boot_cac not defined. This behavior can be changed for region eu by explicitly setting max_boot_cac parameter to a value equal to a multiple of 70"
+	fi
+	max_boot_cac=-1
+fi
+
+###### Sanitizing Rules for Initial CAC (ICAC) ######
+#
+#	max_boot_cac = wirelessconfig.max_boot_cac;
+#	non_dfs_channel = wirelessconfig.non_dfs_channel;
+#
+#	# Parameter max_boot_cac cannot be greater than 0 in regulatory domains other than EU. Disable ICAC
+#	if (wirelessconfig.region != eu (or one of the EU sub-regions) && max_boot_cac > 0 )
+#		max_boot_cac=-1
+#
+#	# No initial CAC is performed if SDFS is enabled. This behavior can be changed by explicitly setting
+#	# max_boot_cac parameter to a value equal to a multiple of 70
+#	if (wirelessconfig.dfs_s_radio == 1 &&  !wirelessconfig.max_boot_cac )
+#		max_boot_cac=0
+#
+#	if (wirelessconfig.dfs_s_radio == 0)
+#		# ICAC disabled since requested boot channel is a DFS channel and SDFS is disabled. This behavior can
+#		# be changed by explicitly setting max_boot_cac parameter to a value equal to a multiple of 70
+#		if (wirelessconfig.channel.isDFS && max_boot_cac == 0)
+#			max_boot_cac=-1
+#
+#		# Parameter non_dfs_channel will be ignored since SDFS is disabled
+#		if (non_dfs_channel != 0) 
+#			non_dfs_channel=0
+#
+#	# Parameter max_boot_cac is greater than 0, hence the parameter non_dfs_channel is ignored. To avoid
+#	# doing initial CAC set max_boot_cac to 0
+#	if (max_boot_cac > 0) 
+#		non_dfs_channel=0
+#
+#	if ((wirelessconfig.channel != 0) and (!wirelessconfig.channel.isDFS)) 
+#		# Parameters non_dfs_channel and channel are set to different non-DFS channels. non_dfs_channel
+#		# parameter will be ignored
+#		if ( non_dfs_channel != 0 && wirelessconfig.channel != non_df_channel ) 
+#			non_dfs_channel=wirelessconfig.channel
+#
+#	if ( ! max_boot_cac ) max_boot_cac=-1
+#
+#	# Expected behavior is the same when SDFS is enabled and max_boot_cac is 0 or 1
+#	if (wirelessconfig.dfs_s_radio == 1 && max_boot_cac == 0) max_boot_cac=-1
+#
+###### End of Sanitizing Rules for ICAC ######
+
+if [ $dfs_s_radio -eq 0 ];then
+	if [ $dfs_chan_valid -eq 1 -a $max_boot_cac -eq 0 ];then
+		max_boot_cac=-1
+		echo "ICAC: Function disabled since requested boot channel is a DFS channel and SDFS is disabled. This behavior can be changed for region eu by explicitly setting max_boot_cac parameter to a value equal to a multiple of 70"
+	fi
+	if [ $non_dfs_channel -ne 0 ];then
+		non_dfs_channel=0
+		need_scan_channel=0
+		if [ "$non_dfs_chan_valid" -eq 1 ];then
+			echo "ICAC: parameter non_dfs_channel will be ignored since SDFS is disabled"
+		fi
+	fi
+fi
+
+if [ $dfs_s_radio -eq 1 -a $max_boot_cac -eq 0 ];then
+	max_boot_cac=-1
+fi
+
+if [ $max_boot_cac -gt 0 ];then
+	non_dfs_channel=0
+	need_scan_channel=0
+	echo "ICAC: max_boot_cac is greater than 0, hence the parameter non_dfs_channel is ignored. To avoid doing initial CAC set max_boot_cac to 0."
+fi
+
+if [ $local_channel -ne 0 -a $dfs_chan_valid -eq 0 ];then
+	if [ $non_dfs_channel -ne 0 ];then
+		if [ $non_dfs_channel -ne $local_channel ];then
+			non_dfs_channel=$local_channel
+			echo "ICAC: non_dfs_channel and channel parameters are set to different non-DFS channels. non_dfs_channel parameter will be ignored"
+		fi
+		need_scan_channel=0
+	fi
+fi
+
+echo "dfs_s_radio $dfs_s_radio dfs $dfs_channel non-dfs $non_dfs_channel scan $need_scan_channel auto-channel $auto_channel channel $local_channel"
+
+call_qcsapi -u -q get_csw_records wifi0 1
+if [ $dfs_s_radio -eq 1 ];
+then
+	#Row 26
+	if [ $non_dfs_channel -eq 0 ];then
+		non_dfs_channel=$local_channel
+	fi
+	iwconfig wifi0 channel $non_dfs_channel > /dev/null
+else
+	iwconfig wifi0 channel $local_channel > /dev/null
+fi
+
+if [ "$max_boot_cac" -le 2048 ]; then
+	if [ "$wifi_mode" == "ap" ]; then
+		echo "Configure max_boot_cac to $max_boot_cac"
+		call_qcsapi -u -q set_max_boot_cac_duration wifi0 $max_boot_cac
+		if [ $? -ne 0 ]
+		then
+			echo "Argument max_boot_cac invalid, stay as -1 (ICAC disabled)"
+		fi
+	fi
+fi
+
+# [STA-DFS] Enable/disable STA DFS in strict mode
+sta_dfs_strict=`get_wifi_config wifi0 sta_dfs_strict`
+if [ $? -eq 0 ]; then
+        if [ "$sta_dfs_strict" -eq 0 -o "$sta_dfs_strict" -eq 1 ]; then
+		call_qcsapi -u -q set_option wifi0 sta_dfs_strict $sta_dfs_strict
+        fi
+fi
+
+# [STA-DFS] Enable/disable transmission of measurement report when radar is detected during CAC
+sta_dfs_msr_cac=`get_wifi_config wifi0 sta_dfs_msr_cac`
+if [ $? -eq 0 ]; then
+        if [ "$sta_dfs_msr_cac" -eq 0 -o "$sta_dfs_msr_cac" -eq 1 ]; then
+		iwpriv wifi0 sta_dfs_msr_cac $sta_dfs_msr_cac
+        fi
+fi
+
+# Add the primary VAP to the bridge after starting wireless services
+qbr add wifi0 $apflag
+
+ssdp_flood=`get_wifi_config wifi0 ssdp_flood`
+if [ $? -ne 0 ]
+then
+	ssdp_flood=1
+fi
+brctl ssdp_flood br0 $ssdp_flood
+
+$base_scripts/non_wps_pair_remove "$wifi_mode"
+
+# Security daemon
+start_down=`get_wifi_config wifi0 start_down`
+if [ "$start_down" != "1" ] && [ "$wifi_mode" = "sta" -o "${STATELESS}" != "y" ]
+then
+	start_security_daemon "$wifi_mode" "$wifi_repeater"
+        if [ "$wifi_mode" = "ap" ]; then
+                wps_pin_sec=`get_wifi_config wifi0 wps_pin_sec`
+                [ $? -ne 0 ] && wps_pin_sec="0"
+                [ "$wps_pin_sec" = "1" ] && ap_pin_refresh_all
+        fi
+fi
+
+# MCS
+local_mcs=`get_wifi_config wifi0 mcs`
+if [ $? -ne 0 ]
+then
+	local_mcs=auto
+else
+	mcs_length=`expr length $local_mcs`
+	if [ $mcs_length -eq 7 ]
+	then
+		mcs_prefix=`echo $local_mcs | cut -b 1-3`
+		if [ "$mcs_prefix" == "0x1" ]
+		then
+			local_mcs_as_hex=`echo $local_mcs | cut -b 4`
+			local_mcs=`hex2dec $local_mcs_as_hex`
+		else
+			local_mcs=auto
+		fi
+	elif [ "$local_mcs" == "0" ]
+	then
+		local_mcs=auto
+	elif [ "$local_mcs" -gt 76 ]
+	then
+		local_mcs=auto
+	fi
+fi
+
+if [ "$local_mcs" == "auto" ]
+then
+	call_qcsapi -u -q set_option wifi0 autorate true
+else
+	call_qcsapi -u -q set_mcs_rate wifi0 MCS${local_mcs}
+fi
+
+# Beamforming
+local_bf=`get_wifi_config wifi0 bf`
+if [ $? -ne 0 -o "$local_bf" != "0" ]
+then
+	bfon
+	echo_with_logging "Beamforming enabled"
+else
+	bfoff
+	echo_with_logging "Beamforming disabled"
+fi
+
+# 40MHz only mode
+f40=`get_wifi_config wifi0 f40`
+if [ "$f40" == "1" -a "$local_bw" == "40" ]
+then
+	iwpriv wifi0 rate_ctrl_flags 0x27
+fi
+
+# 802.11ac
+if [ "$local_vht" == "1" ]
+then
+	call_qcsapi -u -q set_vht wifi0 $local_vht
+	echo_with_logging "802.11ac Enabled"
+	if [ "$wifi_mode" == "sta" ] && [ "$local_bw" == "40" -o "$local_bw" == "20" ]
+	then
+		echo_with_logging "Bandwidth is ${local_bw}MHz but VHT stations must support 80MHz"
+	fi
+elif [ "$local_vht" == "0" ]
+then
+	call_qcsapi -u -q set_vht wifi0 $local_vht
+	echo_with_logging "802.11n Enabled"
+else
+	echo_with_logging "VHT not set, use default"
+fi
+
+# Linux WMM
+tc_prio
+
+# SCS
+call_qcsapi -q -u set_scs_stats wifi0 1
+scs=`get_wifi_config wifi0 scs`
+if [ $? -ne 0 -o "$scs" != "0" ]
+then
+	call_qcsapi -q -u enable_scs wifi0 1
+	echo_with_logging "SCS enabled"
+else
+	call_qcsapi -q -u enable_scs wifi0 0
+	echo_with_logging "SCS disabled"
+fi
+
+# QTM
+qtm_support=`lsmod | grep -c "qvsp"`
+if [ $qtm_support -gt 0 ]
+then
+	if [ "$wifi_mode" = "ap" ]
+	then
+		qtm=`get_wifi_config wifi0 qtm`
+		if [ $? -ne 0 ]; then
+			qtm=0
+		fi
+		qtm_load_profile $qtm
+		echo "QTM enabled:" `call_qcsapi -u -q qtm wifi0 get enabled`
+	fi
+fi
+
+# BRCM workaround to advertise lower BF STS
+rxsts=`get_wifi_config wifi0 rxsts`
+if [ $? -eq 0 ]
+then
+	if [ $rxsts -gt 0 -a $rxsts -lt 5 ]
+	then
+		echo_with_logging "BF receive STS $rxsts"
+		iwpriv wifi0 bf_rxsts $rxsts
+	fi
+fi
+
+if [ -f $base_scripts/load_wds_config -a "$wifi_mode" == "ap" ]; then
+	$base_scripts/load_wds_config ${base_persistent_files}/wds_config.txt
+fi
+
+# Load per-SSID config
+if [ -f $base_scripts/load_per_ssid_config -a "$wifi_mode" == "ap" ]; then
+	$base_scripts/load_per_ssid_config
+fi
+
+# RSSI detector for BA SETUP
+if [ "$wifi_mode" = "ap" ]
+then
+	iwpriv wifi0 rssi_for_ba_set 1
+fi
+
+# start DFS seamless entry
+if [ $dfs_s_radio -eq 1 ]
+then
+	dfs_s_radio_available=`call_qcsapi -u get_dfs_s_radio_availability wifi0`
+	if [ "$dfs_s_radio_available" == "Available" ]
+	then
+		if [ $need_scan_channel -eq 1 ]
+		then
+			call_qcsapi -q -u start_scan wifi0 clearest non_dfs
+		fi
+		iwpriv wifi0 bcn_scheme 1
+
+		ret=$(call_qcsapi -q -u is_weather_channel wifi0 $dfs_channel)
+		if [ $? -ne 0 -o "$ret" = "0" ] && [ "$max_boot_cac" -gt 0 ]
+		then
+			call_qcsapi -q -u start_dfs_s_radio wifi0 auto
+		else
+			call_qcsapi -q -u start_dfs_s_radio wifi0 $dfs_channel
+		fi
+	else
+		echo "DFS seamless radio is unavailable"
+		iwconfig wifi0 channel $local_channel
+	fi
+fi
+
+#launch repeater AP interface
+if [ "$wifi_repeater" = "1" ]; then
+	iwpriv wifi0 repeater 1
+	echo "start 0 ap wifi1" >/sys/devices/qdrv/control
+	sleep 1
+	hostapd -B /mnt/jffs2/hostapd.conf
+fi

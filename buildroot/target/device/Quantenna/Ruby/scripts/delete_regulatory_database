@@ -1,0 +1,1 @@
+echo "delete qtn_regulatory_db.bin" > /proc/bootcfg/env

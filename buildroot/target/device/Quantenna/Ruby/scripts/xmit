@@ -1,0 +1,27 @@
+#!/bin/sh
+# Turn on or off transmission
+# - this script is added for DFS test
+
+arg=$1
+
+if [ $arg == "on" ]; then
+	echo "turning on the system transmission"
+	writerfmem 0 82 c00c00
+	writerfmem 0 83 300
+	writerfmem 0 84 c00c00
+	writerfmem 0 85 300
+	writerfmem 1 82 c00c00
+	writerfmem 1 83 300
+	writerfmem 1 84 c00c00
+	writerfmem 1 85 300
+else
+	echo "turning off the system transmission"
+	writerfmem 0 82 FFFFFF
+	writerfmem 0 83 FFFFFF
+	writerfmem 0 84 FFFFFF
+	writerfmem 0 85 FFFFFF
+	writerfmem 1 82 FFFFFF
+	writerfmem 1 83 FFFFFF
+	writerfmem 1 84 FFFFFF
+	writerfmem 1 85 FFFFFF
+fi

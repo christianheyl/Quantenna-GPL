@@ -1,0 +1,5 @@
+#!/bin/ash
+# used to turn off ACK's for debug 
+# limited use for now. 1 for acks
+# 0 for no ACK's
+iwpriv wifi0 setparam 72 $1

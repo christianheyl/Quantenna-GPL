@@ -1,0 +1,5 @@
+config BR2_PACKAGE_NEMESIS
+	bool "Nemesis"
+	default n
+	help
+		Nemesis IGMP generator

@@ -1,0 +1,5 @@
+config BR2_PACKAGE_QWE_ADAPTER
+        bool "QWE Adapter"
+        default n
+        help
+          Quantenna Wireless Extension Adapter

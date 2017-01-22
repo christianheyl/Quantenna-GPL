@@ -1,0 +1,50 @@
+#
+# Copyright (C) 2001 Erik Andersen <andersen@codepoet.org>
+#
+# Note: BusyBox init doesn't support runlevels.  The runlevels field is
+# completely ignored by BusyBox init. If you want runlevels, use
+# sysvinit.
+#
+# Format for each entry: <id>:<runlevels>:<action>:<process>
+#
+# id        == tty to run on, or empty for /dev/console
+# runlevels == ignored
+# action    == one of sysinit, respawn, askfirst, wait, and once
+# process   == program to run
+
+# Startup the system
+null::sysinit:/bin/mount -o remount,rw /
+null::sysinit:/bin/mount -t proc proc /proc
+null::sysinit:/bin/mkdir /mnt/jffs2
+null::sysinit:/bin/sh /scripts/mtd_mknod
+null::sysinit:/bin/sh /scripts/mount_data_partition
+null::sysinit:/bin/mount -a
+null::sysinit:/bin/echo "/sbin/hotplug" > /sys/kernel/uevent_helper
+null::sysinit:/bin/hostname -F /etc/hostname
+null::sysinit:/sbin/ifconfig lo 127.0.0.1 up
+null::sysinit:/sbin/route add -net 127.0.0.0 netmask 255.0.0.0 lo
+# Ruby inbuilt kernel profiler
+null::sysinit:/bin/mknod /dev/profiler c 10 149
+# now run any rc scripts
+::sysinit:/etc/init.d/rcS
+
+# Ruby patch - run a shell on the serial console
+console::respawn:/bin/sh -l
+
+# Logging junk
+null::sysinit:/bin/touch /var/log/messages
+null::respawn:/bin/sh /scripts/run_syslogd start
+null::respawn:/sbin/klogd -n
+#tty3::respawn:/usr/bin/tail -f /var/log/messages
+
+# Stuff to do for the 3-finger salute
+::ctrlaltdel:/sbin/reboot
+
+# Stuff to do before rebooting
+null::shutdown:/bin/cat /proc/bootcfg/pending
+null::shutdown:/mnt/jffs2/tweak_reboot
+null::shutdown:/usr/bin/killall klogd
+null::shutdown:/usr/bin/killall syslogd
+null::shutdown:/bin/umount -a -r
+null::shutdown:/sbin/swapoff -a
+

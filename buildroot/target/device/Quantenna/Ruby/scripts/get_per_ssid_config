@@ -1,0 +1,44 @@
+#!/bin/sh
+
+default_persistent_path=/mnt/jffs2
+config_file=per_ssid_config.txt
+
+path_to_persistence=`call_qcsapi -u get_file_path security`
+error_check=`echo $path_to_persistence | cut -b 1-13`
+if [ "$error_check" == "QCS API error" ];then
+	config_path=${default_persistent_path}/${config_file}
+else
+	config_path=${path_to_persistence}/${config_file}
+fi
+
+if [ ! -f ${config_path} ]; then
+	exit 1
+fi
+
+if [ $# -lt 2 ];then
+	exit 1
+fi
+
+vap=$1
+param_name=$2
+
+while read LINE
+do
+	line_process=$LINE
+	comment_line=`expr substr "$line_process" 1 1`
+	if [ "$comment_line" == "#" ]
+	then
+		continue
+	fi
+
+	interface=`echo $line_process | awk -F":" '{print $1}'`
+	param_list=`echo $line_process | awk -F":" '{print $2}'`
+
+	if [ "$vap" = "$interface" ];then
+		priority=`parse_per_ssid_param $param_list $param_name`
+		echo $priority
+		exit 0
+	else
+		continue
+	fi
+done < ${config_path}

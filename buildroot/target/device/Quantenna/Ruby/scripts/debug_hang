@@ -1,0 +1,11 @@
+#!/bin/sh
+
+bin=${0##*/}
+platform=`cat /proc/hw_revision | cut -d '_' -f 1`
+
+if [ "$platform" != "bbic3" ]; then
+	echo "$bin not supported on $platform"
+	exit
+fi
+
+/usr/lib/cgi-bin/php-cgi -q /var/www/dump_hang.php

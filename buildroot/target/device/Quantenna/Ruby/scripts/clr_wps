@@ -1,0 +1,10 @@
+#!/bin/sh
+# Removes WPS config and replaces default config
+
+# If we are in station mode
+if test -e /tmp/wpa_supplicant
+then
+	cp /scripts/wpa_supplicant.conf.def /scripts/wpa_supplicant.conf
+	wpa_cli reconfigure
+fi
+

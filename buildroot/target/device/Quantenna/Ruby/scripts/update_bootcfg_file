@@ -1,0 +1,36 @@
+#! /bin/sh
+
+if [ "$1" = "" ]
+then
+    echo "$0 requires the name of a file to update in the bootcfg file system."
+    exit 1
+fi
+
+source_file=$1
+bootcfg_file=`echo $source_file | awk -F / '{print $NF}'`
+
+if [ "$bootcfg_file" = "" ]
+then
+    echo "$0: missing file name"
+    exit 1
+elif [ $bootcfg_file = "env" ]
+then
+    echo "$0: cannot update the bootcfg environment file /proc/bootcfg/env."
+    exit 1
+elif [ ! -f $source_file -o ! -r $source_file ]
+then
+    echo "$0: cannot access $bootcfg_file"
+    exit 1
+fi
+
+bootcfg_base="/proc/bootcfg"
+bootcfg_path=${bootcfg_base}/${bootcfg_file}
+bootcfg_env=${bootcfg_base}/env
+
+if [ -f $bootcfg_path ]
+then
+    echo "delete $bootcfg_file" > $bootcfg_env
+fi
+
+echo "create $bootcfg_file 0" > $bootcfg_env
+cp $source_file $bootcfg_path

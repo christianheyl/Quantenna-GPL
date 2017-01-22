@@ -1,0 +1,62 @@
+#!/bin/sh
+
+bin=${0##*/}
+
+case "$1" in
+"sta")
+	if [ -f /mnt/jffs2/wpa_passphrase_web ]
+	then
+		ssid_list=`call_qcsapi -u get_SSID_list wifi0`
+		echo "$bin: ssid_list is "$ssid_list
+		if [ -n "ssid_list" ]
+		then
+			for i in $ssid_list
+			do
+				ssid_psk_web=$i"_psk_web"
+				key=`cat /mnt/jffs2/wpa_passphrase_web | grep $ssid_psk_web | cut -d '=' -f2`
+				echo "$bin: key is "$key
+				if [ -n "$key" ]
+				then
+					sed -i -e "/\"$i\"/,/}/s/psk=.*/psk=\"$key\"/" /mnt/jffs2/wpa_supplicant.conf
+				fi
+			done
+		fi
+
+		rm -rf /mnt/jffs2/wpa_passphrase_web
+	fi
+
+	cp /mnt/jffs2/wpa_supplicant.conf /tmp/wpa_supplicant.conf
+	pp_enable_exist=`cat /tmp/wpa_supplicant.conf  | grep pp_enable`
+	if [ -n "$pp_enable_exist" ]
+	then
+		sed -i "/pp_enable=/d" /mnt/jffs2/wpa_supplicant.conf
+	fi
+	;;
+"ap")
+	wpa_passphrase_web_list=`cat /mnt/jffs2/hostapd.conf  | grep wpa_passphrase_web`
+	cp /mnt/jffs2/hostapd.conf /tmp/hostap.conf
+	if [ -n "$wpa_passphrase_web_list" ]
+	then
+		echo "$bin: wpa_passphrase_web_list is "$wpa_passphrase_web_list
+		start="interface=wifi0"
+		for i in $wpa_passphrase_web_list
+		do
+			key=`echo $i | cut -d '=' -f2`
+			echo "$bin: key is "$key
+			if [ -n "$key" ]
+			then
+				sed -i -e "/$start/,/"$i"/s/wpa_passphrase=.*/wpa_passphrase=$key/" /mnt/jffs2/hostapd.conf
+				start=$i
+				echo "$bin: start is "$start
+			fi
+		done
+
+		sed -i "/wpa_passphrase_web=/d" /mnt/jffs2/hostapd.conf
+		echo "$bin: wpa_passphrase_web removed"
+	fi
+	;;
+*)
+	echo "$bin: invalid parameter - $1"
+	exit 1
+	;;
+esac

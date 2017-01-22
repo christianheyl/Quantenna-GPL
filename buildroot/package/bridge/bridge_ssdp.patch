@@ -1,0 +1,84 @@
+diff -dur bridge-utils-1.0.6.orig/brctl/brctl_cmd.c bridge-utils-1.0.6/brctl/brctl_cmd.c
+--- bridge-utils-1.0.6.orig/brctl/brctl_cmd.c	2011-09-30 16:54:47.957947860 +1000
++++ bridge-utils-1.0.6/brctl/brctl_cmd.c	2011-10-14 10:40:53.757068949 +1100
+@@ -319,6 +319,28 @@
+ 	return err != 0;
+ }
+ 
++static int br_cmd_ssdp_flood(int argc, char *const* argv)
++{
++	int ssdp_flood, err;
++
++	if (!strcmp(argv[2], "on") || !strcmp(argv[2], "yes") 
++	    || !strcmp(argv[2], "1"))
++		ssdp_flood = 1;
++	else if (!strcmp(argv[2], "off") || !strcmp(argv[2], "no") 
++		 || !strcmp(argv[2], "0"))
++		ssdp_flood = 0;
++	else {
++		fprintf(stderr, "expect on/off for argument\n");
++		return 1;
++	}
++
++	err = br_set_ssdp_flood_state(argv[1], ssdp_flood);
++	if (err)
++		fprintf(stderr, "set ssdp flooding status failed: %s\n", 
++			strerror(errno));
++	return err != 0;
++}
++
+ static int br_cmd_showstp(int argc, char *const* argv)
+ {
+ 	struct bridge_info info;
+@@ -442,6 +464,8 @@
+ 	  "<bridge> {on|off}\tturn stp on/off" },
+ 	{ 2, "igmpsnoop", br_cmd_igmp_snoop,
+ 	  "<bridge> {on|off}\tturn IGMP snooping on/off" },
++	{ 2, "ssdp_flood", br_cmd_ssdp_flood,
++	  "<bridge> {on|off}\tturn ssdp flooding on/off" },
+ };
+ 
+ const struct command *command_lookup(const char *cmd)
+diff -dur bridge-utils-1.0.6.orig/libbridge/libbridge_devif.c bridge-utils-1.0.6/libbridge/libbridge_devif.c
+--- bridge-utils-1.0.6.orig/libbridge/libbridge_devif.c	2011-09-30 16:54:47.957947860 +1000
++++ bridge-utils-1.0.6/libbridge/libbridge_devif.c	2011-10-14 10:41:58.130842670 +1100
+@@ -235,6 +235,7 @@
+ 	info->root_port = fetch_int(sdir, "root_port");
+ 	info->stp_enabled = fetch_int(sdir, "stp_state");
+ 	info->igmp_snoop_enabled = fetch_int(sdir, "igmp_snoop_state");
++	info->ssdp_flood_enabled = fetch_int(sdir, "ssdp_flood_state");
+ 	info->topology_change = fetch_int(sdir, "topology_change");
+ 	info->topology_change_detected = fetch_int(sdir, "topology_change_detected");
+ 	sysfs_close_directory(sdir);
+@@ -396,6 +397,12 @@
+ 	return br_set(br, "igmp_snoop_state", igmp_snoop_state, BRCTL_SET_IGMP_SNOOP_STATE);
+ }
+ 
++int br_set_ssdp_flood_state(const char *br, int ssdp_flood_state)
++{
++	return br_set(br, "ssdp_flood_state", ssdp_flood_state,
++		BRCTL_SET_SSDP_FLOOD_STATE);
++}
++
+ int br_set_bridge_priority(const char *br, int bridge_priority)
+ {
+ 	return br_set(br, "priority", bridge_priority, 
+diff -dur bridge-utils-1.0.6.orig/libbridge/libbridge.h bridge-utils-1.0.6/libbridge/libbridge.h
+--- bridge-utils-1.0.6.orig/libbridge/libbridge.h	2011-09-30 16:54:47.957947860 +1000
++++ bridge-utils-1.0.6/libbridge/libbridge.h	2011-10-14 10:42:58.514382403 +1100
+@@ -42,6 +42,7 @@
+ 	u_int16_t root_port;
+ 	unsigned char stp_enabled;
+ 	unsigned char igmp_snoop_enabled;
++	unsigned char ssdp_flood_enabled;
+ 	unsigned char topology_change;
+ 	unsigned char topology_change_detected;
+ 	struct timeval ageing_time;
+@@ -102,6 +103,7 @@
+ extern int br_set_ageing_time(const char *br, struct timeval *tv);
+ extern int br_set_stp_state(const char *br, int stp_state);
+ extern int br_set_igmp_snoop_state(const char *br, int igmp_snoop_state);
++extern int br_set_ssdp_flood_state(const char *br, int ssdp_flood_state);
+ extern int br_set_bridge_priority(const char *br, int bridge_priority);
+ extern int br_set_port_priority(const char *br, const char *p, 
+ 				int port_priority);

@@ -1,0 +1,74 @@
+#!/bin/sh
+
+# udhcpc script edited by Tim Riker <Tim@Rikers.org>
+# Modified by Quantenna Communications, October 2011.
+#    Log all DHCP events.
+#    Do not deconfigure the interface at deconfig time.
+#    At renew / bound time, bring the interface down and then back up.
+
+tmp_log_file="/tmp/udhcp.log"
+max_log_file_size=4196
+
+echo_with_logging()
+{
+    if [ -f $tmp_log_file ] ; then
+        chars=`cat $tmp_log_file | wc -c`
+        if [ $chars -gt $max_log_file_size ] ; then
+            mv $tmp_log_file $tmp_log_file.0
+        fi
+    fi
+    logger $@
+    echo $@ >> $tmp_log_file
+}
+
+
+
+[ -z "$1" ] && echo "Error: should be called from udhcpc" && exit 1
+
+RESOLV_CONF="/etc/resolv.conf"
+RESOLV_CONF_V4="/etc/resolv.conf.v4"
+RESOLV_CONF_V6="/etc/resolv.conf.v6"
+[ -n "$broadcast" ] && BROADCAST="broadcast $broadcast"
+[ -n "$subnet" ] && NETMASK="netmask $subnet"
+
+case "$1" in
+	deconfig)
+		echo_with_logging "DHCP deconfig"
+		;;
+
+	renew|bound)
+		echo_with_logging "DHCP $1 $interface $ip"
+		echo $ip >/etc/ipaddr
+		/sbin/ifconfig $interface $ip $BROADCAST $NETMASK
+
+		if [ -n "$router" ] ; then
+			echo "deleting routers"
+			while route del default gw 0.0.0.0 dev $interface ; do
+				:
+			done
+
+			for i in $router ; do
+				route add default gw $i dev $interface
+			done
+		fi
+
+		echo -n > $RESOLV_CONF_V4
+		[ -n "$domain" ] && echo search $domain >> $RESOLV_CONF_V4
+		for i in $dns ; do
+			echo adding dns $i
+			echo nameserver $i >> $RESOLV_CONF_V4
+		done
+
+		if [ -f $RESOLV_CONF_V6 ] ; then
+			cat $RESOLV_CONF_V4 $RESOLV_CONF_V6 > $RESOLV_CONF
+		else
+			cat $RESOLV_CONF_V4 > $RESOLV_CONF
+		fi
+		;;
+
+	leasefail)
+		echo_with_logging "DHCP failed to get an IP address"
+		;;
+esac
+
+exit 0

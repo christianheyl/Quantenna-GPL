@@ -1,0 +1,13 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_41_TO_v37_4_0_42 Version v37.4.0.41 to version v37.4.0.42 changes
+ *
+ * \subsection v37_4_0_41_TO_v37_4_0_42Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.41 and v37.4.0.42
+ * \li \ref qcsapi_wifi_set_max_bcast_pps
+ * \li \ref qcsapi_wifi_update_bss_cfg
+ * \li \ref qcsapi_wifi_set_dfs_s_radio_wea_dwell_time
+ */
+

@@ -1,0 +1,76 @@
+--- ./include/usage.h	2015-01-29 20:04:08.223526740 +0800
++++ ./include/usage.new.h	2015-01-29 20:13:19.683540861 +0800
+@@ -2901,6 +2901,7 @@
+      "\nOptions:" \
+      "\n	-4, -6		Force IPv4 or IPv6 hostname resolution" \
+      "\n	-c CNT		Send only CNT pings" \
++     "\n	-W TIMEOUT	Time to wait for a response, in seconds." \
+      "\n	-s SIZE		Send SIZE data bytes in packets (default=56)" \
+      "\n	-I iface/IP	Use interface or IP address as source" \
+      "\n	-q		Quiet, only displays output at start" \
+--- ./networking/ping.c	2015-01-29 20:04:18.227526997 +0800
++++ ./networking/ping.new.c	2015-01-29 20:13:59.039541868 +0800
+@@ -224,15 +224,16 @@
+ 
+ /* full(er) version */
+ 
+-#define OPT_STRING ("qvc:s:I:4" USE_PING6("6"))
++#define OPT_STRING ("qvc:s:I:W:4" USE_PING6("6"))
+ enum {
+ 	OPT_QUIET = 1 << 0,
+ 	OPT_VERBOSE = 1 << 1,
+ 	OPT_c = 1 << 2,
+ 	OPT_s = 1 << 3,
+ 	OPT_I = 1 << 4,
+-	OPT_IPV4 = 1 << 5,
+-	OPT_IPV6 = (1 << 6) * ENABLE_PING6,
++	OPT_W = 1 << 5,
++	OPT_IPV4 = 1 << 6,
++	OPT_IPV6 = (1 << 7) * ENABLE_PING6,
+ };
+ 
+ 
+@@ -246,6 +247,7 @@
+ 	uint16_t myid;
+ 	unsigned tmin, tmax; /* in us */
+ 	unsigned long long tsum; /* in us, sum of all times */
++	unsigned timeout;
+ 	const char *hostname;
+ 	const char *dotted;
+ 	union {
+@@ -271,6 +273,7 @@
+ #define tmin         (G.tmin        )
+ #define tmax         (G.tmax        )
+ #define tsum         (G.tsum        )
++#define timeout      (G.timeout     )
+ #define hostname     (G.hostname    )
+ #define dotted       (G.dotted      )
+ #define pingaddr     (G.pingaddr    )
+@@ -280,6 +283,7 @@
+ 	if (sizeof(G) > COMMON_BUFSIZE) \
+ 		BUG_ping_globals_too_big(); \
+ 	pingsock = -1; \
++	timeout = MAXWAIT; \
+ 	tmin = UINT_MAX; \
+ } while (0)
+ 
+@@ -333,7 +337,7 @@
+ 	} else { /* done, wait for the last ping to come back */
+ 		/* todo, don't necessarily need to wait so long... */
+ 		signal(SIGALRM, pingstats);
+-		alarm(MAXWAIT);
++		alarm(timeout);
+ 	}
+ }
+ 
+@@ -696,8 +700,8 @@
+ 	datalen = DEFDATALEN;
+ 
+ 	/* exactly one argument needed, -v and -q don't mix */
+-	opt_complementary = "=1:q--v:v--q";
+-	getopt32(argv, OPT_STRING, &opt_c, &opt_s, &opt_I);
++	opt_complementary = "=1:q--v:v--q:W+";
++	getopt32(argv, OPT_STRING, &opt_c, &opt_s, &opt_I, &timeout);
+ 	if (option_mask32 & OPT_c)
+ 		pingcount = xatoul(opt_c); // -c
+ 	if (option_mask32 & OPT_s)

@@ -1,0 +1,47 @@
+#
+# Quantenna Topaz board
+#
+
+menu "Quantenna Topaz"
+
+config QUANTENNA_TOPAZ
+	bool "Quantenna Topaz chipset support"
+	select QUANTENNA_RUBY
+	default n
+	help
+	  Additional drivers for Quantenna Topaz accelerated datapath
+
+config ARCH_TOPAZ_FWT
+	tristate "Topaz FWT driver"
+	depends on QUANTENNA_TOPAZ
+	default y
+	help
+	  Topaz Forwarding Table Driver
+
+config ARCH_TOPAZ_TQE
+	tristate "Topaz TQE driver"
+	depends on QUANTENNA_TOPAZ
+	select ARCH_TOPAZ_FWT
+	default y
+	help
+	  Topaz Transmit Queueing Engine Driver
+
+config ARCH_TOPAZ_SWITCH_TEST
+	tristate "Topaz Switch Test Modules"
+	depends on ARCH_TOPAZ_TQE
+	default n
+	help
+	  A set of test modules to control the various Topaz
+	  accelerated datapath elements
+
+config ARCH_TOPAZ_EMAC
+	tristate "Topaz Arasan EMAC driver"
+	depends on QUANTENNA_TOPAZ
+	default y
+	select ARCH_RUBY_EMAC_LIB
+	select ARCH_TOPAZ_TQE
+	help
+	  Topaz Arasan EMAC AHB driver
+
+endmenu
+

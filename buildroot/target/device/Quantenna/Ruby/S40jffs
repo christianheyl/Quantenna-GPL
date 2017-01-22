@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# Setup the JFSS2 file system.
+#
+# Since /mnt/jffs2 is listed in /etc/inittab,
+# it is automatically mounted.
+#
+# So all this script needs to do is setup /ro/bootcfg.
+#
+
+EIRP_US=/mnt/jffs2/eirp_info_us.txt
+EIRP_EU=/mnt/jffs2/eirp_info_eu.txt
+EIRP_AU=/mnt/jffs2/eirp_info_au.txt
+# don't modify EIRP_RONLY_DIR, qcsapi needs this path to work.
+EIRP_RONLY_DIR=/ro/bootcfg
+
+if [ -f "$EIRP_US" ] || [ -f "$EIRP_EU" ] || [ -f "$EIRP_AU" ]
+then
+	/bin/mkdir -p "$EIRP_RONLY_DIR"
+
+	if [ -f "$EIRP_US" ]
+	then
+		ln -s "$EIRP_US" "$EIRP_RONLY_DIR/eirp_info_us.txt"
+	fi
+	if [ -f "$EIRP_EU" ]
+	then
+		ln -s "$EIRP_EU" "$EIRP_RONLY_DIR/eirp_info_eu.txt"
+	fi
+	if [ -f "$EIRP_AU" ]
+	then
+		ln -s "$EIRP_AU" "$EIRP_RONLY_DIR/eirp_info_au.txt"
+	fi
+fi
+

@@ -1,0 +1,1 @@
+mode=ap&bw=40&region=none&channel=0&bf=1&pwr=19

@@ -1,0 +1,73 @@
+#! /bin/sh
+
+if [ "$1" != "" ]
+then
+    wifi_device=$1
+    shift
+else
+    wifi_device=wifi0
+fi
+
+wifi_mode=`call_qcsapi -u get_mode $wifi_device`
+if [ "$wifi_mode" = "Access point" ]
+then
+    wifi_mode=AP
+elif [ "$wifi_mode" = "Station" ]
+then
+    wifi_mode=STA
+else
+    echo "Unrecognized WiFi mode $wifi_mode"
+    exit 1
+fi
+
+if [ "$wifi_mode" = "AP" ]
+then
+    protocol=`call_qcsapi -u get_beacon $wifi_device`
+    if [ "$protocol" != "Basic" ]
+    then
+        authentication=`call_qcsapi -u get_WPA_authentication_mode $wifi_device`
+        encryption=`call_qcsapi -u get_WPA_encryption_modes $wifi_device`
+        passphrase=`call_qcsapi -u get_passphrase $wifi_device 0`
+    else
+        authentication=NONE
+    fi
+elif [ "$wifi_mode" = "STA" ]
+then
+    if [ "$1" = "" ]
+    then
+        echo "$0 requires an SSID on a STA."
+        echo "Usage: $0 <WiFi device> <SSID name>"
+        echo "E.g.: $0 wifi0 quantenna"
+        exit 1
+    else
+        SSID=$1
+        shift
+    fi
+
+    verify_SSID=`call_qcsapi -u SSID_verify_SSID $wifi_device $SSID`
+    if [ "$verify_SSID" != "complete" ]
+    then
+        echo "SSID $SSID is not configured on the STA"
+        exit 1
+    fi
+
+    authentication=`call_qcsapi -u SSID_get_authentication_mode $wifi_device $SSID`
+    if [ "$authentication" != "NONE" ]
+    then
+        protocol=`call_qcsapi -u SSID_get_proto $wifi_device $SSID`
+        encryption=`call_qcsapi -u SSID_get_encryption_modes $wifi_device $SSID`
+        passphrase=`call_qcsapi -u SSID_get_key_passphrase $wifi_device $SSID 0`
+    fi
+fi
+
+echo "WiFi mode:      " $wifi_mode
+if [ "$authentication" != "NONE" ]
+then
+    echo "Protocol:       " $protocol
+    echo "Authentication: " $authentication
+    echo "Encryption:     " $encryption
+    echo "Pass phrase:    " $passphrase
+else
+    echo "Authentication: " $authentication
+    echo "Security is disabled"
+fi

@@ -1,0 +1,249 @@
+make -C buildroot CROSS_COMPILE=/usr/local/ARC/gcc/bin/arc-linux-uclibc- distclean
+make[1]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot« wird betreten
+rm -rf /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/toolchain_build_arc-linux-uclibc/linux
+#make -j1 DESTDIR=/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/root CC=/usr/local/ARC/gcc//bin/arc-linux-uclibc-gcc -C /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/bridge-utils-1.0.6 uninstall
+make -j1 -C /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/bridge-utils-1.0.6 clean
+make: ein unbekanntes Verzeichnis wird betreten
+make: *** /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/bridge-utils-1.0.6: Datei oder Verzeichnis nicht gefunden.  Schluss.
+make: ein unbekanntes Verzeichnis wird verlassen
+make[1]: [bridge-clean] Fehler 2 (ignoriert)
+rm -f /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/root/bin/busybox
+make MAKE="make -j1" -C .//package/busybox/busybox-1.10.3 clean
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/busybox/busybox-1.10.3« wird betreten
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/busybox/busybox-1.10.3« wird verlassen
+rm -f /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/staging_dir/bin/openssl  /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/root/bin/openssl
+rm -f /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/staging_dir/lib/libcrypto.so* /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/root/lib/libcrypto.so*
+rm -f /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/staging_dir/lib/libssl.so* /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/root/lib/libssl.so*
+make -j1 -C /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/openssl-1.0.2d clean
+make: ein unbekanntes Verzeichnis wird betreten
+make: *** /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/openssl-1.0.2d: Datei oder Verzeichnis nicht gefunden.  Schluss.
+make: ein unbekanntes Verzeichnis wird verlassen
+make[1]: [openssl-clean] Fehler 2 (ignoriert)
+make -j1 -C /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/qcsapi/qcsapi-1.0.1 clean
+find: "qcsapi_rpc_sample/": Datei oder Verzeichnis nicht gefunden
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/qcsapi/qcsapi-1.0.1« wird betreten
+rm -f call_qcsapi show_traffic_rates show_access_points monitor_wifi monitor_reset_device monitor_temperature qpm qfts call_qcsapi_client_src.zip libqcsapi_client_src.zip  qcsapi_sockrpc qcsapi_pcie qcsapi_sockraw qcsapi_rpcd call_qcsapi_sockrpc call_qcsapi_pcie call_qcsapi_rpcd call_qcsapi_sockraw
+rm -f *.so*
+rm -f deps.txt
+find . -type f -name \*.o -delete
+find . -type f -name .\*.d -delete
+make -C call_qcsapi_rpc clean
+make[3]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/qcsapi/qcsapi-1.0.1/call_qcsapi_rpc« wird betreten
+# call_qcsapi_rpc clean not required in release distributions
+make[3]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/qcsapi/qcsapi-1.0.1/call_qcsapi_rpc« wird verlassen
+make -C qcsapi_rpc clean
+make[3]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/qcsapi/qcsapi-1.0.1/qcsapi_rpc« wird betreten
+# qcsapi_rpc clean not required in release distributions
+make[3]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/qcsapi/qcsapi-1.0.1/qcsapi_rpc« wird verlassen
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/qcsapi/qcsapi-1.0.1« wird verlassen
+make -j1 -C /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wireless-tools/wireless_tools.29 clean
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wireless-tools/wireless_tools.29« wird betreten
+rm -f *.BAK *.bak *.d *.o *.so ,* *~ *.a *.orig *.rej *.out 
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wireless-tools/wireless_tools.29« wird verlassen
+make -j1 -C /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/wpa_supplicant clean
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/wpa_supplicant« wird betreten
+make -C ../src clean
+make[3]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src« wird betreten
+for d in ap common crypto drivers eapol_auth eapol_supp eap_common eap_peer eap_server l2_packet p2p radius rsn_supp tls utils wps; do [ -d $d ] && make -C $d clean; done
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/ap« wird betreten
+rm -f *~ *.o *.d
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/ap« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/common« wird betreten
+rm -f *~ *.o *.d
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/common« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/crypto« wird betreten
+rm -f *~ *.o *.d libcrypto.a
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/crypto« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/drivers« wird betreten
+rm -f *~ *.o *.d
+rm -f build.wpa_supplicant build.hostapd
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/drivers« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/eapol_auth« wird betreten
+rm -f *~ *.o *.d
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/eapol_auth« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/eapol_supp« wird betreten
+rm -f *~ *.o *.d
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/eapol_supp« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/eap_common« wird betreten
+rm -f *~ *.o *.d
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/eap_common« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/eap_peer« wird betreten
+rm -f *~ *.o *.so *.d
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/eap_peer« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/eap_server« wird betreten
+rm -f *~ *.o *.d
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/eap_server« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/l2_packet« wird betreten
+rm -f *~ *.o *.d
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/l2_packet« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/p2p« wird betreten
+for d in ; do make -C $d clean; done
+rm -f *~ *.o *.d
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/p2p« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/radius« wird betreten
+rm -f *~ *.o *.d libradius.a
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/radius« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/rsn_supp« wird betreten
+rm -f *~ *.o *.d
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/rsn_supp« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/tls« wird betreten
+rm -f *~ *.o *.d libtls.a
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/tls« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/utils« wird betreten
+rm -f *~ *.o *.d libutils.a
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/utils« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/wps« wird betreten
+rm -f *~ *.o *.d
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src/wps« wird verlassen
+rm -f *~
+make[3]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/src« wird verlassen
+make -C dbus clean
+Package dbus-1 was not found in the pkg-config search path.
+Perhaps you should add the directory containing `dbus-1.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'dbus-1' found
+Package dbus-1 was not found in the pkg-config search path.
+Perhaps you should add the directory containing `dbus-1.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'dbus-1' found
+make[3]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/wpa_supplicant/dbus« wird betreten
+rm -f *~ *.o *.d
+rm -f libwpadbus.a
+make[3]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/wpa_supplicant/dbus« wird verlassen
+rm -f core *~ *.o *.d eap_*.so wpa_supplicant wpa_cli wdskey wpa_passphrase systemd/wpa_supplicant.service systemd/wpa_supplicant@.service systemd/wpa_supplicant-nl80211@.service systemd/wpa_supplicant-wired@.service dbus/fi.epitest.hostap.WPASupplicant.service dbus/fi.w1.wpa_supplicant1.service wpa_supplicant.exe wpa_cli.exe wpa_passphrase.exe win_if_list.exe eapol_test preauth_test
+rm -f wpa_priv
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/wpa_supplicant/wpa_supplicant-1.1/wpa_supplicant« wird verlassen
+make -j1 -C /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/hostapd clean
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/hostapd« wird betreten
+make -C ../src clean
+make[3]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src« wird betreten
+for d in ap common crypto drivers eapol_auth eapol_supp eap_common eap_peer eap_server l2_packet p2p radius rsn_supp tls utils wps qlink; do [ -d $d ] && make -C $d clean; done
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/ap« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/ap« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/common« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/common« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/crypto« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov libcrypto.a
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/crypto« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/drivers« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov
+rm -f build.wpa_supplicant build.hostapd
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/drivers« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/eapol_auth« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/eapol_auth« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/eapol_supp« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/eapol_supp« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/eap_common« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/eap_common« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/eap_peer« wird betreten
+rm -f *~ *.o *.so *.d *.gcno *.gcda *.gcov
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/eap_peer« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/eap_server« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/eap_server« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/l2_packet« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/l2_packet« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/p2p« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/p2p« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/radius« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov libradius.a
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/radius« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/rsn_supp« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/rsn_supp« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/tls« wird betreten
+rm -f *~ *.o *.d libtls.a
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/tls« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/utils« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov libutils.a
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/utils« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/wps« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/wps« wird verlassen
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/qlink« wird betreten
+rm -f *~ *.o *.d *.gcno *.gcda *.gcov
+make[4]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src/qlink« wird verlassen
+rm -f *~
+make[3]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/src« wird verlassen
+rm -f core *~ *.o hostapd hostapd_cli nt_password_hash hlr_auc_gw
+rm -f *.d *.gcno *.gcda *.gcov
+rm -f ../src/qtn_hapd/*.d ../src/qtn_hapd/*.o
+rm -f lcov.info
+rm -rf lcov-html
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-2.1/hostapd« wird verlassen
+make -j1 -C /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-proxy/hostapd clean
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-proxy/hostapd« wird betreten
+rm -f core *~ *.o hostapd
+rm -f *.d
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/zhostapd/hostapd-proxy/hostapd« wird verlassen
+rm -f /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/toolchain_build_arc-linux-uclibc/gcc--final/.libs_installed
+rm -rf /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc/root /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/rootfs.arc-linux-uclibc
+rm -rf /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/dl
+rm -rf /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/build_arc  /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/rootfs.arc-linux-uclibc
+rm -rf /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/toolchain_build_arc-linux-uclibc
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/config« wird betreten
+rm -f *.o *~ core  mconf.o lxdialog/checklist.o lxdialog/menubox.o lxdialog/textbox.o lxdialog/yesno.o lxdialog/inputbox.o lxdialog/util.o lxdialog/msgbox.o conf.o \
+		conf mconf zconf.tab.c zconf.tab.h lex.zconf.c lkc_defs.h
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/package/config« wird verlassen
+make[1]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot« wird verlassen
+make[1]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/common« wird betreten
+rm -f ums_release.h
+make[1]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/common« wird verlassen
+make[1]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/u-boot-2009.06« wird betreten
+make[1]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/u-boot-2009.06« wird verlassen
+make[1]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/linux_2.6.35.12« wird betreten
+  CLEAN   /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/linux_2.6.35.12
+  CLEAN   kernel
+  CLEAN   lib
+  CLEAN   usr
+  CLEAN   .tmp_versions
+  CLEAN   vmlinux System.map .tmp_kallsyms1.o .tmp_kallsyms1.S .tmp_kallsyms2.o .tmp_kallsyms2.S .tmp_kallsyms3.o .tmp_kallsyms3.S .tmp_vmlinux1 .tmp_vmlinux2 .tmp_vmlinux3 .tmp_System.map
+  CLEAN   scripts/basic
+  CLEAN   scripts/kconfig
+  CLEAN   scripts/mod
+  CLEAN   scripts
+  CLEAN   include/config include/generated
+  CLEAN   .config .config.old .version include/linux/version.h Module.symvers
+make[1]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/linux_2.6.35.12« wird verlassen
+make[1]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/host« wird betreten
+make -C  utilities distclean
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/host/utilities« wird betreten
+rm -f *.o bin2bin bin2hex ruby_mem_helper
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/host/utilities« wird verlassen
+make -C  umsdl distclean
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/host/umsdl« wird betreten
+rm -f *.o umsdl bin2ums umsdl.tar.gz ums_platform.h
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/host/umsdl« wird verlassen
+make -C  qcsapi-client distclean
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/host/qcsapi-client« wird betreten
+rm -rf call_qcsapi_client_src libqcsapi_client_src call_qcsapi_client_src.zip libqcsapi_client_src.zip
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/host/qcsapi-client« wird verlassen
+make[1]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/host« wird verlassen
+make -C drivers clean
+make[1]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/drivers« wird betreten
+make -C ../linux ARCH=arc M=../drivers/ clean
+gcc: error: unrecognized command line option ‘-mA7’
+gcc: error: unrecognized command line option ‘-mlong-calls’
+gcc: error: unrecognized command line option ‘-multcost=16’
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/linux_2.6.35.12« wird betreten
+  CLEAN   ../drivers//.tmp_versions
+  CLEAN   ../drivers//Module.symvers ../drivers//modules.order
+make[2]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/linux_2.6.35.12« wird verlassen
+make[1]: Verzeichnis »/home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/drivers« wird verlassen
+rm -f drivers/extra_kos.symvers
+rm -rf tftp/
+rm -f buildroot/package/busybox/busybox-1.10.3/.config* .config* buildroot/.config* linux/.config*
+rm -f board_config.mk
+rm -f common/current_platform.h
+rm -f drivers/qdrv/qdrv_config.h
+rm -f buildroot/target/device/Quantenna/Ruby/scripts/platform_id
+rm -rf ./doxygen.tar.bz2 ./doxygen/*
+rm -rf /home/chris/github_local/6441_1.01.30_Rel/O2_GPL_acR4311/buildroot/target/device/Quantenna/Ruby/fw/topaz-bin
+rm -f .first_run

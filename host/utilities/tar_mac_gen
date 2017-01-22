@@ -1,0 +1,2 @@
+./mac_gen
+mv wifi_mac_addrs ../../buildroot/target/device/Quantenna/UMS88K/scripts

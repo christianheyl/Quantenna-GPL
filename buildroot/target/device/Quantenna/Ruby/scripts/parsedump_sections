@@ -1,0 +1,11 @@
+#!/bin/sh
+
+for module in `ls -1a /sys/module/` ; do
+	if [ -e /sys/module/$module/sections/ ] ; then
+		for section in `find /sys/module/$module/sections/ -type f` ; do
+			echo parsedump $module `basename $section` `cat $section`
+		done
+	fi
+done
+
+

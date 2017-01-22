@@ -1,0 +1,6 @@
+Updated to allow various custom functions:
+ - WPS pairing ID
+ - Custom commands such as cancel WPS
+ - Integration with Quantenna host driver
+ - Fixed up various issues associated with MBSS mode
+ - Many bugfixes

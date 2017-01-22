@@ -1,0 +1,4 @@
+#!/bin/sh
+
+rx_resid_vals=`cat /scripts/muc_memmap | grep g_rx_dc_resid_vals | awk '{print $2}'`
+/scripts/readmem_dec $rx_resid_vals 280

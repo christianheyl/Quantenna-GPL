@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# User-level script to run mtest via mtest.ko driver
+
+if [ -f /mtest.ko ]
+then
+	echo "Starting Lhost mtest..."
+    /sbin/insmod /mtest.ko
+    /bin/mknod /dev/mtest c 100 0
+    /user_mtest &
+fi

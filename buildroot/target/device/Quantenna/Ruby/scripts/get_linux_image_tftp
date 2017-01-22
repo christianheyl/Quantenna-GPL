@@ -1,0 +1,18 @@
+#! /bin/sh
+
+if [ $# -lt 1 ]
+then
+    echo "$0 requires the IP address of the TFTP server"
+    exit 1
+fi
+
+tftp_server=$1
+
+if [ $# -gt 1 ]
+then
+    remote_file=$2
+else
+    remote_file=ruby-linux.lzma.img
+fi
+
+tftp -g -l ruby-linux.lzma.img -r $remote_file $tftp_server

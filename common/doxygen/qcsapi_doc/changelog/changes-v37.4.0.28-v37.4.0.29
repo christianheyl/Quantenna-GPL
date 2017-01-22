@@ -1,0 +1,12 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_28_TO_v37_4_0_29 Version v37.4.0.28 to version v37.4.0.29 changes
+ *
+ * \subsection v37_4_0_28_TO_v37_4_0_29Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.28 and v37.4.0.29
+ * \li \ref qcsapi_pm_dual_emac_get_mode
+ * \li \ref qcsapi_pm_dual_emac_set_mode
+ */
+

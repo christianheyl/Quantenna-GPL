@@ -1,0 +1,19 @@
+#!/bin/sh
+# Quantenna Traffice Management Profile: ns
+
+qtm rule del
+
+qtm rule add vappri 1 ac 2 order 6
+qtm rule add vappri 1 ac 1 order 6
+qtm rule add vappri 1 ac 12 order 6
+qtm rule add vappri 2 ac 2 order 6
+qtm rule add vappri 2 ac 1 order 6
+qtm rule add vappri 2 ac 12 order 6
+qtm rule add vappri 4 ac 2 order 6
+qtm rule add vappri 4 ac 1 order 6
+qtm rule add vappri 4 ac 12 order 6
+qtm rule add vappri 8 ac 2 order 6
+qtm rule add vappri 8 ac 1 order 6
+qtm rule add vappri 8 ac 12 order 6
+
+qtm set enabled 1

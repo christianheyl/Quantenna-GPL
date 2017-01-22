@@ -1,0 +1,81 @@
+#! /bin/sh
+
+# only applicable for Quantenna reference boards
+
+config_file=per_ssid_config.txt
+scratch_pad=/tmp/${config_file}
+
+if [ $# -lt 4 ]
+then
+    echo "not enough params. param_list vap param_name param_value"
+    exit 1
+fi
+
+param_list=$1
+vap=$2
+parameter_name=$3
+parameter_value=$4
+
+# awk script does the real work.
+# Use the Field Separator concept (FS) to mimic and enforce PHP syntax.
+# END block is entered if the configuration file is empty.
+#      Verify output string is still "" befor proceeding.
+# Notice the configuration file is expected to have exactly 1 line.
+# This is enforced by calling exit at the end of the per-line block
+# (main block of the awk program.
+echo $param_list | awk -v vap=$vap -v parameter_name=$parameter_name -v parameter_value=$parameter_value '
+BEGIN {
+    FS="&"
+    output_string=vap ":"
+    found_entry=0
+    update_entry=0
+}
+{
+    for (iter = 1; iter <= NF; iter++)
+    {
+	pvpair=$iter
+	if (pvpair == "") continue;
+
+	split( pvpair, fields, "=" )
+	iter_2=0
+	for (var in fields)
+	{
+	     if (iter_2 == 0)
+	     {
+		 pname=fields[ var ]
+		 if (fields[ var ] == parameter_name)
+		 {
+		     found_entry=1
+		     update_entry=1
+		 }
+	     }
+
+	     if (iter_2 == 1 && update_entry != 0)
+	     {
+		  pvpair=pname "=" parameter_value
+	     }
+
+	     iter_2++
+	}
+
+	output_string=output_string pvpair "&"
+	update_entry=0
+    }
+
+    if (found_entry == 0)
+    {
+	output_string=output_string parameter_name "=" parameter_value "&"
+    }
+
+    print output_string
+    exit 0
+}
+END
+{
+    if (output_string == "")
+    {
+	output_string=parameter_name "=" parameter_value "&"
+	print output_string
+    }
+}
+' >>$scratch_pad

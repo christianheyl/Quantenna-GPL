@@ -1,0 +1,52 @@
+Common subdirectories: openssl-0.9.8w/apps and openssl-0.9.8w-use/apps
+Common subdirectories: openssl-0.9.8w/bugs and openssl-0.9.8w-use/bugs
+Common subdirectories: openssl-0.9.8w/certs and openssl-0.9.8w-use/certs
+diff -au openssl-0.9.8w/Configure openssl-0.9.8w-use/Configure
+--- openssl-0.9.8w/Configure	2010-12-10 16:30:42.000000000 -0800
++++ openssl-0.9.8w-use/Configure	2012-05-03 16:04:09.671614160 -0700
+@@ -1,4 +1,4 @@
+-:
++#!/usr/bin/perl
+ eval 'exec perl -S $0 ${1+"$@"}'
+     if $running_under_some_shell;
+ ##
+@@ -555,6 +555,9 @@
+ ##### Compaq Non-Stop Kernel (Tandem)
+ "tandem-c89","c89:-Ww -D__TANDEM -D_XOPEN_SOURCE -D_XOPEN_SOURCE_EXTENDED=1 -D_TANDEM_SOURCE -DB_ENDIAN::(unknown):::THIRTY_TWO_BIT:::",
+ 
++########## Linux-arc ###########
++"linux-arc","gcc:-DL_ENDIAN -DTERMIO -O3 -fomit-frame-pointer -Wall::-D_REENTRANT::-ldl:BN_LLONG::::::::::::dlfcn:linux-shared:-fPIC::.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
++
+ );
+ 
+ my @MK1MF_Builds=qw(VC-WIN64I VC-WIN64A
+Common subdirectories: openssl-0.9.8w/crypto and openssl-0.9.8w-use/crypto
+Common subdirectories: openssl-0.9.8w/demos and openssl-0.9.8w-use/demos
+Common subdirectories: openssl-0.9.8w/doc and openssl-0.9.8w-use/doc
+Common subdirectories: openssl-0.9.8w/engines and openssl-0.9.8w-use/engines
+Common subdirectories: openssl-0.9.8w/fips and openssl-0.9.8w-use/fips
+Common subdirectories: openssl-0.9.8w/include and openssl-0.9.8w-use/include
+Common subdirectories: openssl-0.9.8w/MacOS and openssl-0.9.8w-use/MacOS
+diff -au openssl-0.9.8w/Makefile.org openssl-0.9.8w-use/Makefile.org
+--- openssl-0.9.8w/Makefile.org	2010-01-27 08:06:36.000000000 -0800
++++ openssl-0.9.8w-use/Makefile.org	2012-05-03 18:31:18.000000000 -0700
+@@ -615,7 +615,7 @@
+ dist_pem_h:
+ 	(cd crypto/pem; $(MAKE) -e $(BUILDENV) pem.h; $(MAKE) clean)
+ 
+-install: all install_docs install_sw
++install: all install_sw
+ 
+ install_sw:
+ 	@$(PERL) $(TOP)/util/mkdir-p.pl $(INSTALL_PREFIX)$(INSTALLTOP)/bin \
+Common subdirectories: openssl-0.9.8w/ms and openssl-0.9.8w-use/ms
+Common subdirectories: openssl-0.9.8w/Netware and openssl-0.9.8w-use/Netware
+Common subdirectories: openssl-0.9.8w/os2 and openssl-0.9.8w-use/os2
+Common subdirectories: openssl-0.9.8w/perl and openssl-0.9.8w-use/perl
+Common subdirectories: openssl-0.9.8w/shlib and openssl-0.9.8w-use/shlib
+Common subdirectories: openssl-0.9.8w/ssl and openssl-0.9.8w-use/ssl
+Common subdirectories: openssl-0.9.8w/test and openssl-0.9.8w-use/test
+Common subdirectories: openssl-0.9.8w/times and openssl-0.9.8w-use/times
+Common subdirectories: openssl-0.9.8w/tools and openssl-0.9.8w-use/tools
+Common subdirectories: openssl-0.9.8w/util and openssl-0.9.8w-use/util
+Common subdirectories: openssl-0.9.8w/VMS and openssl-0.9.8w-use/VMS

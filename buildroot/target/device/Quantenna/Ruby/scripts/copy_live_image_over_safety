@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# enable fast fail
+set -o nounset
+set -o errexit
+
+live_flash_device=`grep '\"linux_live\"' /proc/mtd | awk -F: '{print $1}'`
+safety_flash_device=`grep '\"linux_safety\"' /proc/mtd | awk -F: '{print $1}'`
+safety_flash_blockdev=`echo $safety_flash_device | sed 's/mtd/mtdblock/'`
+let safety_size_kb=`cat /sys/class/block/$safety_flash_blockdev/size`/2
+
+echo -n "Overwrite safety image with live image? "
+read answer
+ok=0
+for response in y Y yes YES Yes Sure sure SURE OK ok Ok
+do
+	if [ "_$answer" == "_$response" ]
+	then
+		ok=1
+	fi
+done
+if [ $ok != 1 ] 
+then
+	exit 1
+fi
+
+echo "erase $safety_flash_device"
+flash_eraseall /dev/$safety_flash_device
+echo "copying $live_flash_device to $safety_flash_device"
+dd if=/dev/$live_flash_device of=/dev/$safety_flash_device bs=1k count=$safety_size_kb
+echo "Successfully copied."
+

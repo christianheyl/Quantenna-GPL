@@ -1,0 +1,88 @@
+/**@page mypage5 Demonstration application: call_qcsapi
+ * @brief An application is present to demonstrate the QCSAPI, <c>call_qcsapi</c>.
+ * It is a non-interactive command that takes all its parameter from the command line.
+ * This application is also the interface to the QSCAPI for scripting applications including web-based GUIs.
+ * 
+ @section mysection5_1 Command Line Parameters
+ * The first command-line parameter specifies the API to be called.
+ * Remaining command-line parameters specify the arguments to that API.
+ * The order is the order of the arguments in the API.
+ * Thus the 2nd argument is usually the interface - e.g. wifi0 or eth1_0.
+ * For a generic QSCAPI, the 3rd argument will select the generic parameter - counter, option, etc.
+ * A set API will expect the new value as its final parameter.
+ *
+ * @anchor MAC_ADDRESS_DETAILS
+ * @subsection mysection5_1_1 Format for a MAC address
+ * MAC addresses are 48 bits, or 6 bytes long.  They should be entered in this format:<br>
+	<c>xx:xx:xx:xx:xx:xx</c><br>
+ * where each "xx" represents the value of the corresponding byte in hexadecimal radix.
+ * The <c>call_qcsapi</c> command uses this same format to display MAC addresses, e.g. Get MAC Address (qcsapi_interface_get_mac_addr)
+ * or Get BSSID (qcsapi_wifi_get_BSSID).
+ * 
+ * Not all sequences of 6 bytes represent valid MAC addresses for an individual interface.
+ *
+ * If the low-order bit is set in the 1st byte, the MAC address is interpreted as a multicast address.
+ * As this is a logical identifier for a group of interfaces on a network, it is not suitable as the address for an individual interface.
+ * Notice the broadcast address, <c>FF:FF:FF:FF:FF:FF</c>, is a special case of a multicast address.
+ * 
+ * The MAC address that is all zeros (<c>00:00:00:00:00:00</c>) is also not valid as the MAC address for an individual interface.
+ *
+ * By convention, the all-zero MAC address is reported as the BSSID for a STA that is not in association.
+ * Since the BSSID for a STA is the MAC address of its partner AP, this means an AP cannot have a WiFi MAC address that is all zeros.
+ * This restriction applies to STAs as well as APs.
+ * 
+ * All APIs that accept a MAC address as a parameter expect that MAC address to be valid for an individual interface.
+ * Thus a multicast address will not be accepted as a MAC address, and the selected API will return Invalid Value (<c>EINVAL</c>) as the error code.
+ * Additional details about command line parameters are listed with each individual QCSAPI.
+ * 
+ * @section mysection5_2 Operation and Output
+ * Using its command line parameters, call_qcsapi calls the selected API, reports on the results and then exits.
+ * Its output depends on the nature of the API.  For APIs that set a parameter, it displays the message complete.
+ * For APIs that get a parameter value, it reports the parameter value.
+ * 
+ * If the API returns an error, the resulting message resembles the example below:
+ * 
+ * <c>QCS API error 22: Invalid argument</c>
+ * 
+ * The key is the word error, followed by the numeric error code (notice the actual returned error code will be less than 0, here -22).
+ * See @ref mysection4_1_4 "section QCS API Return Values" for more details on error codes.
+ * 
+ * The <c>call_qcsapi</c> application also provides an interface to the QCSAPIs for scripting and web-based applications.
+ *
+ * @section mysection5_3 Examples
+ *
+ * The following examples are documented for the reader's reference.
+ *
+ * Example 1: Get the operational mode of a device:
+ *
+ * \code
+quantenna # call_qcsapi get_mode wifi0     
+Access point
+quantenna # 
+\endcode
+ *
+ * Example 2: Disable the RF on a device:
+ *
+ * \code
+quantenna # call_qcsapi rfenable wifi0 0
+killing cmdloop hostapd with pid: 275
+killing hostapd with pid: 278
+[93387.180000] wifi0: station 00:26:86:01:1a:be disassociated
+[93387.185000] wifi0: station 00:26:86:01:1a:be disassociated
+01:56:27.304088   wifi0    Custom driver event:Dot11Msg:Client removed [00:26:86:01:1A:BE] [Deauthenticated - 3 - Deauthenticated because sendin[93387.210000] br0: port 2(wifi0) entering disabled state
+g STA is leaving (or has left) IBSS or ESS]
+01:56:27.304449   wifi0    Custom driver event:STA-TRAFFIC-STAT
+mac=00:26:86:01:1a:be
+rx_packets=50036
+rx_bytes=13669562
+tx_packets=17931
+tx_bytes=3282979
+
+01:56:27.306999   wifi0    Custom driver event:Dot11Msg:Client disconnected [00:26:86:01:1A:BE] [Client sent disassociation - 8 - Disassociated because sending STA is leaving (or has left) BSS]
+01:56:27.307305   wifi0    Expired node:00:26:86:01:1A:BE
+complete
+quantenna # 
+\endcode
+ *
+ * Note in this example there was a single STA associated, which was removed when the RF was disabled on the AP via <c>call_qcsapi</c>.
+ */

@@ -1,0 +1,90 @@
+/**@page mypage8 Using QCSAPI via RPC
+ * @section mysecton8_1 Introduction
+ * @subsection mysection8_1_1 rpcgen
+ * <c>rpcgen</c> is a tool for creating remote procedure call stubs in C, given an RPC protocol definition file.
+ * These stubs contain code relevant for marshaling and un-marshaling, which is serialization of data so that
+ * it can be transmitted over a network. The marshaled data can be sent over UDP sockets, TCP sockets, or through PCIe.
+ *
+ * @section mysection8_2 call_qcsapi_sockrpc / call_qcsapi_rpcd
+ * These are utilities for remote invocation of the <c>call_qcsapi</c> example program.
+ *
+ * <c>call_qcsapi_rpcd</c> is a server implementation, which is much like <c>call_qcsapi</c>, except that it runs as a daemon,
+ * accepting requests from RPC clients. Requests take the format of a list of strings, which are equivalent to <c>argv</c> in <c>call_qcsapi</c>.
+ *
+ * <c>call_qcsapi_sockrpc</c> is a client implementation, which finds the server hostname, 
+ * then creates a request out of argc and <c>argv</c>, waits for a response then prints it.
+ * It uses UDP sockets to communicate with the server.
+ *
+ * <c>call_qcsapi_pcie</c> is a client implementation which creates requests from <c>argc</c> and <c>argv</c>, 
+ * but it uses PCIe to communicate with the server instead of UDP sockets.<br>
+ * @image latex rpc_img1.jpg " " width=\textwidth
+ *
+ * @subsection mysection8_2_1 Implementation
+ * <c>call_qcsapi_rpc</c> and associated client programs use <c>rpcgen</c> to create client and server stubs based on a simple interface definition file, <c>call_qcsapi_rpc.x</c>.
+ *
+ * @section mysection8_3 RPC for qcsapi.h
+ * This is an RPC service, which provides and RPC interface for (almost) all of the functions in libqcsapi.
+ * @subsection mysection8_3_1 libqcsapi
+ * The target device includes a binary library, <c>libqcsapi.so</c>, which provides implementations for 
+ * the functions prototyped in <c>qcsapi.h</c>. Third party developers may develop applications that run on the target and link to libqcsapi.so
+ * @subsection mysection8_3_2 libqcsapi_client
+ * In order to develop applications that can use QCSAPI, but run on another host, libqcsapi_client provides RPC 
+ * stubs based on prototypes in qcsapi.h, with an additional function for specifying the RPC transport mechanism (UDP/TCP/PCIe).<br>
+ * Third party developers can create a program running on a host platform, link against <c>libqcsapi_client.so</c>,
+ * and call qcsapi functions from C code.<br>
+ * <c>libqcsapi_client.so</c> communicates with server RPC stubs running on <c>qcsapi_rpcd</c>.
+ * @subsection mysection8_3_3 qcsapi_rpcd
+ * <c>qcsapi_rpcd</c> is an RPC service program, which contains RPC server stubs for each function in libqcsapi.
+ * <c>qcsapi_rpcd</c> registers UDP, TCP and PCIe services. It links to <c>libqcsapi.so</c>, to invoke the real QCSAPI functions when requested by clients.
+ *
+ * @subsection mysection8_3_4 qcsapi_sockrpc
+ * qcsapi_sockrpc is a version of <c>call_qcsapi</c>, which is linked against <c>libqcsapi_client.so</c> instead of <c>libqcsapi.so</c>.
+ * It works as follows:<br>
+ * @image latex rpc_img2.jpg " " width=\textwidth
+ *
+ * @section mysection8_4 Implementation details of libqcsapi_client + qcsapi_rpcd
+ * To reduce ongoing maintenance effort required, <c>libqcsapi_client</c> and <c>qcsapi_rpcd</c> are both automatically generated
+ * based on the contents of <c>qcsapi.h</c>; it is just RPC client and server stubs. The process of code generation
+ * is as follows. All of these files are relative paths under <c>buildroot/package/qcsapi/qcsapi-1.0.1/</c>.
+ * -# <c>qcsapi.h</c> is manually changed with new feature developments, as it always has been.
+ * -# <c>qcsapi_rpc</c>/<c>qcsapi_rpc_gen.pl</c> reads <c>qcsapi.h</c>, and generates:
+ *    -# an rpc interface definition file for use with <c>rpcgen</c><br>
+	 <c>qcsapi_rpc/generated/qcsapi_rpc.x</c>. This file is later used as an input for <c>rpcgen</c>.
+ *    -# client stub implementations:<br>
+	 <c>qcsapi_rpc/generated/qcsapi_rpc_clnt_adapter.c</c>.
+	 This will contain function definitions matched to the prototypes in <c>qcsapi.h</c>, which convert <c>qcsapi.h</c> calls to the relevant RPC routines.
+ *    -# server stub adapter implementation:<br>
+	 <c>qcsapi_rpc/generated/qcsapi_rpc_svc_adapter.c</c>, which convert from <c>rpcgen</c> RPC server stub functions to <c>qcsapi.h</c> calls; these calls will go to the real implementation in <c>libqcsapi.so</c>.
+ * -# Once the perl script generates <c>qcsapi_rpc/generated/qcsapi_rpc.x</c>, <c>rpcgen</c> is used to create other files:
+      -# <c>qcsapi_rpc/generated/qcsapi_rpc.h</c>, structure definitions and function prototypes to represent data that is appropriate for marshaling/un-marshaling.
+      -# <c>qcsapi_rpc/generated/qcsapi_rpc_clnt.c</c>, which is <c>rpcgen</c> generated client stubs, but these are unused. Required code is already in <c>qcsapi_rpc_clnt_adapter.c</c>.
+      -# <c>qcsapi_rpc/generated/qcsapi_rpc_svc.c</c>, RPC service function demultiplexer. Takes arguments from the RPC service program, and will call the appropriate function in <c>qcsapi_rpc_svc_adapter.c</c>.
+      -# <c>qcsapi_rpc/generated/qcsapi_rpc_xdr.c</c> marshaling/un-marshaling functions.
+ * -# Programs are compiled and linked with the following dependencies:
+      -# <c>qcsapi_rpcd</c>
+	-# <c>qcsapi_rpc/generated/qcsapi_rpc_svc.c</c>
+	-# <c>qcsapi_rpc/generated/qcsapi_rpc_svc_adapter.c</c>
+	-# <c>qcsapi_rpc/generated/qcsapi_rpc_xdr.c</c>
+	-# <c>libqcsapi.so</c>
+	-# Additional code for starting and registering the server, and PCIe server transport.
+      -# <c>libqcsapi_client</c>
+	-# <c>qcsapi_rpc/generated/qcsapi_rpc_clnt_adapter.c</c>
+	-# <c>qcsapi_rpc/generated/qcsapi_rpc_xdr.c</c>
+      -# <c>qcsapi_sockrpc</c>:
+	-# Code for resolving which remote server to use
+	-# <c>call_qcsapi</c> frontend code
+	-# <c>libqcsapi_client.so</c>
+ *.
+ * @section mysection8_5 QCSAPI RPC in the SDK
+ * The sdk ships with generated sources for <c>qcsapi_rpc</c> and <c>call_qcsapi_rpc</c>, but not with <c>qcsapi_rpc/qcsapi_rpc_gen.pl</c>,
+ * or interface definition files. This allows <c>libqcsapi_client</c> and other client programs to be rebuild by customers, 
+ * but any changes to <c>qcsapi.h</c> will not automatically update the RPC code.
+ *
+ * @subsection mysection8_5_1 Source bundles
+ * <c>call_qcsapi</c> clients and <c>qcsapi_rpc</c> clients (including <c>libqcsapi_client.so</c> source) are included in the 
+ * SDK as source code .zip bundles, which can be taken integrated with host tools by vendors, 
+ * so their host firmware can contain QCSAPI RPC client programs without the Quantenna build system. 
+ * A caveat of this is that automatically generated code based on <c>qcsapi.h</c> will be updated with each change to <c>qcsapi.h</c>,
+ * so vendors must be diligent to make sure they are matching the appropriate client 
+ * release with the Quantenna target platform server.
+ */

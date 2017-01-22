@@ -1,0 +1,21 @@
+
+#! /bin/sh
+# Set up a default DFS debug environment
+# - usage: dfs_debug <test flags1>
+
+# <test flags1> is either 0 or ORed value of TF1_DFS_... 
+# defined in .../qdrv_debug.h
+#
+# For quick reference, they are copied here, but please make sure
+# they are same with ones defined in the header file.
+#   TF1_DFS_QUICKTIME=0x01
+#   TF1_DFS_TESTMODE=0x02
+#   TF1_DFS_DISALLOWRADARDETECT=0x4
+#   TF1_DFS_DONTCAREDOTH=0x8
+
+if [ -f /sys/devices/qdrv/control ]
+then
+        echo "set debug 0x407"       > /sys/devices/qdrv/control
+        echo "set level 3"           > /sys/devices/qdrv/control
+        echo "set test1 $1"          > /sys/devices/qdrv/control
+fi

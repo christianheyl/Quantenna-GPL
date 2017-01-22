@@ -1,0 +1,25 @@
+#! /bin/sh
+
+version_reg=E6040018
+version_str=`readmem $version_reg`
+
+version_val=`echo $version_str | sed 's%0[Xx]%%g' | awk '{ print $NF }'`
+echo $version_val | awk '
+BEGIN
+{
+    FS=""
+}
+{
+    tmpval=$(NF-3)
+    tmpval=tmpval % 8
+
+    if (tmpval == 0)
+    {
+       print "RFIC3"
+    }
+    else
+    {
+       print "RFIC4"
+    }
+}'
+

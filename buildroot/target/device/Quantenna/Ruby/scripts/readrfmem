@@ -1,0 +1,21 @@
+#! /bin/sh
+
+if [ $# -lt 2 ]
+then
+    echo "Usage: $0 <baseband index> <register offset>"
+    echo "where <register offset> is in the range 0 - 255"
+    exit 1
+fi
+
+bb_index=$1
+reg_offset=$2
+
+if [ -f /sys/devices/qdrv/control ]
+then
+        echo "calcmd 33 0 8 0 1 $bb_index 2 $reg_offset" > /sys/devices/qdrv/control
+        cat /proc/qdrvdata
+
+else
+        echo "System not initialized"
+fi
+

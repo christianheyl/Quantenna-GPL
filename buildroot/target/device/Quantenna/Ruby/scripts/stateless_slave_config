@@ -1,0 +1,15 @@
+qcsapi_rpc_target=1.1.1.2
+
+wifi0_mode=ap
+wifi0_region=us
+wifi0_vht=1
+wifi0_bw=80
+wifi0_channel=36
+wifi0_staticip=1
+
+slave_ipaddr=192.168.1.111/16
+
+wifi0_SSID=Q-stateless
+wifi0_auth_mode=PSKAuthentication
+wifi0_passphrase=quantenna1
+

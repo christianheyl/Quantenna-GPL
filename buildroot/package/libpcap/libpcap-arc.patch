@@ -1,0 +1,49 @@
+diff -ur libpcap-0.9.4/aclocal.m4 libpcap-0.9.4-new/aclocal.m4
+--- libpcap-0.9.4/aclocal.m4	2005-04-21 13:42:09.000000000 +1000
++++ libpcap-0.9.4-new/aclocal.m4	2010-10-18 18:10:01.850598879 +1100
+@@ -627,7 +627,7 @@
+ 	# know it does work, and have the script just fail on other
+ 	# cpu types and update it when such a failure occurs.
+ 	#
+-	alpha*|arm*|hp*|mips*|sh*|sparc*|ia64|nv1)
++	alpha*|arc*|arm*|hp*|mips*|sh*|sparc*|ia64|nv1)
+ 		ac_cv_lbl_unaligned_fail=yes
+ 		;;
+ 
+diff -ur libpcap-0.9.4/config.guess libpcap-0.9.4-new/config.guess
+--- libpcap-0.9.4/config.guess	2003-11-18 17:30:50.000000000 +1100
++++ libpcap-0.9.4-new/config.guess	2010-10-18 18:10:01.851516652 +1100
+@@ -823,6 +823,9 @@
+     arm*:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-gnu
+ 	exit 0 ;;
++    arc*:Linux:*:*)
++	echo ${UNAME_MACHINE}-unknown-linux-gnu
++	exit 0 ;;
+     cris:Linux:*:*)
+ 	echo cris-axis-linux-gnu
+ 	exit 0 ;;
+diff -ur libpcap-0.9.4/configure libpcap-0.9.4-new/configure
+--- libpcap-0.9.4/configure	2005-07-07 16:58:31.000000000 +1000
++++ libpcap-0.9.4-new/configure	2010-10-18 18:10:01.858567143 +1100
+@@ -6528,7 +6528,7 @@
+ 	# know it does work, and have the script just fail on other
+ 	# cpu types and update it when such a failure occurs.
+ 	#
+-	alpha*|arm*|hp*|mips*|sh*|sparc*|ia64|nv1)
++	alpha*|arc*|arm*|hp*|mips*|sh*|sparc*|ia64|nv1)
+ 		ac_cv_lbl_unaligned_fail=yes
+ 		;;
+ 
+diff -ur libpcap-0.9.4/Makefile.in libpcap-0.9.4-new/Makefile.in
+--- libpcap-0.9.4/Makefile.in	2003-12-15 12:35:03.000000000 +1100
++++ libpcap-0.9.4-new/Makefile.in	2010-10-18 18:09:03.969574934 +1100
+@@ -49,7 +49,7 @@
+ DYEXT = @DYEXT@
+ 
+ # Standard CFLAGS
+-CFLAGS = $(CCOPT) $(INCLS) $(DEFS)
++CFLAGS = $(CCOPT) $(INCLS) $(DEFS) -Dlinux
+ 
+ INSTALL = @INSTALL@
+ INSTALL_PROGRAM = @INSTALL_PROGRAM@

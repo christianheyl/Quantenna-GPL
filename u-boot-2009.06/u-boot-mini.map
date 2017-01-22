@@ -1,0 +1,2020 @@
+Archive member included because of file (symbol)
+
+/usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+                              build_mini/board/ruby/timer.o (__udivsi3)
+/usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+                              build_mini/board/ruby/timer.o (__umodsi3)
+/usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+                              /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o) (__udivmodsi4)
+/usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+                              build_mini/cpu/arc/cache.o (__st_r13_to_r14)
+/usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+                              build_mini/board/ruby/timer.o (__udivdi3)
+
+Allocating common symbols
+Common symbol       size              file
+
+NetArpWaitTry       0x4               build_mini/net/net.o
+NetArpWaitPacketMAC
+                    0x4               build_mini/net/net.o
+NetOurEther         0x6               build_mini/net/net.o
+NetOurIP            0x4               build_mini/net/net.o
+NetPingIP           0x4               build_mini/net/net.o
+NetServerIP         0x4               build_mini/net/net.o
+___strtok           0x4               build_mini/lib_generic/string.o
+NetArpWaitTxPacketSize
+                    0x4               build_mini/net/net.o
+NetArpWaitReplyIP   0x4               build_mini/net/net.o
+NetRxPackets        0x10              build_mini/net/net.o
+NetArpWaitTxPacket  0x4               build_mini/net/net.o
+gd                  0x4               build_mini/board/ruby_mini/ruby_mini_common.o
+NetArpWaitPacketIP  0x4               build_mini/net/net.o
+NetState            0x4               build_mini/net/net.o
+BootpTry            0x4               build_mini/net/bootp.o
+BootFile            0x80              build_mini/net/net.o
+global_data         0x4               build_mini/board/ruby_mini/ruby_mini_common.o
+EtherPacket         0x40              build_mini/net/net.o
+RarpTry             0x4               build_mini/net/rarp.o
+NetIPID             0x4               build_mini/net/net.o
+BootpID             0x4               build_mini/net/bootp.o
+NetRxPkt            0x4               build_mini/net/net.o
+NetArpWaitPacketBuf
+                    0x620             build_mini/net/net.o
+NetRxPktLen         0x4               build_mini/net/net.o
+NetBootFileXferSize
+                    0x4               build_mini/net/net.o
+PktBuf              0x1e20            build_mini/net/net.o
+NetArpWaitTimerStart
+                    0x4               build_mini/net/net.o
+
+Discarded input sections
+
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/board/ruby/flip.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/board/ruby/gpio.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/board/ruby/timer.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/board/ruby/serial.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/board/ruby/reset.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .u_boot_cmd    0x00000000        0x0 build_mini/common/cmd_nvedit.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/cpu/arc/cache.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/lib_generic/ctype.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/lib_generic/vsprintf.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/lib_generic/string.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini_common.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/board/ruby/arasan-emac-ahb.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/common/cmd_net.o
+ .u_boot_cmd    0x00000000        0x0 build_mini/common/cmd_net.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/net/tftp.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/net/rarp.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/net/eth.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/net/bootp.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/net/net.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.cond.16
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.cond.17
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.aux.65
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.cond.30
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.cond.31
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x00000000        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+sram             0x88014000         0x00014000
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+
+.text           0x88014000     0x6228
+                0x88014000                __uboot_begin = .
+ *(.text)
+ .text          0x88014000       0xa0 build_mini/board/ruby/start.o
+                0x88014000                _start
+                0x88014040                early_flash_config_end
+                0x88014020                early_flash_config_start
+                0x88014040                warm_boot
+ .text          0x880140a0        0x0 build_mini/board/ruby/flip.o
+ .text          0x880140a0       0xbc build_mini/board/ruby/gpio.o
+                0x880140bc                gpio_config
+                0x88014144                gpio_input
+                0x8801411c                gpio_output
+ .text          0x8801415c      0x1a8 build_mini/board/ruby/timer.o
+                0x880142a8                set_timer
+                0x880142f4                board_timer_init
+                0x880142e0                reset_timer
+                0x880141cc                get_timer
+                0x88014214                udelay
+ .text          0x88014304      0x190 build_mini/board/ruby/serial.o
+                0x880143f0                serial_setbrg
+                0x880143cc                serial_tx_done
+                0x88014384                serial_tstc
+                0x88014324                serial_putc
+                0x88014468                board_serial_init
+                0x88014460                serial_init
+                0x880143a8                serial_puts
+                0x88014350                serial_getc
+ .text          0x88014494       0x5c build_mini/board/ruby/reset.o
+                0x88014494                board_reset
+                0x880144e0                do_reset
+ .text          0x880144f0      0x5e8 build_mini/common/cmd_nvedit.o
+                0x880145c4                getenv
+                0x88014618                _do_setenv
+                0x88014548                getenv_r
+                0x880149c4                do_printenv
+                0x8801498c                setenv
+                0x880144f0                get_env_id
+                0x88014968                do_setenv
+                0x880144fc                envmatch
+ .text          0x88014ad8      0x14c build_mini/cpu/arc/cache.o
+                0x88014ae8                invalidate_dcache_range
+                0x88014b8c                dcache_enable
+                0x88014bf8                flush_cache
+                0x88014bcc                invalidate_icache_all
+                0x88014b9c                icache_enable
+                0x88014b2c                flush_dcache_range
+                0x88014bd8                flush_and_inv_dcache_all
+                0x88014b04                flush_and_inv_dcache_range
+                0x88014b74                icache_disable
+                0x88014bac                dcache_status
+                0x88014bbc                icache_status
+                0x88014ad8                invalidate_icache_range
+                0x88014b48                dcache_disable
+ .text          0x88014c24        0x0 build_mini/lib_generic/ctype.o
+ .text          0x88014c24      0xb94 build_mini/lib_generic/vsprintf.o
+                0x880152a4                vsprintf
+                0x88014d20                ustrtoul
+                0x88014cfc                simple_strtol
+                0x88015180                panic
+                0x8801578c                sprintf
+                0x88014c4c                simple_strtoul
+ .text          0x880157b8      0x458 build_mini/lib_generic/string.o
+                0x880157b8                strcpy
+                0x88015b74                memscan
+                0x88015ae0                memmove
+                0x88015ab8                memcpy
+                0x88015a38                strswab
+                0x88015914                strnlen
+                0x880158e4                strrchr
+                0x880157f8                strcat
+                0x88015be4                memchr
+                0x88015b94                strstr
+                0x88015878                strncmp
+                0x880157cc                strncpy
+                0x88015a8c                bcopy
+                0x88015998                strtok
+                0x88015b3c                memcmp
+                0x88015818                strncat
+                0x88015a68                memset
+                0x88015854                strcmp
+                0x88015a04                strsep
+                0x8801593c                strspn
+                0x880158d0                strlen
+                0x880158b8                strchr
+                0x88015970                strpbrk
+ .text          0x88015c10      0x1b0 build_mini/board/ruby_mini/ruby_mini_common.o
+                0x88015d5c                printf
+                0x88015c10                console_assign
+                0x88015c74                cpu_init
+                0x88015cb4                hang
+                0x88015c2c                getc
+                0x88015ca8                board_config
+                0x88015cc4                ruby_mini_init
+                0x88015c38                puts
+                0x88015ca4                cmd_usage
+                0x88015c70                show_boot_progress
+                0x88015c50                env_get_char
+                0x88015da4                vprintf
+                0x88015c5c                env_get_addr
+                0x88015c3c                ctrlc
+                0x88015c4c                print_size
+                0x88015d18                board_init
+                0x88015c6c                env_crc_update
+                0x88015c88                env_init
+                0x88015c34                putc
+                0x88015c44                had_ctrlc
+                0x88015c18                console_init_f
+                0x88015c64                env_get_file_body
+ .text          0x88015dc0     0x1370 build_mini/board/ruby/arasan-emac-ahb.o
+                0x88015ec0                mdio_poll_complete
+                0x88015dd0                probe_phy
+                0x88015ff4                mdio_postrd_raw
+                0x88016dbc                board_eth_init
+                0x88015f14                mdio_rdval_raw
+                0x88015f60                mdio_postwr_raw
+ .text          0x88017130      0x2ec build_mini/common/cmd_net.o
+                0x880173e0                do_rarpb
+                0x88017130                do_ping
+                0x880173f4                do_tftpb
+                0x88017408                do_bootp
+ .text          0x8801741c      0x2d4 build_mini/board/ruby/tftp_bootp_loop.o
+                0x8801741c                qtn_parse_early_flash_config
+                0x880175dc                get_stage2_image
+ .text          0x880176f0      0x664 build_mini/net/tftp.o
+                0x8801782c                TftpStart
+ .text          0x88017d54      0x144 build_mini/net/rarp.o
+                0x88017d54                RarpRequest
+ .text          0x88017e98      0x658 build_mini/net/eth.o
+                0x88017fa8                eth_get_dev_by_name
+                0x88017f0c                eth_halt
+                0x88017e98                cpu_eth_init
+                0x88018124                eth_register
+                0x880182fc                eth_getenv_enetaddr
+                0x88017ea0                eth_get_dev
+                0x88018248                eth_parse_enetaddr
+                0x88018090                eth_try_another
+                0x88018298                eth_set_enetaddr
+                0x88018354                eth_initialize
+                0x88017fec                eth_set_current
+                0x88017f68                eth_rx
+                0x88017ed8                eth_get_dev_index
+                0x880181a8                eth_init
+                0x88018214                eth_setenv_enetaddr
+                0x88017f90                eth_get_name
+                0x88017eac                eth_get_dev_by_index
+                0x88017f34                eth_send
+ .text          0x880184f0      0x578 build_mini/net/bootp.o
+                0x880185b0                BootpRequest
+ .text          0x88018a68     0x10e0 build_mini/net/net.o
+                0x88018c2c                getenv_IPaddr
+                0x88018b08                NetCksumOk
+                0x88019594                NetSetTimeout
+                0x88018b28                copy_filename
+                0x88018c40                NetEthHdrSize
+                0x88018cc8                ip_to_string
+                0x880197e8                ArpTimeoutCheck
+                0x88018ed8                NetReceive
+                0x88018bd0                string_to_ip
+                0x880195d8                NetSendUDPPacket
+                0x88018d04                NetSetEther
+                0x88019858                NetLoop
+                0x88019380                ArpRequest
+                0x88018c7c                VLAN_to_string
+                0x88018bbc                getenv_VLAN
+                0x88018acc                NetCksum
+                0x88018da8                NetSetIP
+                0x88018b7c                string_to_VLAN
+                0x8801971c                NetStartAgain
+                0x88018ac0                NetSetHandler
+                0x88019464                PingSend
+                0x88018ec8                NetSendPacket
+ .text          0x88019b48      0x1d8 build_mini/board/ruby_mini/ruby_mini.o
+                0x88019b48                ar8236_init
+                0x88019b68                do_bootm
+                0x88019b58                rtl8367b_poll_linkup
+                0x88019b50                ar8237_init
+                0x88019b6c                start_arcboot
+                0x88019b60                rtl8367b_init
+ .text          0x88019d20        0x4 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+                0x88019d20                __udivsi3
+ .text          0x88019d24       0x10 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+                0x88019d24                __umodsi3
+ .text          0x88019d34       0x8c /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+                0x88019d34                __udivmodsi4
+ .text          0x88019dc0       0x70 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+                0x88019e10                __ld_r13_to_r19
+                0x88019dcc                __st_r13_to_r22
+                0x88019de0                __st_r13_to_r17
+                0x88019e28                __ld_r13_to_r13
+                0x88019e08                __ld_r13_to_r21
+                0x88019e18                __ld_r13_to_r17
+                0x88019dfc                __ld_r13_to_r24
+                0x88019de8                __st_r13_to_r15
+                0x88019dc0                __st_r13_to_r25
+                0x88019e14                __ld_r13_to_r18
+                0x88019e24                __ld_r13_to_r14
+                0x88019de4                __st_r13_to_r16
+                0x88019df8                __ld_r13_to_r25
+                0x88019dc4                __st_r13_to_r24
+                0x88019dd0                __st_r13_to_r21
+                0x88019e0c                __ld_r13_to_r20
+                0x88019dc0                __millicodethunk
+                0x88019dd8                __st_r13_to_r19
+                0x88019dc8                __st_r13_to_r23
+                0x88019e1c                __ld_r13_to_r16
+                0x88019dec                __st_r13_to_r14
+                0x88019e04                __ld_r13_to_r22
+                0x88019df0                __st_r13_to_r13
+                0x88019ddc                __st_r13_to_r18
+                0x88019e20                __ld_r13_to_r15
+                0x88019dd4                __st_r13_to_r20
+                0x88019e00                __ld_r13_to_r23
+ .text          0x88019e30      0x3f8 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+                0x88019e30                __udivdi3
+ *(.text.*)
+                0x8801a228                . = ALIGN (0x4)
+
+.rodata         0x8801a228      0xd78
+ *(.rodata)
+ .rodata        0x8801a228       0x24 build_mini/lib_generic/vsprintf.o
+                0x8801a228                hex_asc
+ .rodata        0x8801a24c       0x38 build_mini/board/ruby_mini/ruby_mini_common.o
+ .rodata        0x8801a284       0x14 build_mini/net/tftp.o
+ .rodata        0x8801a298        0x8 build_mini/net/eth.o
+ .rodata        0x8801a2a0       0x10 build_mini/net/bootp.o
+ .rodata        0x8801a2b0        0x8 build_mini/net/net.o
+ *(.rodata.str*)
+ .rodata.str1.4
+                0x8801a2b8        0xf build_mini/board/ruby/reset.o
+                                 0x10 (size before relaxing)
+ *fill*         0x8801a2c7        0x1 00
+ .rodata.str1.4
+                0x8801a2c8      0x1d6 build_mini/common/cmd_nvedit.o
+                                0x1d8 (size before relaxing)
+ *fill*         0x8801a49e        0x2 00
+ .rodata.str1.4
+                0x8801a4a0        0xf build_mini/lib_generic/vsprintf.o
+                                 0x10 (size before relaxing)
+ *fill*         0x8801a4af        0x1 00
+ .rodata.str1.4
+                0x8801a4b0        0xd build_mini/board/ruby_mini/ruby_mini_common.o
+                                 0x10 (size before relaxing)
+ *fill*         0x8801a4bd        0x3 00
+ .rodata.str1.4
+                0x8801a4c0      0x363 build_mini/board/ruby/arasan-emac-ahb.o
+                                0x364 (size before relaxing)
+ *fill*         0x8801a823        0x1 00
+ .rodata.str1.4
+                0x8801a824      0x19f build_mini/common/cmd_net.o
+                                0x1b4 (size before relaxing)
+ *fill*         0x8801a9c3        0x1 00
+ .rodata.str1.4
+                0x8801a9c4       0x33 build_mini/board/ruby/tftp_bootp_loop.o
+                                 0x54 (size before relaxing)
+ *fill*         0x8801a9f7        0x1 00
+ .rodata.str1.4
+                0x8801a9f8      0x1ed build_mini/net/tftp.o
+                                0x1f4 (size before relaxing)
+ *fill*         0x8801abe5        0x3 00
+ .rodata.str1.4
+                0x8801abe8       0x1d build_mini/net/rarp.o
+                                 0x48 (size before relaxing)
+ *fill*         0x8801ac05        0x3 00
+ .rodata.str1.4
+                0x8801ac08       0xcc build_mini/net/eth.o
+                                 0xd8 (size before relaxing)
+ .rodata.str1.4
+                0x8801acd4       0x74 build_mini/net/bootp.o
+                                 0xb4 (size before relaxing)
+ .rodata.str1.4
+                0x8801ad48      0x1e1 build_mini/net/net.o
+                                0x21c (size before relaxing)
+ *fill*         0x8801af29        0x3 00
+ .rodata.str1.4
+                0x8801af2c       0x74 build_mini/board/ruby_mini/ruby_mini.o
+                                 0x90 (size before relaxing)
+ *(.rodata.*)
+                0x8801afa0                . = ALIGN (0x4)
+
+.data           0x8801afa0      0x422
+ *(.data)
+ .data          0x8801afa0        0x0 build_mini/board/ruby/start.o
+ .data          0x8801afa0        0x0 build_mini/board/ruby/flip.o
+ .data          0x8801afa0        0x0 build_mini/board/ruby/gpio.o
+ .data          0x8801afa0        0x0 build_mini/board/ruby/timer.o
+ .data          0x8801afa0        0x0 build_mini/board/ruby/serial.o
+ .data          0x8801afa0        0x0 build_mini/board/ruby/reset.o
+ .data          0x8801afa0        0x4 build_mini/common/cmd_nvedit.o
+ .data          0x8801afa4        0x0 build_mini/cpu/arc/cache.o
+ .data          0x8801afa4      0x100 build_mini/lib_generic/ctype.o
+                0x8801afa4                _ctype
+ .data          0x8801b0a4        0x0 build_mini/lib_generic/vsprintf.o
+ .data          0x8801b0a4        0x0 build_mini/lib_generic/string.o
+ .data          0x8801b0a4      0x21c build_mini/board/ruby_mini/ruby_mini_common.o
+                0x8801b0a4                load_addr
+                0x8801b0a8                __env
+ .data          0x8801b2c0       0xe4 build_mini/board/ruby/arasan-emac-ahb.o
+                0x8801b2c0                mdc_clk_divisor
+ .data          0x8801b3a4        0x0 build_mini/common/cmd_net.o
+ .data          0x8801b3a4        0x0 build_mini/board/ruby/tftp_bootp_loop.o
+ .data          0x8801b3a4       0x14 build_mini/net/tftp.o
+                0x8801b3a4                TftpRRQTimeoutMSecs
+                0x8801b3a8                TftpRRQTimeoutCountMax
+ .data          0x8801b3b8        0x0 build_mini/net/rarp.o
+ .data          0x8801b3b8        0x0 build_mini/net/eth.o
+ .data          0x8801b3b8        0x0 build_mini/net/bootp.o
+ .data          0x8801b3b8        0xa build_mini/net/net.o
+                0x8801b3b8                NetBcastAddr
+                0x8801b3c0                NetOurNativeVLAN
+                0x8801b3be                NetOurVLAN
+ .data          0x8801b3c2        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .data          0x8801b3c2        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .data          0x8801b3c2        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .data          0x8801b3c2        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .data          0x8801b3c2        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .data          0x8801b3c2        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ *(.data.*)
+                0x8801b3c4                . = ALIGN (0x4)
+                0x8801b3c4                __bss_start = .
+
+.bss            0x8801b3c4     0x587c
+ *(.bss)
+ .bss           0x8801b3c4        0x0 build_mini/board/ruby/start.o
+ .bss           0x8801b3c4        0x0 build_mini/board/ruby/flip.o
+ .bss           0x8801b3c4        0x0 build_mini/board/ruby/gpio.o
+ .bss           0x8801b3c4        0xc build_mini/board/ruby/timer.o
+ .bss           0x8801b3d0        0x4 build_mini/board/ruby/serial.o
+ .bss           0x8801b3d4        0x0 build_mini/board/ruby/reset.o
+ .bss           0x8801b3d4        0x0 build_mini/common/cmd_nvedit.o
+ .bss           0x8801b3d4        0x0 build_mini/cpu/arc/cache.o
+ .bss           0x8801b3d4        0x0 build_mini/lib_generic/ctype.o
+ .bss           0x8801b3d4        0x0 build_mini/lib_generic/vsprintf.o
+ .bss           0x8801b3d4        0x0 build_mini/lib_generic/string.o
+ .bss           0x8801b3d4       0x44 build_mini/board/ruby_mini/ruby_mini_common.o
+ *fill*         0x8801b418        0x8 00
+ .bss           0x8801b420     0x30a0 build_mini/board/ruby/arasan-emac-ahb.o
+ .bss           0x8801e4c0        0x0 build_mini/common/cmd_net.o
+ .bss           0x8801e4c0       0x80 build_mini/board/ruby/tftp_bootp_loop.o
+ .bss           0x8801e540       0xb4 build_mini/net/tftp.o
+ .bss           0x8801e5f4        0x0 build_mini/net/rarp.o
+ .bss           0x8801e5f4       0x14 build_mini/net/eth.o
+ .bss           0x8801e608        0x0 build_mini/net/bootp.o
+ .bss           0x8801e608       0xcc build_mini/net/net.o
+                0x8801e614                NetOurNISDomain
+                0x8801e696                NetServerEther
+                0x8801e608                NetOurSubnetMask
+                0x8801e694                NetBootFileSize
+                0x8801e634                NetOurHostName
+                0x8801e60c                NetOurGatewayIP
+                0x8801e69c                NetEtherNullAddr
+                0x8801e6a4                NetRestartWrap
+                0x8801e6a8                NetTxPacket
+                0x8801e610                NetOurDNSIP
+                0x8801e654                NetOurRootPath
+ .bss           0x8801e6d4        0x0 build_mini/board/ruby_mini/ruby_mini.o
+ .bss           0x8801e6d4        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivsi3.o)
+ .bss           0x8801e6d4        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_umodsi3.o)
+ .bss           0x8801e6d4        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_divmod_tools.o)
+ .bss           0x8801e6d4        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_millicodethunk.o)
+ .bss           0x8801e6d4        0x0 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+ *(.bss.*)
+ COMMON         0x8801e6d4        0x4 build_mini/lib_generic/string.o
+                0x8801e6d4                ___strtok
+ COMMON         0x8801e6d8        0x8 build_mini/board/ruby_mini/ruby_mini_common.o
+                0x8801e6d8                gd
+                0x8801e6dc                global_data
+ COMMON         0x8801e6e0        0x4 build_mini/net/rarp.o
+                0x8801e6e0                RarpTry
+ COMMON         0x8801e6e4        0x8 build_mini/net/bootp.o
+                0x8801e6e4                BootpTry
+                0x8801e6e8                BootpID
+ COMMON         0x8801e6ec     0x2554 build_mini/net/net.o
+                0x8801e6ec                NetArpWaitTry
+                0x8801e6f0                NetArpWaitPacketMAC
+                0x8801e6f4                NetOurEther
+                0x8801e6fc                NetOurIP
+                0x8801e700                NetPingIP
+                0x8801e704                NetServerIP
+                0x8801e708                NetArpWaitTxPacketSize
+                0x8801e70c                NetArpWaitReplyIP
+                0x8801e710                NetRxPackets
+                0x8801e720                NetArpWaitTxPacket
+                0x8801e724                NetArpWaitPacketIP
+                0x8801e728                NetState
+                0x8801e72c                BootFile
+                0x8801e7ac                EtherPacket
+                0x8801e7ec                NetIPID
+                0x8801e7f0                NetRxPkt
+                0x8801e7f4                NetArpWaitPacketBuf
+                0x8801ee14                NetRxPktLen
+                0x8801ee18                NetBootFileXferSize
+                0x8801ee1c                PktBuf
+                0x88020c3c                NetArpWaitTimerStart
+                0x88020c40                . = ALIGN (0x4)
+                0x88020c40                __bss_end = .
+                0x88020c40                __uboot_end = .
+
+/DISCARD/
+ *(.u_boot_cmd)
+LOAD build_mini/board/ruby/start.o
+LOAD build_mini/board/ruby/flip.o
+LOAD build_mini/board/ruby/gpio.o
+LOAD build_mini/board/ruby/timer.o
+LOAD build_mini/board/ruby/serial.o
+LOAD build_mini/board/ruby/reset.o
+LOAD build_mini/common/cmd_nvedit.o
+LOAD build_mini/cpu/arc/cache.o
+LOAD build_mini/lib_generic/ctype.o
+LOAD build_mini/lib_generic/vsprintf.o
+LOAD build_mini/lib_generic/string.o
+LOAD build_mini/board/ruby_mini/ruby_mini_common.o
+LOAD build_mini/board/ruby/arasan-emac-ahb.o
+LOAD build_mini/common/cmd_net.o
+LOAD build_mini/board/ruby/tftp_bootp_loop.o
+LOAD build_mini/net/tftp.o
+LOAD build_mini/net/rarp.o
+LOAD build_mini/net/eth.o
+LOAD build_mini/net/bootp.o
+LOAD build_mini/net/net.o
+LOAD build_mini/board/ruby_mini/ruby_mini.o
+LOAD /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a
+OUTPUT(u-boot-mini elf32-littlearc)
+
+.gnu.linkonce.arcextmap.inst.2.5.2
+                0x88020c40       0x16
+ .gnu.linkonce.arcextmap.inst.2.5.2
+                0x88020c40       0x16 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.2.5.3
+                0x88020c56       0x16
+ .gnu.linkonce.arcextmap.inst.2.5.3
+                0x88020c56       0x16 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.2.5.4
+                0x88020c6c       0x16
+ .gnu.linkonce.arcextmap.inst.2.5.4
+                0x88020c6c       0x16 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.2.5.5
+                0x88020c82       0x14
+ .gnu.linkonce.arcextmap.inst.2.5.5
+                0x88020c82       0x14 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.2.5.6
+                0x88020c96       0x16
+ .gnu.linkonce.arcextmap.inst.2.5.6
+                0x88020c96       0x16 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.2.5.7
+                0x88020cac       0x14
+ .gnu.linkonce.arcextmap.inst.2.5.7
+                0x88020cac       0x14 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.3.5.6
+                0x88020cc0       0x14
+ .gnu.linkonce.arcextmap.inst.3.5.6
+                0x88020cc0       0x14 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.3.5.7
+                0x88020cd4       0x14
+ .gnu.linkonce.arcextmap.inst.3.5.7
+                0x88020cd4       0x14 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.3.5.8
+                0x88020ce8       0x16
+ .gnu.linkonce.arcextmap.inst.3.5.8
+                0x88020ce8       0x16 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.3.5.10
+                0x88020cfe        0xa
+ .gnu.linkonce.arcextmap.inst.3.5.10
+                0x88020cfe        0xa build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.3.5.11
+                0x88020d08        0xa
+ .gnu.linkonce.arcextmap.inst.3.5.11
+                0x88020d08        0xa build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.3.5.40
+                0x88020d12       0x18
+ .gnu.linkonce.arcextmap.inst.3.5.40
+                0x88020d12       0x18 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.3.5.41
+                0x88020d2a       0x18
+ .gnu.linkonce.arcextmap.inst.3.5.41
+                0x88020d2a       0x18 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.cond.16
+                0x88020d42        0xc
+ .gnu.linkonce.arcextmap.cond.16
+                0x88020d42        0xc build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.cond.17
+                0x88020d4e        0xc
+ .gnu.linkonce.arcextmap.cond.17
+                0x88020d4e        0xc build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.aux.65
+                0x88020d5a       0x12
+ .gnu.linkonce.arcextmap.aux.65
+                0x88020d5a       0x12 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.3.4.26
+                0x88020d6c        0x9
+ .gnu.linkonce.arcextmap.inst.3.4.26
+                0x88020d6c        0x9 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.3.4.27
+                0x88020d75        0xa
+ .gnu.linkonce.arcextmap.inst.3.4.27
+                0x88020d75        0xa build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.3.4.28
+                0x88020d7f        0xb
+ .gnu.linkonce.arcextmap.inst.3.4.28
+                0x88020d7f        0xb build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.3.4.29
+                0x88020d8a        0xa
+ .gnu.linkonce.arcextmap.inst.3.4.29
+                0x88020d8a        0xa build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.cond.30
+                0x88020d94        0x6
+ .gnu.linkonce.arcextmap.cond.30
+                0x88020d94        0x6 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.cond.31
+                0x88020d9a        0x7
+ .gnu.linkonce.arcextmap.cond.31
+                0x88020d9a        0x7 build_mini/board/ruby/start.o
+
+.gnu.linkonce.arcextmap.inst.3.5.63
+                0x88020da1        0xa
+ .gnu.linkonce.arcextmap.inst.3.5.63
+                0x88020da1        0xa build_mini/board/ruby/start.o
+
+.debug_abbrev   0x88020dab     0x2a1b
+ .debug_abbrev  0x88020dab      0x156 build_mini/board/ruby/gpio.o
+ .debug_abbrev  0x88020f01      0x1fd build_mini/board/ruby/timer.o
+ .debug_abbrev  0x880210fe      0x1f5 build_mini/board/ruby/serial.o
+ .debug_abbrev  0x880212f3      0x124 build_mini/board/ruby/reset.o
+ .debug_abbrev  0x88021417      0x249 build_mini/common/cmd_nvedit.o
+ .debug_abbrev  0x88021660      0x154 build_mini/cpu/arc/cache.o
+ .debug_abbrev  0x880217b4       0x4b build_mini/lib_generic/ctype.o
+ .debug_abbrev  0x880217ff      0x314 build_mini/lib_generic/vsprintf.o
+ .debug_abbrev  0x88021b13      0x1c7 build_mini/lib_generic/string.o
+ .debug_abbrev  0x88021cda      0x2dc build_mini/board/ruby_mini/ruby_mini_common.o
+ .debug_abbrev  0x88021fb6      0x426 build_mini/board/ruby/arasan-emac-ahb.o
+ .debug_abbrev  0x880223dc      0x1d0 build_mini/common/cmd_net.o
+ .debug_abbrev  0x880225ac      0x148 build_mini/board/ruby/tftp_bootp_loop.o
+ .debug_abbrev  0x880226f4      0x209 build_mini/net/tftp.o
+ .debug_abbrev  0x880228fd      0x12d build_mini/net/rarp.o
+ .debug_abbrev  0x88022a2a      0x305 build_mini/net/eth.o
+ .debug_abbrev  0x88022d2f      0x30b build_mini/net/bootp.o
+ .debug_abbrev  0x8802303a      0x423 build_mini/net/net.o
+ .debug_abbrev  0x8802345d      0x206 build_mini/board/ruby_mini/ruby_mini.o
+ .debug_abbrev  0x88023663      0x163 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+
+.debug_info     0x880237c6     0x9502
+ .debug_info    0x880237c6      0x227 build_mini/board/ruby/gpio.o
+ .debug_info    0x880239ed      0x382 build_mini/board/ruby/timer.o
+ .debug_info    0x88023d6f      0x47b build_mini/board/ruby/serial.o
+ .debug_info    0x880241ea      0x219 build_mini/board/ruby/reset.o
+ .debug_info    0x88024403      0x72a build_mini/common/cmd_nvedit.o
+ .debug_info    0x88024b2d      0x46e build_mini/cpu/arc/cache.o
+ .debug_info    0x88024f9b       0x52 build_mini/lib_generic/ctype.o
+ .debug_info    0x88024fed      0xa50 build_mini/lib_generic/vsprintf.o
+ .debug_info    0x88025a3d      0x866 build_mini/lib_generic/string.o
+ .debug_info    0x880262a3      0x827 build_mini/board/ruby_mini/ruby_mini_common.o
+ .debug_info    0x88026aca     0x2397 build_mini/board/ruby/arasan-emac-ahb.o
+ .debug_info    0x88028e61      0x514 build_mini/common/cmd_net.o
+ .debug_info    0x88029375      0x2c2 build_mini/board/ruby/tftp_bootp_loop.o
+ .debug_info    0x88029637      0x49e build_mini/net/tftp.o
+ .debug_info    0x88029ad5      0x24f build_mini/net/rarp.o
+ .debug_info    0x88029d24      0x7e1 build_mini/net/eth.o
+ .debug_info    0x8802a505      0x8cb build_mini/net/bootp.o
+ .debug_info    0x8802add0     0x13dd build_mini/net/net.o
+ .debug_info    0x8802c1ad      0x54c build_mini/board/ruby_mini/ruby_mini.o
+ .debug_info    0x8802c6f9      0x5cf /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+
+.debug_line     0x8802ccc8     0x6c72
+ .debug_line    0x8802ccc8      0x147 build_mini/board/ruby/gpio.o
+ .debug_line    0x8802ce0f      0x24f build_mini/board/ruby/timer.o
+ .debug_line    0x8802d05e      0x238 build_mini/board/ruby/serial.o
+ .debug_line    0x8802d296       0xfe build_mini/board/ruby/reset.o
+ .debug_line    0x8802d394      0x720 build_mini/common/cmd_nvedit.o
+ .debug_line    0x8802dab4      0x1fc build_mini/cpu/arc/cache.o
+ .debug_line    0x8802dcb0       0x58 build_mini/lib_generic/ctype.o
+ .debug_line    0x8802dd08      0xc61 build_mini/lib_generic/vsprintf.o
+ .debug_line    0x8802e969      0x564 build_mini/lib_generic/string.o
+ .debug_line    0x8802eecd      0x405 build_mini/board/ruby_mini/ruby_mini_common.o
+ .debug_line    0x8802f2d2     0x148f build_mini/board/ruby/arasan-emac-ahb.o
+ .debug_line    0x88030761      0x388 build_mini/common/cmd_net.o
+ .debug_line    0x88030ae9      0x2de build_mini/board/ruby/tftp_bootp_loop.o
+ .debug_line    0x88030dc7      0x6e0 build_mini/net/tftp.o
+ .debug_line    0x880314a7      0x1c6 build_mini/net/rarp.o
+ .debug_line    0x8803166d      0x67d build_mini/net/eth.o
+ .debug_line    0x88031cea      0x63b build_mini/net/bootp.o
+ .debug_line    0x88032325     0x106f build_mini/net/net.o
+ .debug_line    0x88033394      0x358 build_mini/board/ruby_mini/ruby_mini.o
+ .debug_line    0x880336ec      0x24e /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+
+.debug_frame    0x8803393c     0x19d0
+ .debug_frame   0x8803393c       0x7c build_mini/board/ruby/gpio.o
+ .debug_frame   0x880339b8       0xc8 build_mini/board/ruby/timer.o
+ .debug_frame   0x88033a80      0x120 build_mini/board/ruby/serial.o
+ .debug_frame   0x88033ba0       0x48 build_mini/board/ruby/reset.o
+ .debug_frame   0x88033be8      0x120 build_mini/common/cmd_nvedit.o
+ .debug_frame   0x88033d08      0x150 build_mini/cpu/arc/cache.o
+ .debug_frame   0x88033e58      0x1a0 build_mini/lib_generic/vsprintf.o
+ .debug_frame   0x88033ff8      0x258 build_mini/lib_generic/string.o
+ .debug_frame   0x88034250      0x264 build_mini/board/ruby_mini/ruby_mini_common.o
+ .debug_frame   0x880344b4      0x294 build_mini/board/ruby/arasan-emac-ahb.o
+ .debug_frame   0x88034748       0xc4 build_mini/common/cmd_net.o
+ .debug_frame   0x8803480c       0xa4 build_mini/board/ruby/tftp_bootp_loop.o
+ .debug_frame   0x880348b0       0xbc build_mini/net/tftp.o
+ .debug_frame   0x8803496c       0x80 build_mini/net/rarp.o
+ .debug_frame   0x880349ec      0x278 build_mini/net/eth.o
+ .debug_frame   0x88034c64      0x14c build_mini/net/bootp.o
+ .debug_frame   0x88034db0      0x434 build_mini/net/net.o
+ .debug_frame   0x880351e4       0xa8 build_mini/board/ruby_mini/ruby_mini.o
+ .debug_frame   0x8803528c       0x80 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+
+.debug_loc      0x8803530c     0x6810
+ .debug_loc     0x8803530c      0x103 build_mini/board/ruby/gpio.o
+ .debug_loc     0x8803540f      0x1dc build_mini/board/ruby/timer.o
+ .debug_loc     0x880355eb      0x1ed build_mini/board/ruby/serial.o
+ .debug_loc     0x880357d8       0xb5 build_mini/board/ruby/reset.o
+ .debug_loc     0x8803588d      0x831 build_mini/common/cmd_nvedit.o
+ .debug_loc     0x880360be      0x18f build_mini/cpu/arc/cache.o
+ .debug_loc     0x8803624d      0xc98 build_mini/lib_generic/vsprintf.o
+ .debug_loc     0x88036ee5      0x816 build_mini/lib_generic/string.o
+ .debug_loc     0x880376fb      0x239 build_mini/board/ruby_mini/ruby_mini_common.o
+ .debug_loc     0x88037934     0x12be build_mini/board/ruby/arasan-emac-ahb.o
+ .debug_loc     0x88038bf2      0x442 build_mini/common/cmd_net.o
+ .debug_loc     0x88039034      0x1a9 build_mini/board/ruby/tftp_bootp_loop.o
+ .debug_loc     0x880391dd      0x2a4 build_mini/net/tftp.o
+ .debug_loc     0x88039481      0x119 build_mini/net/rarp.o
+ .debug_loc     0x8803959a      0x6b5 build_mini/net/eth.o
+ .debug_loc     0x88039c4f      0x603 build_mini/net/bootp.o
+ .debug_loc     0x8803a252      0xf4e build_mini/net/net.o
+ .debug_loc     0x8803b1a0       0xf9 build_mini/board/ruby_mini/ruby_mini.o
+ .debug_loc     0x8803b299      0x883 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+
+.debug_pubnames
+                0x8803bb1c      0xec3
+ .debug_pubnames
+                0x8803bb1c       0x41 build_mini/board/ruby/gpio.o
+ .debug_pubnames
+                0x8803bb5d       0x5e build_mini/board/ruby/timer.o
+ .debug_pubnames
+                0x8803bbbb       0x9d build_mini/board/ruby/serial.o
+ .debug_pubnames
+                0x8803bc58       0x2f build_mini/board/ruby/reset.o
+ .debug_pubnames
+                0x8803bc87       0xb0 build_mini/common/cmd_nvedit.o
+ .debug_pubnames
+                0x8803bd37      0x135 build_mini/cpu/arc/cache.o
+ .debug_pubnames
+                0x8803be6c       0x1d build_mini/lib_generic/ctype.o
+ .debug_pubnames
+                0x8803be89       0x73 build_mini/lib_generic/vsprintf.o
+ .debug_pubnames
+                0x8803befc      0x125 build_mini/lib_generic/string.o
+ .debug_pubnames
+                0x8803c021      0x186 build_mini/board/ruby_mini/ruby_mini_common.o
+ .debug_pubnames
+                0x8803c1a7       0x99 build_mini/board/ruby/arasan-emac-ahb.o
+ .debug_pubnames
+                0x8803c240       0xa6 build_mini/common/cmd_net.o
+ .debug_pubnames
+                0x8803c2e6       0x48 build_mini/board/ruby/tftp_bootp_loop.o
+ .debug_pubnames
+                0x8803c32e       0x53 build_mini/net/tftp.o
+ .debug_pubnames
+                0x8803c381       0x2e build_mini/net/rarp.o
+ .debug_pubnames
+                0x8803c3af      0x154 build_mini/net/eth.o
+ .debug_pubnames
+                0x8803c503       0x3c build_mini/net/bootp.o
+ .debug_pubnames
+                0x8803c53f      0x404 build_mini/net/net.o
+ .debug_pubnames
+                0x8803c943       0x7c build_mini/board/ruby_mini/ruby_mini.o
+ .debug_pubnames
+                0x8803c9bf       0x20 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+
+.debug_aranges  0x8803c9df      0x260
+ .debug_aranges
+                0x8803c9df       0x20 build_mini/board/ruby/gpio.o
+ .debug_aranges
+                0x8803c9ff       0x20 build_mini/board/ruby/timer.o
+ .debug_aranges
+                0x8803ca1f       0x20 build_mini/board/ruby/serial.o
+ .debug_aranges
+                0x8803ca3f       0x20 build_mini/board/ruby/reset.o
+ .debug_aranges
+                0x8803ca5f       0x20 build_mini/common/cmd_nvedit.o
+ .debug_aranges
+                0x8803ca7f       0x20 build_mini/cpu/arc/cache.o
+ .debug_aranges
+                0x8803ca9f       0x20 build_mini/lib_generic/vsprintf.o
+ .debug_aranges
+                0x8803cabf       0x20 build_mini/lib_generic/string.o
+ .debug_aranges
+                0x8803cadf       0x20 build_mini/board/ruby_mini/ruby_mini_common.o
+ .debug_aranges
+                0x8803caff       0x20 build_mini/board/ruby/arasan-emac-ahb.o
+ .debug_aranges
+                0x8803cb1f       0x20 build_mini/common/cmd_net.o
+ .debug_aranges
+                0x8803cb3f       0x20 build_mini/board/ruby/tftp_bootp_loop.o
+ .debug_aranges
+                0x8803cb5f       0x20 build_mini/net/tftp.o
+ .debug_aranges
+                0x8803cb7f       0x20 build_mini/net/rarp.o
+ .debug_aranges
+                0x8803cb9f       0x20 build_mini/net/eth.o
+ .debug_aranges
+                0x8803cbbf       0x20 build_mini/net/bootp.o
+ .debug_aranges
+                0x8803cbdf       0x20 build_mini/net/net.o
+ .debug_aranges
+                0x8803cbff       0x20 build_mini/board/ruby_mini/ruby_mini.o
+ .debug_aranges
+                0x8803cc1f       0x20 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+
+.debug_ranges   0x8803cc3f      0x7c8
+ .debug_ranges  0x8803cc3f       0x18 build_mini/board/ruby/gpio.o
+ .debug_ranges  0x8803cc57       0x18 build_mini/board/ruby/timer.o
+ .debug_ranges  0x8803cc6f       0x18 build_mini/board/ruby/serial.o
+ .debug_ranges  0x8803cc87       0x18 build_mini/common/cmd_nvedit.o
+ .debug_ranges  0x8803cc9f       0xf0 build_mini/lib_generic/vsprintf.o
+ .debug_ranges  0x8803cd8f      0x3c0 build_mini/board/ruby/arasan-emac-ahb.o
+ .debug_ranges  0x8803d14f       0x30 build_mini/net/tftp.o
+ .debug_ranges  0x8803d17f       0x38 build_mini/net/eth.o
+ .debug_ranges  0x8803d1b7       0xd8 build_mini/net/bootp.o
+ .debug_ranges  0x8803d28f       0xf0 build_mini/net/net.o
+ .debug_ranges  0x8803d37f       0x18 build_mini/board/ruby_mini/ruby_mini.o
+ .debug_ranges  0x8803d397       0x70 /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+
+.debug_str      0x8803d407     0x27ba
+ .debug_str     0x8803d407      0x112 build_mini/board/ruby/gpio.o
+                                0x158 (size before relaxing)
+ .debug_str     0x8803d519      0x140 build_mini/board/ruby/timer.o
+                                0x259 (size before relaxing)
+ .debug_str     0x8803d659       0xe9 build_mini/board/ruby/serial.o
+                                0x294 (size before relaxing)
+ .debug_str     0x8803d742       0x94 build_mini/board/ruby/reset.o
+                                0x19c (size before relaxing)
+ .debug_str     0x8803d7d6       0xd8 build_mini/common/cmd_nvedit.o
+                                0x2bc (size before relaxing)
+ .debug_str     0x8803d8ae      0x106 build_mini/cpu/arc/cache.o
+                                0x20c (size before relaxing)
+ .debug_str     0x8803d9b4       0x1b build_mini/lib_generic/ctype.o
+                                 0x6b (size before relaxing)
+ .debug_str     0x8803d9cf      0x164 build_mini/lib_generic/vsprintf.o
+                                0x28f (size before relaxing)
+ .debug_str     0x8803db33       0xe5 build_mini/lib_generic/string.o
+                                0x1df (size before relaxing)
+ .debug_str     0x8803dc18      0x24c build_mini/board/ruby_mini/ruby_mini_common.o
+                                0x49f (size before relaxing)
+ .debug_str     0x8803de64      0xeab build_mini/board/ruby/arasan-emac-ahb.o
+                               0x10f8 (size before relaxing)
+ .debug_str     0x8803ed0f      0x172 build_mini/common/cmd_net.o
+                                0x2ad (size before relaxing)
+ .debug_str     0x8803ee81      0x124 build_mini/board/ruby/tftp_bootp_loop.o
+                                0x255 (size before relaxing)
+ .debug_str     0x8803efa5      0x1be build_mini/net/tftp.o
+                                0x305 (size before relaxing)
+ .debug_str     0x8803f163       0xa1 build_mini/net/rarp.o
+                                0x1a6 (size before relaxing)
+ .debug_str     0x8803f204      0x219 build_mini/net/eth.o
+                                0x3b6 (size before relaxing)
+ .debug_str     0x8803f41d      0x223 build_mini/net/bootp.o
+                                0x433 (size before relaxing)
+ .debug_str     0x8803f640      0x417 build_mini/net/net.o
+                                0x819 (size before relaxing)
+ .debug_str     0x8803fa57       0x9d build_mini/board/ruby_mini/ruby_mini.o
+                                0x332 (size before relaxing)
+ .debug_str     0x8803faf4       0xcd /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)
+                                0x187 (size before relaxing)
+
+.comment        0x8803fbc1      0x230
+ .comment       0x8803fbc1       0x1c build_mini/board/ruby/gpio.o
+ .comment       0x8803fbdd       0x1c build_mini/board/ruby/timer.o
+ .comment       0x8803fbf9       0x1c build_mini/board/ruby/serial.o
+ .comment       0x8803fc15       0x1c build_mini/board/ruby/reset.o
+ .comment       0x8803fc31       0x1c build_mini/common/cmd_nvedit.o
+ .comment       0x8803fc4d       0x1c build_mini/cpu/arc/cache.o
+ .comment       0x8803fc69       0x1c build_mini/lib_generic/ctype.o
+ .comment       0x8803fc85       0x1c build_mini/lib_generic/vsprintf.o
+ .comment       0x8803fca1       0x1c build_mini/lib_generic/string.o
+ .comment       0x8803fcbd       0x1c build_mini/board/ruby_mini/ruby_mini_common.o
+ .comment       0x8803fcd9       0x1c build_mini/board/ruby/arasan-emac-ahb.o
+ .comment       0x8803fcf5       0x1c build_mini/common/cmd_net.o
+ .comment       0x8803fd11       0x1c build_mini/board/ruby/tftp_bootp_loop.o
+ .comment       0x8803fd2d       0x1c build_mini/net/tftp.o
+ .comment       0x8803fd49       0x1c build_mini/net/rarp.o
+ .comment       0x8803fd65       0x1c build_mini/net/eth.o
+ .comment       0x8803fd81       0x1c build_mini/net/bootp.o
+ .comment       0x8803fd9d       0x1c build_mini/net/net.o
+ .comment       0x8803fdb9       0x1c build_mini/board/ruby_mini/ruby_mini.o
+ .comment       0x8803fdd5       0x1c /usr/local/ARC/gcc/bin/../lib/gcc/arc-linux-uclibc/4.2.1/libgcc.a(_udivdi3.o)

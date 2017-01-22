@@ -1,0 +1,23 @@
+/**@page mypage2 Background
+ * The packetlogger debug facility of the embedded Quantenna software is a debug feature
+ * which is used to monitor realtime statistics in the embedded system.
+ *
+ * The feature exports internally visible statistics (from the LHost, MuC, MAC and baseband)
+ * via the network. A statistics gathering process runs on the network, and packages the
+ * data into machine readable formats, in the first instance as comma separated values (CSVs).
+ *
+ * The following diagram gives a high level component view of the packetlogger facility.
+ *
+ * \anchor image-of-top
+ * \image latex pktlogger_high_level.png "Pktlogger high level setup" width=\textwidth
+ *
+ * The source of the data containing board statistics comes from an individual board such
+ * as a QHS710. This is the first component in the packet logger architecture. The device that
+ * consumes and formats the data is generally run on a host PC connected to the same Ethernet
+ * segment as the Quantenna board. This is the second component in the packet logger architecture.
+ *
+ * The pktlogger environment consists of two device roles, sender and receiver.
+ * The DUT as sender, collects data and constructs a UDP packet, which is then sent via Ethernet,
+ * PCIe or WiFi. The receiver creates a UDP socket to receive these packets, and saves
+ * them to a file which can be processed at a later time.
+ */

@@ -1,0 +1,739 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+#   vineetg: Oct 4th 2007 : Added Config Options for 800/SMP
+#
+
+mainmenu "Linux Kernel Configuration"
+
+# CONFIG common to all ARC cores (700+800) under this
+#    config option instead of existing ARCH_ARC700
+# Need corresponding change in include/asm-arc/linkage.h
+
+config ARCH_ARC
+    bool
+    default y
+    select HAVE_OPROFILE
+    select NO_IOPORT
+    select HAVE_KPROBES
+    select HAVE_KRETPROBES
+
+# vineetg: Mar 31st 2010
+# hack: to enable oprofile w/o TRACE_IRQFLAGS
+# Normally this is selected automatically by build system
+# But is dependent on IRQTRACING when don't have yet.
+# So for now we force it: When IRQTRACING implemented, take it off
+    select TRACING_SUPPORT
+
+
+config RWSEM_GENERIC_SPINLOCK
+        def_bool y
+
+config UID16
+        bool
+        default y
+
+# This definition is temporarily lying here
+
+config SPLIT_PTLOCK_CPUS
+        int
+        default 4096
+
+
+config FLATMEM
+        bool
+        default y
+
+# Reminder: We need to restructure the menuconfig
+#            and get lots of options in.
+
+config LOG_BUF_SHIFT
+        int
+        default 14
+
+# Sameer: Hardcoding this variable as y for a while
+#         This is the variable to be used to to switch
+#         between linux and uclinux
+
+config MMU
+        bool
+        default y
+
+config NO_IOPORT
+	bool
+	default y
+
+config GENERIC_CALIBRATE_DELAY
+        bool
+        default y
+
+config GENERIC_TIME
+        bool
+        default y
+
+config GENERIC_GPIO
+        bool
+	default y
+	
+config GENERIC_FIND_FIRST_BIT
+        bool
+        default y
+
+config GENERIC_FIND_NEXT_BIT
+        bool
+        default y
+
+config GENERIC_HWEIGHT
+        bool
+        default y
+
+config BINFMT_ELF
+        bool
+        default y
+
+config STACKTRACE_SUPPORT
+	def_bool y
+    select STACKTRACE
+
+config SCHED_OMIT_FRAME_POINTER
+        bool
+        default y
+
+config HAVE_LATENCYTOP_SUPPORT
+	bool
+	default y
+
+# CONFIG common to all ARC cores (700+800) under this 
+#    config option instead of existing ARCH_ARC700
+# Need corresponding change in include/asm-arc/linkage.h
+config ARCH_ARC
+    bool
+    default y
+    select HAVE_OPROFILE
+    select NO_IOPORT
+
+# end of temporary definitions section
+
+config VMALLOC_SIZE
+        int
+        default "256" #"VMALLOC_SIZE(in MB)"
+
+# To support saving core dump in case of LHost, MuC or AuC crash
+config QTN_SOC_CORE_DUMP
+	bool
+	default y
+	select ZLIB_DEFLATE
+
+source "init/Kconfig"
+
+source "kernel/Kconfig.freezer"
+
+menu "Processor Type and features"
+
+choice
+        prompt "ARC Processor"
+        default ARCH_ARC700
+
+config ARCH_ARC700
+        bool "ARC700"
+        help
+          Support for ARC700 core processors.
+
+config ARCH_ARC800
+        bool "ARC800"
+        help
+          Support for ARC800 core processors.
+
+endchoice
+
+config SMP
+        bool "Symmetric Multi-Processing (Incomplete)"
+    default y
+    depends on ARCH_ARC800
+        help
+          This enables support for systems with more than one CPU. If you have
+          a system with only one CPU, like most personal computers, say N. If
+          you have a system with more than one CPU, say Y.
+
+          If you say N here, the kernel will run on single and multiprocessor
+          machines, but will use only one CPU of a multiprocessor machine. If
+          you say Y here, the kernel will run on many, but not all, single
+          processor machines. On a single processor machine, the kernel will
+          run faster if you say N here.
+
+          See also the <file:Documentation/smp.txt>,
+          <file:Documentation/i386/IO-APIC.txt>,
+          <file:Documentation/nmi_watchdog.txt> and the SMP-HOWTO available at
+          <http://www.linuxdoc.org/docs.html#howto>.
+
+          If you don't know what to do here, say N.
+
+config NR_CPUS
+        int "Maximum number of CPUs (2-32)"
+        range 2 32
+        depends on SMP
+        default "2"
+
+
+menu "ARC CPU Core Configuration"
+
+menuconfig ARC700_CACHE
+    bool "Enable Cache Support"
+    default y
+
+config ARC700_USE_ICACHE
+        bool "Use Instruction Cache"
+        default y
+        depends on ARC700_CACHE
+
+config ARC700_USE_DCACHE
+        bool "Use Data Cache"
+        default y
+        depends on ARC700_CACHE
+
+config ARC700_CACHE_PAGES
+        bool "Per Page Cache Control"
+#        default y if ARC700_USE_ICACHE || ARC700_USE_DCACHE
+        depends on ARC700_CACHE && (ARC700_USE_ICACHE || ARC700_USE_DCACHE)
+        help
+        This can be used to over-ride the global I/D Cache Enable on a
+        per-page basis (but only for pages accessed via MMU such as
+        Kernel Virtual address or User Virtual Address)
+        TLB entries have a per-page Cache Enable Bit.
+        Note that Global I/D ENABLE + Per Page DISABLE works but corollary
+        Global DISABLE + Per Page ENABLE won't work
+
+config ARCH_ARC_ICCM
+		bool "Use ICCM"
+        help
+		Single Cycle RAMS to store Fast Path Code
+        default n
+
+config ARCH_ARC_DCCM
+		bool "Use DCCM"
+        help
+        Single Cycle RAMS to store Fast Path Data
+        default n
+
+choice
+        prompt "ARC700 MMU Version"
+        default ARC_MMU_V3 if ARC700_V_4_10
+        default ARC_MMU_V2 if !ARC700_V_4_10
+
+config ARC_MMU_V1
+        bool "MMU v1"
+        help
+            Orig ARC700 MMU
+
+config ARC_MMU_V2
+        bool "MMU v2"
+        help
+            Fixed the deficiency of v1 - possible thrashing in memcpy sceanrio
+            when 2 D-TLB and 1 I-TLB entries index into same 2way set.
+
+config ARC_MMU_V3
+        bool "MMU v3"
+# enable this later on, otherwise we are bound to use news insn with v3
+#        depends on ARC700_V_4_10
+        help
+            Introduced with ARC700 4.10: New Features
+            Variable Page size (1k-16k), var JTLB size 128 x (2 or 4)
+            Shared Address Spaces (SASID)
+
+endchoice
+
+
+config ARC_MMU_SASID
+        bool "shared TLB entries for library code segments"
+        default y
+        depends on ARC_MMU_V3
+        select MMAP_CODE_CMN_VADDR
+        help
+        Enable MMU support for code TLB entries, sharable across processes.
+        So instead of a per-process TLB entry per page of library code, a
+        single TLB entry is used across all proceeses, mapping this lib.
+        This is difft from glabal TLB entries as it is subscription based
+        This will reduce pressure on TLB immensely.
+
+choice
+        prompt "MMU Page Size"
+        default ARC_PAGE_SIZE_8K
+
+config ARC_PAGE_SIZE_8K
+        bool "8KB"
+        help
+            Choose between 8k vs 16k
+
+config ARC_PAGE_SIZE_16K
+        bool "16KB"
+        depends on ARC_MMU_V3
+
+config ARC_PAGE_SIZE_4K
+        bool "4KB"
+        depends on ARC_MMU_V3
+
+endchoice
+
+config ARCH_ARC_LV2_INTR
+        bool "Enable two levels of Interrupts high(2)low(1)"
+        default n
+        select TIMER_LV2
+
+config ARCH_ARC_FPU
+        bool "Enable FPU state persistence across context switch"
+        default N
+        help
+        Double Precision Floating Point unit had dedictaed regs which
+        need to be saved/restored across context-switch.
+        Note that ARC FPU is overly simplistic, unlike say x86, which has
+        hardware pieces to allow software to conditionally save/restore,
+        based on actual usage of FPU by a task. Thus our implemn does
+        this for all tasks in system.
+
+menuconfig ARC700_V_4_10
+        bool "Build kernel for ARC700 v 4.10 - Summer 2011"
+        default n
+        help
+        This rel of ARC700 provides a bunch of new feature:
+        -MMU-v3: Variable Pg Sz, bigger J-TLB, Shared Address Spaces
+        -Caches: New Prog Model, Region Flush
+        -Insns: endian swap, load-locked/store-conditional, time-stamp-ctr
+
+config ARC_HAS_LLSC
+        bool "llock/scond insns for faster atomic ops"
+        default y
+        depends on ARC700_V_4_10
+
+config ARC_HAS_SWAPE
+        bool "single cycle endian-swap insn"
+        default y
+        depends on ARC700_V_4_10
+
+config ARC_HAS_RTSC
+        bool "64-bit read-only time-stamp counter"
+        default y
+        depends on ARC700_V_4_10
+
+endmenu   #CPU Core config
+
+menu "Board Configuration"
+
+config LINUX_LINK_BASE
+        hex "Linux Link Address"
+        default "0x80000000"
+        help
+            ARC700 divides the 32 bit phy address space into two equal halves
+            -Lower 2G (0 - 0x7FFF_FFFF ) is user virtual, translated by MMU
+            -Upper 2G (0x8000_0000 onwards) is untranslated, for kernel
+            Typically Linux kernel is linked at the start of untransalted addr,
+            hence the default value of 0x8zs.
+            However some customers have peripherals mapped at this addr, so
+            Linux needs to be scooted a bit.
+            If you don't know what the above means, leave this setting alone.
+
+config SDRAM_SIZE
+        hex "SD RAM Size"
+        default "0x10000000"
+        help
+            Implies the amount of SDRAM/DRAM Linux is going to claim/own.
+            The actual memory itself could be larger than this number. But for
+            all software purposes, this is the amt of memory.
+
+endmenu   #Board config
+
+menu "ARC Pheripheral Support"
+
+config ARC_AHB_PCI_BRIDGE
+    bool "Host PCI Bridge on AA4 Board"
+    default n
+    depends on PCI
+    help
+    To Enable a PCI device to work on AA4 Ref Board a AHB to PCI Host Bridge
+    is needed.
+
+config NO_DMA
+    bool
+    default n
+
+
+config ARC_IDE
+	tristate "Enable ARC IDE"
+    select HAVE_IDE
+    select IDE
+    select BLK_DEV_IDE
+    select BLK_DEV_IDEDISK
+	default y
+
+config ARC_BLK_DEV_IDEDMA
+        bool "ARC IDE DMA support"
+        default y
+        select BLK_DEV_IDEDMA
+        depends on ARC_IDE
+
+config ARC_SERIAL
+        bool "ARC UART driver support"
+        select SERIAL_CORE
+        default y
+
+config ARC_SERIAL_NR_PORTS
+    int 'Number of ports'
+    range 1 3
+    default 1
+    depends on ARC_SERIAL
+
+config ARC_SERIAL_BAUD
+        int "Baud rate"
+        default "115200"
+        depends on ARC_SERIAL
+
+config ARC_SERIAL_CONSOLE
+        bool
+        select SERIAL_CORE_CONSOLE
+        depends on !ARC_PGU_CONSOLE && ARC_SERIAL
+        default y
+
+config SERIAL_LV2
+        bool "Configure serial interrupt on level 2"
+        default n
+        depends on ARC_SERIAL && TIMER_LV2
+
+config TIMER_LV2
+        bool "Configure Timer0 interrupt on level 2"
+        default n
+        depends on ARCH_ARC_LV2_INTR
+
+config ARC_PS2
+        bool "ARC PS/2 support"
+        default n
+	depends on SERIO
+        help
+        ARC FPGA Peripherals PS/2 support. Driver currently works only
+        on AA4 board.
+
+config ARC_PS2_DEBUG
+        bool "ARC PS/2 driver debugging"
+        default n
+	depends on ARC_PS2
+        help
+	Turn on statistic collection and various debug messages to
+	simplify debugging.
+
+config ARCTANGENT_EMAC
+        tristate "ARCTangent EMAC support"
+        select NET
+        select INET
+        select NETDEVICES
+        select NET_ETHERNET
+        default n
+
+config EMAC_LV2
+        bool "Configure EMAC interrupt on level 2"
+        default n
+        depends on ARCTANGENT_EMAC && TIMER_LV2
+
+config EMAC_NAPI
+        bool "Use NAPI ?"
+        default n
+        depends on ARCTANGENT_EMAC
+
+config XILINX_TEMAC
+        tristate "Use AA5 Xilinx TEMAC ?"
+        default n
+        select NET
+        select INET
+        select NETDEVICES
+        select NET_ETHERNET
+
+config ISS_MAC
+        tristate "Use xISS/ISS ENET simulation ?"
+        default n
+        select NET
+        select IET
+        select NETDEVICES
+        select NET_ETHERNET
+
+config ARCPGU
+        tristate "Use ARC Pixel Graphics Unit"
+        select FB
+        select FB_CFB_FILLRECT
+        select FB_CFB_COPYAREA
+        select FB_CFB_IMAGEBLIT
+
+config VFB_SIM
+        bool "Use ISS/xISS framebuffer"
+        select FB
+        select FB_CFB_FILLRECT
+        select FB_CFB_COPYAREA
+        select FB_CFB_IMAGEBLIT
+        select FB_SYS_FOPS
+config VFB_SIM_BASE
+        hex "Base address of Frame Buffer in Pysical memory"
+        default "0x88000000"
+        depends on VFB_SIM
+
+config VFB_SIM_SIZE
+        hex "Size of memory buffer"
+        default "0x400000"
+        depends on VFB_SIM
+
+config VFB_SIM_XRES
+        int "X-Resolution"
+        default "640"
+        depends on VFB_SIM
+
+config VFB_SIM_YRES
+        int "Y-Resolution"
+        default "480"
+        depends on VFB_SIM
+
+config VFB_SIM_BPP
+        int "Bits per pixel"
+        default "16"
+        depends on VFB_SIM
+
+config FORCE_MAX_ZONEORDER
+        int
+        depends on ARCPGU || PGU_SIM
+        default "13"
+
+config ARCPGU_YUVBUFS
+    int 'Number of YUV Buffers'
+    default 18
+    depends on ARCPGU || PGU_SIM
+
+config ARCPGU_RGBBUFS
+    int 'Number of RGB Buffers'
+    default 2
+    depends on ARCPGU || PGU_SIM
+
+config ARCPGU_DISPTYPE
+    int 'Display selector (0 - VGA, 1 - QVGA)'
+    default 0
+    depends on ARCPGU || PGU_SIM
+
+config ARCPGU_XRES
+    int 'Default YUV X resolution'
+    default 640
+    depends on ARCPGU || PGU_SIM
+
+config ARCPGU_YRES
+    int 'Default YUV Y resolution'
+    default 480
+    depends on ARCPGU || PGU_SIM
+
+config ARCPGU_VCLK
+    bool 'PLL-driven pixel clock'
+    default 0
+    depends on ARCPGU || PGU_SIM
+
+config ARC_PGU_CONSOLE
+    bool 'Console on the ARC PGU'
+    depends on ARCPGU || PGU_SIM
+    select FRAMEBUFFER_CONSOLE
+    select FONTS
+    select FONT_8x8
+    select FONT_8x16
+    select LOGO
+    select LOGO_LINUX_MONO
+    select LOGO_LINUX_VGA16
+    select LOGO_LINUX_CLUT224
+    select BACKLIGHT_LCD_SUPPORT
+
+config ARCVSYNC
+    bool
+    depends on ARC_PGU_CONSOLE
+    default y
+
+config SOUND_ARC_AC97
+        tristate "Enable AC97 interface"
+        select SOUND
+        select SOUND_PRIME
+
+config ARC_7XX_GPIO
+        bool "ARC 7XX GPIO support"
+        select ARCH_REQUIRE_GPIOLIB
+	select GENERIC_GPIO
+	default y
+        help
+          Say Y here if you're going to use arc gpio.
+
+menu "Bus options (PCI etc.)"
+
+config PCI
+	bool "PCI support"
+	default n
+	help
+	  If you have PCI, say Y, otherwise N.
+
+source "drivers/pci/Kconfig"
+source "drivers/pci/hotplug/Kconfig"
+source "drivers/pcmcia/Kconfig"
+
+endmenu     # Bus options
+
+endmenu     # Peripherals
+
+
+config ARCH_ARC_CURR_IN_REG
+        bool "Dedicate Register r25 for current_task pointer"
+        default N
+        help
+          This reserved Register R25 to point to Current Task in
+          kernel mode. This saves memory access for each such access
+
+config ARC_TLS_REG_EMUL
+        bool "Emulate a TLS register using a dedicated user vaddr"
+        default N
+        help
+            ARC ABI lacks defining a dedicated TLS register to hold
+            pointer to TLS Data area.
+            So we emulate the TLS register using a TLS Virtual addr
+
+config ARC_MISALIGNED_ACCESS
+        bool "Support unaligned memory access"
+        default N
+        help
+          This enables misaligned 16 & 32 bit memory access exception handler
+          to recover from misaligned memory access in both user and kernel space.
+
+config ARCH_ARC_SPACE_RND
+        bool "Address Space Randomisation (mmap/SP)"
+        default N
+        help
+          This feature enables Address space randomisation for mmap and SP
+          Note that it could lead to some performance degradation especially
+          for shared libraries so use it only if needed
+
+config MMAP_CODE_CMN_VADDR
+        bool "mmap shared lib code at same vaddr across proceses"
+        default y
+        select GENERIC_ALLOCATOR
+        help
+        This feature forces kernel to map a particular shared lib's code
+        at same vaddr across processes using a dedicated
+        mmap-shared-code-virtual-address-space. Any lib's code page frames
+        are already shared using page-cache; same vaddr ensures a single
+        v:p mapping, preventing virtual aliases in ARC VIPT I-Caches.
+        This boosts performance because each alias occupies a cache-line
+        of own hence needs to be fetched per instance as opposed to just
+        once.
+        It is _must_ for enabling hardware SASID feature, where a single
+        shared TLB entry for shared code can be used across processes.
+
+config HZ
+    int "Timer Frequency"
+    default 100
+
+config GENERIC_CLOCKEVENTS
+    bool "Generic clock events"
+    default y
+
+config ARC_STACK_NONEXEC
+    bool "Make stack non-executable"
+    default n
+    help
+    By default the stack and heap areas of processes have execute permissions switched on.
+    You may choose to disable execute on the default data permissions switching this option on
+    see include/asm/page.h
+
+source "kernel/time/Kconfig"
+
+config ARCH_ARC_HLINK
+        bool "Support for Metaware debugger assisted Host access"
+        default n
+        help
+        This options allows a Linux userland apps to directly access
+        host file system (open/creat/read/write etc) with help from
+        Metaware Debugger. This can come in handy for Linux-host communication
+        when there is no real usable peripheral such as EMAC.
+
+
+menuconfig ARC_DBG
+    bool "ARC debugging"
+    default y
+
+config ARC_STACK_UNWIND
+    bool "Enable DWARF specific kernel stack unwind"
+    depends on ARC_DBG
+    default y
+    help
+    Compiles the kernel with DWARF unwind information and can be used
+    to get stack backtraces.
+
+    If you say Y here the resulting kernel image will be slightly larger
+    but not slower, and it will give very useful debugging information.
+    If you don't debug the kernel, you can say N, but we may not be able
+    to solve problems without frame unwind information
+
+config ARC_TLB_PARANOIA
+    bool "Paranoia Checks in Low Level TLB Handlers"
+    depends on ARC_DBG
+    default n
+
+config ARC_DBG_EVENT_TIMELINE
+    bool "Low level event capture"
+    depends on ARC_DBG
+    default n
+    help
+    Capture low level events: IRQ/Trap/Exception
+
+config ARC_TLB_PROFILE
+    bool "Profile TLB Misses"
+    default n
+    select DEBUG_FS
+    depends on ARC_DBG
+    help
+    Counts number of I and D TLB Misses and exports them via Debugfs
+    The counters can be cleared via Debugfs as well
+
+config ARC_UBOOT_CMDLINE
+    bool "Support U-boot kernel command line passing"
+    default n
+    help
+    If you are using U-boot (www.denx.de) and wish to pass the kernel
+    command line from the U-boot environment to the Linux kernel then
+    switch this option on.
+    U-boot will pass the command_line variable at the beginning of the
+    .bss section.  The kernel copies this variable into the correct place
+    during it's boot.
+
+    If you are unsure "N" is a good choice.
+
+config ARC_PROFILING
+    bool "Support ARC Hardware Profiling"
+    default n
+    help
+    If you have the ARC hardware support built into your hardware and
+    wish to use the "task mode" profiling support then switch this on.
+    This will enable an architecture specific context switch hook that
+    will enable / disable the hardware counting while not running the specific
+    process you are interested in.
+
+    If you are unsure "N" is a good choice.
+
+source "kernel/Kconfig.preempt"
+
+endmenu
+
+source "mm/Kconfig"
+
+
+source "net/Kconfig"
+
+source "drivers/Kconfig"
+
+source "fs/Kconfig"
+
+source "arch/arc/Kconfig.debug"
+
+source "security/Kconfig"
+
+source "crypto/Kconfig"
+
+source "lib/Kconfig"
+
+source "../drivers/ruby/Kconfig"
+
+source "../drivers/topaz/Kconfig"
+

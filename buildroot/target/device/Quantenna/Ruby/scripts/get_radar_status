@@ -1,0 +1,11 @@
+#!/bin/sh
+
+filepath=/sys/devices/qdrv/control
+
+if [ $# != 1 ] ; then
+	echo "usage: get_radar_status <channel>"
+	echo "@channel should be a dfs-channel"
+else
+	qdrvcmd="get 0 radar_status $1"
+	echo $qdrvcmd > $filepath
+fi

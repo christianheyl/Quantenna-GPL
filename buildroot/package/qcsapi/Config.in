@@ -1,0 +1,59 @@
+config BR2_PACKAGE_QCSAPI
+	bool "qcsapi"
+	default y
+	help
+	  Quantenna Configuration and Status API.
+
+config BR2_PACKAGE_CALL_QCSAPI_RPC_SOCKET_CLIENT
+	bool "call_qcsapi_sockrpc"
+	default n
+	help
+	  RPC client for call_qcsapi, using UDP sockets
+
+config BR2_PACKAGE_CALL_QCSAPI_RPC_PCIE_CLIENT
+	bool "call_qcsapi_pcie"
+	default n
+	help
+	  RPC client for call_qcsapi, using PCIE
+
+config BR2_PACKAGE_CALL_QCSAPI_RPC_RAW_SOCKET_CLIENT
+	bool "call_qcsapi_sockraw"
+	default n
+	help
+	  RPC client for call_qcsapi, using raw sockets
+
+config BR2_PACKAGE_CALL_QCSAPI_RPC_SERVER
+	bool "call_qcsapi_rpcd"
+	default n
+	help
+	  RPC server for all call_qcsapi RPC clients
+
+config BR2_PACKAGE_QCSAPI_RPC_SOCKET_CLIENT
+	bool "qcsapi_sockrpc"
+	default n
+	help
+	  RPC client for libqcsapi, using UDP sockets
+
+config BR2_PACKAGE_QCSAPI_RPC_PCIE_CLIENT
+	bool "qcsapi_pcie"
+	default n
+	help
+	  RPC client for libqcsapi, using PCIE
+
+config BR2_PACKAGE_QCSAPI_RPC_RAW_SOCKET_CLIENT
+	bool "qcsapi_sockraw"
+	default n
+	help
+	  RPC client for libqcsapi, using raw sockets
+
+config BR2_PACKAGE_QCSAPI_RPC_SERVER
+	bool "qcsapi_rpcd"
+	default n
+	help
+	  RPC server for all qcsapi RPC clients
+
+config BR2_PACKAGE_QCSAPI_MONITOR_RFENABLE
+	bool "qcsapi_monitor_rfenable"
+	default n
+	help
+	  QCSAPI monitor_rfenable binary

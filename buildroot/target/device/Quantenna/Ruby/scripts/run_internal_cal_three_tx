@@ -1,0 +1,187 @@
+#! /bin/sh
+numargs=$#
+enable_vco_cal 0
+enable_txpow_cal 0
+band=1
+
+if [ "$1" -gt "15" ]
+then
+	band=1
+else
+	band=0
+fi
+
+echo "band = $band"
+
+rf_chipid=`call_qcsapi get_board_parameter rf_chipid`
+
+echo "calcmd 12 0 14 0 1 127 2 14 3 40 4 40 5 1" > /sys/devices/qdrv/control
+if [ $numargs -gt 0 ]
+then
+        for i in 1 2 3
+        do
+		if [ "$1" -gt "0" ]
+		then
+			echo "===========  START OF CHANNEL AT $1 =============="
+			echo "calcmd 1 0 8 0 1 $band 2 $1" > /sys/devices/qdrv/control
+
+			echo "Run TX LO and IQ Calibration"
+			if [ "$rf_chipid" == "2" ]
+			then
+				echo "gain index 5"
+				set_tx_rf_gain 5 5 5 5
+			else
+				echo "  Gain set 77"
+				writerfmem 0 170 77077
+				writerfmem 0 171 77077
+			fi
+			echo "calcmd 28 0 6 0 1 0" > /sys/devices/qdrv/control
+			echo "calcmd 28 0 6 0 1 1" > /sys/devices/qdrv/control
+			echo "calcmd 28 0 6 0 1 2" > /sys/devices/qdrv/control
+			echo "calcmd 20 0 4 0" > /sys/devices/qdrv/control
+
+			echo "calcmd 29 0 6 0 1 0" > /sys/devices/qdrv/control
+			echo "calcmd 29 0 6 0 1 1" > /sys/devices/qdrv/control
+			echo "calcmd 29 0 6 0 1 2" > /sys/devices/qdrv/control
+			echo "calcmd 22 0 4 0" > /sys/devices/qdrv/control
+
+			if [ "$rf_chipid" == "2" ]
+			then
+				echo "gain index 10"
+				set_tx_rf_gain 10 10 10 10
+			else
+				echo "  Gain set 76"
+				writerfmem 0 170 76076
+				writerfmem 0 171 76076
+			fi
+			echo "calcmd 28 0 6 0 1 0" > /sys/devices/qdrv/control
+			echo "calcmd 28 0 6 0 1 1" > /sys/devices/qdrv/control
+			echo "calcmd 28 0 6 0 1 2" > /sys/devices/qdrv/control
+			echo "calcmd 20 0 4 0" > /sys/devices/qdrv/control
+
+
+			echo "calcmd 29 0 6 0 1 0" > /sys/devices/qdrv/control
+			echo "calcmd 29 0 6 0 1 1" > /sys/devices/qdrv/control
+			echo "calcmd 29 0 6 0 1 2" > /sys/devices/qdrv/control
+			echo "calcmd 22 0 4 0" > /sys/devices/qdrv/control
+
+			if [ "$rf_chipid" == "2" ]
+			then
+				echo "gain index 15"
+				set_tx_rf_gain 15 15 15 15
+			else
+				echo "  Gain set 75"
+				writerfmem 0 170 75075
+				writerfmem 0 171 75075
+			fi
+			echo "calcmd 28 0 6 0 1 0" > /sys/devices/qdrv/control
+			echo "calcmd 28 0 6 0 1 1" > /sys/devices/qdrv/control
+			echo "calcmd 28 0 6 0 1 2" > /sys/devices/qdrv/control
+			echo "calcmd 20 0 4 0" > /sys/devices/qdrv/control
+
+
+			echo "calcmd 29 0 6 0 1 0" > /sys/devices/qdrv/control
+			echo "calcmd 29 0 6 0 1 1" > /sys/devices/qdrv/control
+			echo "calcmd 29 0 6 0 1 2" > /sys/devices/qdrv/control
+			echo "calcmd 22 0 4 0" > /sys/devices/qdrv/control
+
+
+			if [ "$rf_chipid" == "2" ]
+			then
+				echo "gain index 19"
+				set_tx_rf_gain 19 19 19 19
+			else
+				echo "  Gain set 74"
+				writerfmem 0 170 74074
+				writerfmem 0 171 74074
+			fi
+			echo "calcmd 28 0 6 0 1 0" > /sys/devices/qdrv/control
+			echo "calcmd 28 0 6 0 1 1" > /sys/devices/qdrv/control
+			echo "calcmd 28 0 6 0 1 2" > /sys/devices/qdrv/control
+			echo "calcmd 20 0 4 0" > /sys/devices/qdrv/control
+
+
+			echo "calcmd 29 0 6 0 1 0" > /sys/devices/qdrv/control
+			echo "calcmd 29 0 6 0 1 1" > /sys/devices/qdrv/control
+			echo "calcmd 29 0 6 0 1 2" > /sys/devices/qdrv/control
+			echo "calcmd 22 0 4 0" > /sys/devices/qdrv/control
+
+
+			if [ "$rf_chipid" == "2" ]
+			then
+				echo "gain index 22"
+				set_tx_rf_gain 22 22 22 22
+			else
+				echo "  Gain set 73"
+				writerfmem 0 170 73073
+				writerfmem 0 171 73073
+			fi
+			echo "calcmd 28 0 6 0 1 0" > /sys/devices/qdrv/control
+			echo "calcmd 28 0 6 0 1 1" > /sys/devices/qdrv/control
+			echo "calcmd 28 0 6 0 1 2" > /sys/devices/qdrv/control
+			echo "calcmd 20 0 4 0" > /sys/devices/qdrv/control
+
+			echo "calcmd 29 0 6 0 1 0" > /sys/devices/qdrv/control
+			echo "calcmd 29 0 6 0 1 1" > /sys/devices/qdrv/control
+			echo "calcmd 29 0 6 0 1 2" > /sys/devices/qdrv/control
+			echo "calcmd 22 0 4 0" > /sys/devices/qdrv/control
+
+
+			if [ "$rf_chipid" == "2" ]
+			then
+				echo "gain index 25"
+				set_tx_rf_gain 25 25 25 25
+			else
+				echo "  Gain set 72"
+				writerfmem 0 170 72072
+				writerfmem 0 171 72072
+			fi
+			echo "calcmd 28 0 6 0 1 0" > /sys/devices/qdrv/control
+			echo "calcmd 28 0 6 0 1 1" > /sys/devices/qdrv/control
+			echo "calcmd 28 0 6 0 1 2" > /sys/devices/qdrv/control
+			echo "calcmd 20 0 4 0" > /sys/devices/qdrv/control
+
+			echo "calcmd 29 0 6 0 1 0" > /sys/devices/qdrv/control
+			echo "calcmd 29 0 6 0 1 1" > /sys/devices/qdrv/control
+			echo "calcmd 29 0 6 0 1 2" > /sys/devices/qdrv/control
+			echo "calcmd 22 0 4 0" > /sys/devices/qdrv/control
+
+			if [ "$rf_chipid" == "2" ]
+			then
+				echo "gain index 28"
+				set_tx_rf_gain 28 28 28 28
+				echo "calcmd 28 0 6 0 1 0" > /sys/devices/qdrv/control
+				echo "calcmd 28 0 6 0 1 1" > /sys/devices/qdrv/control
+				echo "calcmd 28 0 6 0 1 2" > /sys/devices/qdrv/control
+				echo "calcmd 20 0 4 0" > /sys/devices/qdrv/control
+
+				echo "calcmd 29 0 6 0 1 0" > /sys/devices/qdrv/control
+				echo "calcmd 29 0 6 0 1 1" > /sys/devices/qdrv/control
+				echo "calcmd 29 0 6 0 1 2" > /sys/devices/qdrv/control
+				echo "calcmd 22 0 4 0" > /sys/devices/qdrv/control
+
+				echo "gain index 31"
+				set_tx_rf_gain 31 31 31 31
+				echo "calcmd 28 0 6 0 1 0" > /sys/devices/qdrv/control
+				echo "calcmd 28 0 6 0 1 1" > /sys/devices/qdrv/control
+				echo "calcmd 28 0 6 0 1 2" > /sys/devices/qdrv/control
+				echo "calcmd 20 0 4 0" > /sys/devices/qdrv/control
+
+				echo "calcmd 29 0 6 0 1 0" > /sys/devices/qdrv/control
+				echo "calcmd 29 0 6 0 1 1" > /sys/devices/qdrv/control
+				echo "calcmd 29 0 6 0 1 2" > /sys/devices/qdrv/control
+				echo "calcmd 22 0 4 0" > /sys/devices/qdrv/control
+
+			fi
+
+			echo "End TX LO and IQ Calibration"
+
+			echo "===========   END OF CHANNEL AT $1  =============="
+			echo " "
+			echo " "
+		fi
+		shift
+        done
+fi
+enable_vco_cal 1
+echo "TX DC/IQ Calibration Done"

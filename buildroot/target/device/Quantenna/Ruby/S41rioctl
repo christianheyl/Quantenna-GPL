@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo "Initialising kernel rioctl client"
+if [ -f /proc/soc1 ]; then
+	cat /etc/soc2ipcaddr > /proc/rioctl
+else
+	cat /etc/soc1ipcaddr > /proc/rioctl
+fi
+

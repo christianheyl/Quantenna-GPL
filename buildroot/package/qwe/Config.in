@@ -1,0 +1,5 @@
+config BR2_PACKAGE_QWE_PAL
+        bool "QWE PAL"
+        default n
+        help
+          Quantenna Wireless Extension Platform Abstract Layer

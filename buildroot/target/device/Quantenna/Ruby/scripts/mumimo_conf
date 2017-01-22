@@ -1,0 +1,92 @@
+#!/bin/sh
+
+call_qcsapi get_swfeat_list|grep -q "MU-MIMO"
+if [ $? -ne 0 ]
+then
+	echo "MU-MIMO is not supported on this device"
+	exit 1
+fi
+
+if [ $# -ne 1 ]
+then
+	echo "please specify mu mimo mode:"
+	echo "1) precoding only"
+	echo "2) mu equalizer only"
+	echo "3) enable precoding and mu equalizer"
+	echo "4) MU MIMO mode off, SU only"
+	exit 1;
+fi
+mu_mode=$1
+
+# MU MIMO only work at 80MHZ currently
+mu_bw=`get_wifi_config wifi0 bw`
+if [ "$mu_bw" != "80" ]
+then
+	echo "MU MIMO only work at 80MHZ currently"
+	exit 1;
+fi
+
+wifi_mode=`get_wifi_config wifi0 mode`
+if [ "$wifi_mode" != "ap" -a "$wifi_mode" != "sta" ]
+then
+	echo "check wifi mode in wireless configuration file"
+	echo " current mode is: $wifi_mode; supported modes are ap and sta"
+	exit 1;
+fi
+
+case $mu_mode in
+	'1'|'precoding_only')
+		if [ "$wifi_mode" == "ap" ]
+		then
+			echo "enable precoding only on AP"
+			mu enable
+			# Set MU only mode
+			iwpriv wifi0 mu_dbg_flg_set 0x800001ff
+		else
+			echo "disable mu equalizer on STA"
+			mu enable
+			iwpriv wifi0 mu_set_use_eq 0
+		fi
+		;;
+	'2'|'equalizer_only')
+		if [ "$wifi_mode" == "ap" ]
+		then
+			echo "enable mu equalizer only on AP"
+			mu enable
+			# Set MU only mode
+			iwpriv wifi0 mu_dbg_flg_set 0x800001ff
+			#double check on this
+			echo "bypass Qmat after group assignment"
+			echo "iwpriv wifi0 mu_grp_qmt_del <grp_id>"
+			iwpriv wifi0 mu_grp_qmt_del 1
+		else
+			echo "enable mu equalizer on STA"
+			mu enable
+			iwpriv wifi0 mu_set_use_eq 1
+		fi
+		;;
+	'3'|'precoding_and_equalizer')
+		if [ "$wifi_mode" == "ap" ]
+		then
+			echo "enable precoding and mu equalizer on AP"
+			mu enable
+			# Set MU only mode
+			iwpriv wifi0 mu_dbg_flg_set 0x800001ff
+		else
+			echo "enable mu equalizer on STA"
+			mu enable
+			iwpriv wifi0 mu_set_use_eq 1
+		fi
+		;;
+	'4'|'disable_mu')
+		echo "mu mimo off, SU only"
+		mu disable
+		# Clear MU only mode
+		iwpriv wifi0 mu_dbg_flg_set 0x000001ff
+		iwpriv wifi0 mu_set_use_eq 0
+		;;
+	*)
+		echo "unrecognized parameter"
+esac
+
+

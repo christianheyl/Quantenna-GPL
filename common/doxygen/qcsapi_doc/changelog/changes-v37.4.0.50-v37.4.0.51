@@ -1,0 +1,16 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_50_TO_v37_4_0_51 Version v37.4.0.50 to version v37.4.0.51 changes
+ *
+ * \subsection v37_4_0_50_TO_v37_4_0_51Proto Function prototype changes
+ *
+ * The following function prototypes were modified between versions v37.4.0.50 and v37.4.0.51
+ *  - \ref qcsapi_wifi_show_vlan_config
+ *    - Old prototype: int qcsapi_wifi_show_vlan_config(const char *ifname, string_2048 vcfg, const char *flag);
+ *    - New prototype: int qcsapi_wifi_show_vlan_config(const char *ifname, struct qcsapi_data_2Kbytes *vcfg, const char *flag);
+ *  - \ref qcsapi_wifi_get_rates
+ *    - Old prototype: int qcsapi_wifi_get_rates(const char *ifname, qcsapi_rate_type rate_type, string_1024 supported_rates);
+ *    - New prototype: int qcsapi_wifi_get_rates(const char *ifname, qcsapi_rate_type rate_type, string_2048 supported_rates);
+ */
+

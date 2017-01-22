@@ -1,0 +1,27 @@
+#! /bin/sh
+
+if [ $# = 0 ]
+then
+    echo "$0 requires a number of antennas to use as a parameter"
+    exit 1
+fi
+
+case $1 in
+	'1'|'2'|'3')
+		iwpriv wifi0 set_antenna_usg $1 \
+		&& iwpriv wifi0 mu_set_use_eq 0 \
+		&& iwpriv wifi0 set_vht_nss_cap $1
+		;;
+	'4')
+		iwpriv wifi0 set_antenna_usg $1 \
+		&& iwpriv wifi0 mu_set_use_eq 1 \
+		&& iwpriv wifi0 set_vht_nss_cap $1
+		;;
+	*)
+		echo "antenna count expected to be in range 1..4"
+esac
+if [ $? -ne 0 ]
+then
+	echo "error setting antenna usage"
+	exit 1
+fi

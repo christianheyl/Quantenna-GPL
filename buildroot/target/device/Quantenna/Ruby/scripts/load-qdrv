@@ -1,0 +1,53 @@
+#!/bin/sh
+start_mode=$2
+echo "Loading modules"
+modprobe qtn_debug
+modprobe i2cbus
+modprobe qtsens
+modprobe pm_interval
+modprobe wlan
+modprobe fwt_if
+modprobe fwt_ctrl
+modprobe auc_fw
+modprobe qdrv tqe_sem_en=$3 || set_sys_status wifi
+modprobe wlan_xauth || set_sys_status wifi
+modprobe wlan_ccmp || set_sys_status wifi
+modprobe wlan_tkip || set_sys_status wifi
+
+cp /scripts/dc_iq.cal /tmp
+cp /scripts/txpower.cal /tmp
+if [ "$start_mode" == "runtime" ] ; then
+	if [ -f /etc/firmware/qtn_driver.${1}.0.bin ] ; then
+		echo "Loading MuC driver (qtn_driver.${1}.0.bin)"
+		echo "set mucfw qtn_driver.${1}.0.bin" > /sys/devices/qdrv/control
+	else
+		echo "*******************************************"
+		echo "Defaulting to cal driver (unknown driver ${1})"
+		echo "*******************************************"
+		echo "set mucfw qtn_driver.cal_ruby.0.bin" > /sys/devices/qdrv/control
+	fi
+else
+	echo "Calibration mode"
+fi
+
+echo "set aucfw auc_driver.0.bin" > /sys/devices/qdrv/control
+echo "set mucfw qtn_driver.${1}.0.bin" > /sys/devices/qdrv/control
+echo "set dspfw rdsp_driver.0.bin" > /sys/devices/qdrv/control
+echo "clearsram" > /sys/devices/qdrv/control
+
+if [ -f /mnt/jffs2/qos_merge ]
+then
+	qm=`cat /mnt/jffs2/qos_merge`
+	echo "set muc_qos_q_merge $qm" > /sys/devices/qdrv/control
+fi
+
+if [ -f /mnt/jffs2/check_fcs_corruption ]
+then
+	fc=`cat /mnt/jffs2/check_fcs_corruption`
+	echo "set check_fcs_corruption $fc" > /sys/devices/qdrv/control
+fi
+
+# capture iwevents, send to syslog
+iwevent --syslog &
+# Qhop private events daemon
+qeventd &

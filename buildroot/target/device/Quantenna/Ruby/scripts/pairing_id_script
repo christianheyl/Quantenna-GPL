@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ $1 = "set" ]
+then
+	cp /mnt/jffs2/wpa_supplicant.conf /tmp/wpa_supplicant.conf
+	pairing_id_exist=`cat /tmp/wpa_supplicant.conf  | grep pairing_id`
+	if [ -n "$pairing_id_exist" ]
+	then
+		cat /tmp/wpa_supplicant.conf | sed "s/pairing_id=.*/pairing_id=$2/g" > /mnt/jffs2/wpa_supplicant.conf
+	else
+		cat /tmp/wpa_supplicant.conf | sed "s/\(serial_number=.*\)/\1\npairing_id=$2/g" > /mnt/jffs2/wpa_supplicant.conf
+	fi
+fi
+
+if [ $1 = "get" ]
+then
+	cat /mnt/jffs2/wpa_supplicant.conf | grep pairing_id | cut -d '=' -f2
+fi

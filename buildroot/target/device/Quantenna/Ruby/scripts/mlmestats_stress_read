@@ -1,0 +1,20 @@
+#!/bin/ash
+
+bin=${0##*/}
+
+primary_vap=$(call_qcsapi -u get_primary_interface)
+if [ $? -ne 0 ]
+then
+    echo "$bin: cannot get the primary WiFi interface"
+    exit 1
+fi
+
+while [ 1 ]
+do
+	macs_list=$(call_qcsapi -u get_mlme_stats_macs_list $primary_vap)
+	for mac in $macs_list
+	do
+		mac_stats=$(call_qcsapi -u get_mlme_stats_per_mac $primary_vap $mac)
+		echo [$mac] $mac_stats
+	done
+done

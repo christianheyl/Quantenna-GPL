@@ -1,0 +1,189 @@
+/* CSS Document */
+html, body, div, span,h1, h2, h3, h4, h5, h6, p, a, em, img, strike, strong, tt,dd, dl, dt,form, label, table, tr, th, td, ol, ul, li
+{
+	margin:0px auto;
+}
+
+img{
+	margin:0px auto;
+	border:0px;
+	}
+
+.body{
+	background:url(../images/background.png) repeat-x #d8e4f0;
+	margin:0px;
+	border:0px;
+	}
+
+.logo {
+	padding:0px;
+	border:0px;
+	width:800px;
+	margin:0px auto;
+	}
+
+.top{
+	border:0px;
+	margin:0px auto;
+	padding:0px;
+	width:810px;
+	height:73px;
+	font:15px Calibri, Arial, Candara, corbel, "Franklin Gothic Book";
+	color:#FFF;
+	background:url(../images/logo_all.gif) no-repeat;
+	}
+
+.container{
+	border:6px solid #9FACB7;
+	width:800px;
+	height:690px;
+	background-color:#9FACB7;
+	}
+
+.left{
+	background-color: #fff;
+	float:left;
+	width:139px;
+	height:100%;
+	border:0px;
+	}
+
+.right{
+	height:100%;
+	background-color:#FFF;
+	float:right;
+	width:660px;
+	border-left:0px;
+	}
+
+.bottom{
+	margin:0px auto;
+	width:800px;
+	height:60px;
+	text-align:center;
+	margin-top:5px;
+	font:12px Calibri, Arial, Candara, corbel, "Franklin Gothic Book";
+	color:#000;
+	}
+
+a:link,a:visited {
+	color:#000;text-decoration:none;
+	}
+
+a:hover {
+	background-color:#BCD8FA;
+	}
+
+#menu {
+	border:0px;
+	width:107px;
+	margin:0px 8px;
+	padding:0px;
+	text-align:left;
+	list-style:none;
+	}
+
+#menu .item {
+	margin:5px 0px;
+	padding:0px;
+	list-style:none;
+	}
+
+a.title:link, a.title:visited, a.title:hover {
+	 font:22px Calibri, Arial, Candara, corbel, "Franklin Gothic Book";
+	 display:block;
+	 background-color:#216ba4;
+	 color:#FFF;
+	 font-weight:bold;
+	 padding:2px 0 0 22px;
+	 width:102px;
+	 line-height:28px;
+	 cursor:pointer;
+	 text-decoration:inherit;
+	 text-align:justify;}
+
+#menu .item ul {
+	font:16px Calibri, Arial, Candara, corbel, "Franklin Gothic Book";
+	border:1px solid #9FACB7;
+	margin:0;
+	width:100px;
+	padding:6px 16px 6px 6px;
+	background:#fff;
+	list-style:none;
+	display:none;
+	}
+
+#menu .item ul li {
+	display:block;
+	padding:1px 1px 1px 1px;
+	}
+
+.righttop{
+	color:#216ba4;
+	background:#FFF;
+	font-weight:bold;
+	border-bottom:1px solid #9FACB7;
+	padding:2px 50px 2px 20px;
+	font:35px Calibri, Arial, Candara, corbel, "Franklin Gothic Book";
+	}
+
+.rightmain{
+	margin:20px 20px 20px 20px;
+	}
+
+.rightbottom{
+	margin-top:20px;
+	color:#FFF;
+	font-weight:bold;
+	height:100%;
+	text-align:center;
+	}
+
+.tablemain{
+	width:100%;
+	border:0px;
+	color:#0B7682;
+	font:16px Calibri, Arial, Candara, corbel, "Franklin Gothic Book";
+	}
+
+.divline{
+	background:url(../images/divline.png);
+	height:20px;
+	}
+
+.pre{
+	color:#000;
+	font:16px Calibri, Arial, Candara, corbel, "Franklin Gothic Book";
+	}
+
+.combox{
+	color:#0B7682;
+	font:16px Calibri, Arial, Candara, corbel, "Franklin Gothic Book";
+	width:147px;
+	}
+
+.checkbox{
+	color:#0B7682;
+	font:15px Calibri, Arial, Candara, corbel, "Franklin Gothic Book";
+	}
+
+.textbox{
+	color:#0B7682;
+	font:17px Calibri, Arial, Candara, corbel, "Franklin Gothic Book";
+	width:142px;
+	}
+
+.button{
+	color:#0B7682;
+	font:16px Calibri, Arial, Candara, corbel, "Franklin Gothic Book";
+	width:90px;
+	}
+
+.login{
+	border:none;
+	padding-bottom:0px;
+	padding-left:0px;
+	padding-right:0px;
+	margin:0px;
+	padding-top:0px;
+}

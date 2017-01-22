@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# Configuration for Flash-less system
+#
+
+NOSPI=
+WMAC_MODE=`/scripts/parse_cmdline wmac_mode`
+PERSISTENT_PATH="/"
+JFFS2_PATH="/mnt/jffs2"
+PERSISTENT_AP="persistent_ap.tgz"
+PERSISTENT_STA="persistent_sta.tgz"
+
+set -o monitor
+
+sigchld () {
+	echo "Task completed..."
+}
+
+echo "Waiting for flash-less system configuration to complete..."
+if [ "${WMAC_MODE}" == "ap" ]; then
+	tar -C ${JFFS2_PATH} -zxvf ${PERSISTENT_PATH}/${PERSISTENT_AP} > /dev/null
+else
+	tar -C ${JFFS2_PATH} -zxvf ${PERSISTENT_PATH}/${PERSISTENT_STA} > /dev/null
+fi
+trap sigchld SIGCHLD

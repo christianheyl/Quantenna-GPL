@@ -1,0 +1,101 @@
+#! /bin/sh
+
+ro_bootcfg_base=/ro/bootcfg
+proc_bootcfg_base=/proc/bootcfg
+basefile=eirp_info
+
+if [ "$2" = "" ]
+then
+    echo "$0 requires a regulatory region and a channel (or \"all\" to display the complete table)."
+    exit 1
+fi
+
+channel=$2
+region=$1
+
+if [ $region = "us" -o \
+     $region = "US" -o \
+     $region = "usa" -o \
+     $region = "USA" -o \
+     $region = "fcc" -o \
+     $region = "FCC" ]
+then
+    base_region="us"
+elif [ $region = "eu" -o \
+       $region = "EU" -o \
+       $region = "Europe" -o \
+       $region = "ce" -o \
+       $region = "CE" ]
+then
+    base_region="eu"
+elif [ $region = "Japan" -o \
+       $region = "jp" ]
+then
+    base_region="jp"
+elif [ $region = "Russia" -o \
+       $region = "ru" ]
+then
+    base_region="ru"
+elif [ $region = "none" ]
+then
+    base_region="none"
+elif [ $region = "au" -o \
+       $region = "AU" -o \
+       $region = "Australia" ]
+then
+    base_region="au"
+else
+    echo "$0: unrecognized regulatory region $region."
+    exit 1
+fi
+
+if [ $base_region = "none" ]
+then
+    file_suffix=".txt"
+else
+    file_suffix="_${base_region}.txt"
+fi
+
+targetfile=${basefile}${file_suffix}
+targetpath=${ro_bootcfg_base}/${targetfile}
+
+if [ ! -f $targetpath -o ! -r $targetpath ]
+then
+    targetpath=${proc_bootcfg_base}/${targetfile}
+    if [ ! -f $targetpath -o ! -r $targetpath ]
+    then
+        echo "$0: cannot access the database for region $region."
+        exit 1
+    fi
+fi
+
+if [ $channel = "all" ]
+then
+    cat $targetpath
+else
+    entry=`cat $targetpath | awk -v channel=$channel '
+    BEGIN { found_entry=0 }
+    /^#/ {
+        next
+    }
+    NF==0 {
+        next
+    }
+    $1==channel {
+	print $0
+        found_entry=1
+    }
+    END {
+        if (found_entry==0)
+        {
+            exit 1
+        }
+    }'`
+    if [ $? -ne 0 ]
+    then
+        echo "$0: no entry for channel $channel in the TX power table for region $region."
+        exit 1
+    else
+        echo $entry
+    fi
+fi

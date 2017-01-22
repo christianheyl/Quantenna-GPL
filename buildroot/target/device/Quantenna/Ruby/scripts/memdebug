@@ -1,0 +1,25 @@
+#!/bin/sh
+cmd=$1
+interval=$2
+
+if [ -z $cmd ]
+then
+	cmd="on"
+fi
+
+if [ -z $interval ]
+then
+	interval="1"
+fi
+
+if [ "$cmd" = "on" ]; then
+	echo "memdebug 0 add e503ffb0 128" > /sys/devices/qdrv/control
+	echo "memdebug 0 add e5050400 16" > /sys/devices/qdrv/control
+	echo "memdebug 0 add e5050478 4" > /sys/devices/qdrv/control
+	echo "memdebug 0 add e6000320 4" > /sys/devices/qdrv/control
+	echo "memdebug 0 add e5050500 16" > /sys/devices/qdrv/control
+	echo "memdebug 0 add e5052034 4" > /sys/devices/qdrv/control
+	echo "pktlogger 0 start mem $interval" > /sys/devices/qdrv/control
+else
+	echo "pktlogger 0 stop mem" > /sys/devices/qdrv/control
+fi

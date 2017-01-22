@@ -1,0 +1,14 @@
+Support for various peripherals (on-SoC and off-SoC).
+ - Timers.
+ - UARTs.
+ - GPIO.
+ - LED.
+ - DDR parts.
+ - Ethernet parts.
+ - SPI flash parts.
+Support for RGMII download.
+Support for boot from 64K flash.
+Support for PCIe.
+Debug functions.
+Boot functions.
+Bugfixes.

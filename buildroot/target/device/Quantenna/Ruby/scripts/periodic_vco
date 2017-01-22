@@ -1,0 +1,2 @@
+#! /bin/sh
+echo "calcmd 67 0 6 0 1 $1" > /sys/devices/qdrv/control

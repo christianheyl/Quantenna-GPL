@@ -1,0 +1,19 @@
+# 20MHZ only
+cat /proc/ndpdisp > /scripts/out0.tmp
+cat /proc/ndpdisp > /scripts/out1.tmp
+cat /proc/ndpdisp > /scripts/out2.tmp
+cat /proc/ndpdisp > /scripts/out3.tmp
+cat /scripts/out0.tmp /scripts/out1.tmp > /scripts/txbf_outvec_bb0
+cat /scripts/out2.tmp /scripts/out3.tmp > /scripts/txbf_outvec_bb1
+rm -f /scripts/out*.tmp
+/scripts/int_testing/script_bf/txbf_test_format_arm 1 0 256 /scripts/inpNdp.txt 
+
+# for 40MHZ not tested
+#cat /proc/txbftest > /scripts/out1.tmp
+#cat /proc/txbftest > /scripts/out2.tmp
+#cat /proc/txbftest > /scripts/out3.tmp
+#cat /scripts/out0.tmp /scripts/out1.tmp > /scripts/txbf_outvec_bb0
+#cat /scripts/out2.tmp /scripts/out3.tmp > /scripts/txbf_outvec_bb1
+#rm -f /scripts/out*.tmp
+#/scripts/txbf_test_format_arm 1
+

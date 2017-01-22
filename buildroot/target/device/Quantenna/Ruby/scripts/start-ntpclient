@@ -1,0 +1,13 @@
+#!/bin/sh
+
+killall -q ntpclient
+
+#do timesync
+# allow time for dns to be resolved.
+sleep 60
+
+# continue to adjust time every day
+while true ; do
+	ntpclient -s -h pool.ntp.org
+	sleep 86400
+done

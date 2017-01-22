@@ -1,0 +1,37 @@
+--- gdb-6.5/opcodes/arm-dis.c.orig	2010-08-05 21:06:44.827609604 -0700
++++ gdb-6.5/opcodes/arm-dis.c	2010-08-05 20:52:26.760218364 -0700
+@@ -2947,14 +2947,14 @@
+ 		      if (started)
+ 			func (stream, ", ");
+ 		      started = 1;
+-		      func (stream, arm_regnames[14] /* "lr" */);
++		      func (stream, "%s", arm_regnames[14] /* "lr" */);
+ 		    }
+ 
+ 		  if (domaskpc)
+ 		    {
+ 		      if (started)
+ 			func (stream, ", ");
+-		      func (stream, arm_regnames[15] /* "pc" */);
++		      func (stream, "%s", arm_regnames[15] /* "pc" */);
+ 		    }
+ 
+ 		  func (stream, "}");
+@@ -3488,7 +3488,7 @@
+ 		  }
+ 		else
+ 		  {
+-		    func (stream, psr_name (given & 0xff));
++		    func (stream, "%s", psr_name (given & 0xff));
+ 		  }
+ 		break;
+ 
+@@ -3496,7 +3496,7 @@
+ 		if ((given & 0xff) == 0)
+ 		  func (stream, "%cPSR", (given & 0x100000) ? 'S' : 'C');
+ 		else
+-		  func (stream, psr_name (given & 0xff));
++		  func (stream, "%s", psr_name (given & 0xff));
+ 		break;
+ 
+ 	      case '0': case '1': case '2': case '3': case '4':

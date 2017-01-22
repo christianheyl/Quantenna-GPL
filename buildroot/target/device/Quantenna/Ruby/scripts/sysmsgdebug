@@ -1,0 +1,47 @@
+#!/bin/sh
+
+if [ -z "$1" ]
+then
+    if [ ! -f /tmp/sysdebug.exist ]
+    then
+        if [ -f /var/run/syslogd.pid ]
+        then
+            pid=`cat /var/run/syslogd.pid`
+            kill -0 $pid > /dev/null 2>&1
+            if [ $? = 0 ]
+            then
+		echo "pktlogger 0 start sysmsg" > /sys/devices/qdrv/control
+                kill -SIGHUP $pid
+                touch /tmp/sysdebug.exist
+            fi
+        else
+            echo "syslogd is not running."
+        fi
+    fi
+    exit 0
+fi
+
+if [ "$1" = "off" ]
+then
+    if [ -f /tmp/sysdebug.exist ]
+        then
+        if [ -f /var/run/syslogd.pid ]
+        then
+            pid=`cat /var/run/syslogd.pid`
+            kill -0 $pid > /dev/null 2>&1
+            if [ $? = 0 ]
+            then
+                kill -SIGHUP $pid
+                rm /tmp/sysdebug.exist
+		echo "pktlogger 0 stop sysmsg" > /sys/devices/qdrv/control
+            fi
+        else
+            echo "syslogd is not running."
+        fi
+        exit 0
+    else
+        echo "sysmsgdebug is not running."
+    fi
+else
+    echo "Invalid argument, usage: sysmsgdebug [ off ]"
+fi

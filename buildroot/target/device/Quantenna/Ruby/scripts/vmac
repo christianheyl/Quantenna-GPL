@@ -1,0 +1,38 @@
+#!/bin/sh
+
+if [ -f "/sys/class/net/host0/dbg" ] ; then
+	VMACDBG="/sys/class/net/host0/dbg"
+elif [ -f "/sys/class/net/pcie0/dbg" ] ; then
+	VMACDBG="/sys/class/net/pcie0/dbg"
+else
+	echo "dbg doesn't exsit"
+	exit 1
+fi
+
+if [ $# -eq 0 ] ; then
+
+	cat $VMACDBG
+
+elif [ $1 = "g" ] ; then
+
+	if [ $# -eq 2 ] ; then
+		echo $2 > $VMACDBG
+	fi
+	cat $VMACDBG
+
+elif [ $1 = "s" ] ; then
+
+	if [ $# -lt 2 ] ; then
+		echo "Invalid format for vmac"
+		exit 1
+	fi
+	echo $2 $3 > $VMACDBG
+
+elif [ $1 = "-h" ] ; then
+
+	echo "vmac s N [val]"
+	echo "vmac g N"
+	echo "vmac g"
+	echo "vmac"
+
+fi

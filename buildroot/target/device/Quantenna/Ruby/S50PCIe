@@ -1,0 +1,86 @@
+#!/bin/sh
+#
+# Start the pcie....
+#
+
+base_scripts="/scripts"
+
+. $base_scripts/start-helpers.sh
+
+start() {
+	export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/scripts:/usr/local/bin
+	export LD_LIBRARY_PATH=/lib:/usr/lib
+
+	# bd_pcie is bit defined
+	#   bit(0) is PCIE_IN_USE
+	#   bit(1) is PCIE_USE_PHY_LOOPBK
+	#   bit(2) is PCIE_RC_MODE
+	pcie_in_use=`get_board_config bd_pcie`
+	if [ 0$pcie_in_use -gt 0 ]
+	then
+		if [ $pcie_in_use -ge 1 -a $pcie_in_use -lt 4 ]
+		then
+			# disable skb recycling on bbic3
+			if [ -f "/proc/hw_revision" ] ; then
+				cat /proc/hw_revision | grep 'bbic3' > /dev/null
+				if [ $? -eq 0 ] ; then
+					echo "0" > /proc/qtn_skb_recycle_max
+			        fi
+			fi
+
+			echo "PCIe target enabled"
+			wifi_macaddr_configure
+			modprobe qdpc-pcie qdpc_mac0addr=$mac0addr tqe_sem_en=$en_tqe_sem
+			if [ $? -eq 0 ] ; then
+				qbr add pcie0
+				ifconfig pcie0 0.0.0.0 up
+				br0_mac=`cat /sys/class/net/pcie0/address`
+				ifconfig br0 hw ether $br0_mac
+			else
+				set_sys_status pcie_ep
+			fi
+		elif [ $pcie_in_use -ge 4 ]
+		then
+			# disable skb recycling
+			echo "0" > /proc/qtn_skb_recycle_max
+			echo "PCIe host enabled"
+			modprobe qdpc-host
+
+			if [ $? -eq 0 ] ; then
+				ifconfig host0 > /dev/null
+				if [ $? -eq 0 ] ; then
+					qbr add host0
+					ifconfig host0 0.0.0.0 up
+				fi
+			else
+				set_sys_status pcie_rc
+			fi
+		fi
+	fi
+}
+
+stop() {
+	echo "Stopping pcie interface not supported"
+}
+
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart|reload)
+		restart
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart}"
+		exit 1
+esac
+
+exit $?

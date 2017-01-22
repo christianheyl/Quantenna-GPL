@@ -1,0 +1,28 @@
+#!/bin/sh
+
+cmd=$1
+interval=$2
+
+if [ -z $cmd ]; then
+	cmd="on"
+fi
+
+if [ -z $interval ]; then
+	interval="2"
+fi
+
+case $cmd in
+"on")
+	echo "Enabling netdebug for PHY statistics"
+	echo "pktlogger 0 start phy_stats $interval" > /sys/devices/qdrv/control
+	;;
+"off")
+	echo "Disabling netdebug for PHY statistics"
+	echo "pktlogger 0 stop phy_stats" > /sys/devices/qdrv/control
+	;;
+*)
+	echo "Usage: phystatsdebug [ on | off ]"
+	exit 1
+	;;
+esac
+

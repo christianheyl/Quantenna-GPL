@@ -1,0 +1,9 @@
+#! /bin/sh
+
+if [ $# -ne 2 ]
+then
+    echo "Usage: transmit_file <image name> <host IP address>"
+    exit 1
+fi
+
+tftp -g $2 -r $1 -l /tmp/$1

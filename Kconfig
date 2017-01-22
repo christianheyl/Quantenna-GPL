@@ -1,0 +1,20 @@
+mainmenu "RUBY system configuration"
+
+menu "Filesystem & toolchain"
+
+source "buildroot/@@"
+source "Config.in"
+source "@@"
+
+endmenu
+
+menu "Busybox configuration"
+
+source "buildroot/package/busybox/busybox-1.10.3/@CONFIG_@"
+source "Config.in"
+source "@@"
+
+endmenu
+
+
+

@@ -1,0 +1,20 @@
+#! /bin/sh
+
+channel=$1
+
+if [ "$channel" == "" ]
+then 
+	echo "Enter channel Number"
+else
+
+	if [ $channel -lt 15 ]
+	then
+		echo "calcmd 1 0 8 0 1 0 2 $channel" > /sys/devices/qdrv/control
+		call_qcsapi set_LED 16 1
+	else
+		echo "calcmd 1 0 8 0 1 1 2 $channel" > /sys/devices/qdrv/control
+		call_qcsapi set_LED 16 0
+	fi
+fi
+
+

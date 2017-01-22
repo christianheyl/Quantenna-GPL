@@ -1,0 +1,7 @@
+# Override the default uClibc configuration
+
+ifeq ($(strip $(BR2_TARGET_RUBY)),y)
+
+include target/device/Quantenna/Ruby/ruby.mk
+
+endif

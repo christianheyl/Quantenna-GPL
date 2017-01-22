@@ -1,0 +1,101 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_0_TO_v37_4_0_18 Version v37.4.0.0 to version v37.4.0.18 changes
+ *
+ * \subsection v37_4_0_0_TO_v37_4_0_18Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.0 and v37.4.0.18
+ *
+ * \li \ref qcsapi_wifi_set_optim_stats (37.4.0.3)
+ * \li \ref qcsapi_wifi_set_sys_time (37.4.0.5)
+ * \li \ref qcsapi_wifi_set_2_4ghz_bw (37.4.0.5)
+ * \li \ref qcsapi_wifi_get_mac_address_reserve (37.4.0.5)
+ * \li \ref qcsapi_wifi_set_vco_lock_detect_mode (37.4.0.5)
+ * \li \ref qcsapi_wifi_clear_mac_address_reserve (37.4.0.5)
+ * \li \ref qcsapi_wifi_set_mac_address_reserve (37.4.0.5)
+ * \li \ref qcsapi_wifi_get_vco_lock_detect_mode (37.4.0.5)
+ * \li \ref qcsapi_wifi_get_sys_time (37.4.0.5)
+ * \li \ref qcsapi_wifi_set_pref_band (37.4.0.5)
+ * \li \ref qcsapi_wifi_get_2_4ghz_bw (37.4.0.5)
+ * \li \ref qcsapi_wifi_get_pref_band (37.4.0.5)
+ * \li \ref qcsapi_wifi_ssid_get_bssid (37.4.0.6)
+ * \li \ref qcsapi_wifi_ssid_set_bssid (37.4.0.6)
+ * \li \ref qcsapi_get_eth_info (37.4.0.6)
+ * \li \ref qcsapi_wifi_get_chan_power_table (37.4.0.7)
+ * \li \ref qcsapi_wifi_get_scs_score_report (37.4.0.7)
+ * \li \ref qcsapi_wifi_set_chan_power_table (37.4.0.7)
+ * \li \ref qcsapi_wifi_get_ap_interface_name (37.4.0.9)
+ * \li \ref qcsapi_wifi_set_ap_interface_name (37.4.0.9)
+ * \li \ref qcsapi_wifi_verify_repeater_mode (37.4.0.9)
+ * \li \ref qcsapi_wifi_block_bss (37.4.0.12)
+ * \li \ref qcsapi_wifi_chan_control (37.4.0.13)
+ * \li \ref qcsapi_wifi_get_chan_disabled (37.4.0.13)
+ * \li \ref qcsapi_wifi_set_txba_disable (37.4.0.17)
+ * \li \ref qcsapi_security_del_hs20_icon (37.4.0.17)
+ * \li \ref qcsapi_wifi_get_pairwise_key_interval (37.4.0.17)
+ * \li \ref qcsapi_wifi_get_vap_state (37.4.0.17)
+ * \li \ref qcsapi_wifi_set_vap_default_state (37.4.0.17)
+ * \li \ref qcsapi_wifi_send_qos_map_conf (37.4.0.17)
+ * \li \ref qcsapi_wifi_set_chan_pri_inactive_ext (37.4.0.17)
+ * \li \ref qcsapi_wifi_get_txburst (37.4.0.17)
+ * \li \ref qcsapi_wifi_get_supported_freq_bands (37.4.0.17)
+ * \li \ref qcsapi_wifi_get_qos_map (37.4.0.17)
+ * \li \ref qcsapi_security_del_osu_server_uri (37.4.0.17)
+ * \li \ref qcsapi_wifi_get_sec_chan (37.4.0.17)
+ * \li \ref qcsapi_wifi_get_dscp_tid_map (37.4.0.17)
+ * \li \ref qcsapi_wifi_get_rxba_decline (37.4.0.17)
+ * \li \ref qcsapi_wifi_del_qos_map (37.4.0.17)
+ * \li \ref qcsapi_wifi_set_pairwise_key_interval (37.4.0.17)
+ * \li \ref qcsapi_security_add_osu_server_uri (37.4.0.17)
+ * \li \ref qcsapi_security_get_osu_server_uri (37.4.0.17)
+ * \li \ref qcsapi_security_get_osu_server_param (37.4.0.17)
+ * \li \ref qcsapi_wifi_set_vap_state (37.4.0.17)
+ * \li \ref qcsapi_wifi_get_txba_disable (37.4.0.17)
+ * \li \ref qcsapi_security_del_osu_server_param (37.4.0.17)
+ * \li \ref qcsapi_security_get_hs20_icon (37.4.0.17)
+ * \li \ref qcsapi_wifi_set_qos_map (37.4.0.17)
+ * \li \ref qcsapi_wifi_set_rxba_decline (37.4.0.17)
+ * \li \ref qcsapi_wifi_set_txburst (37.4.0.17)
+ * \li \ref qcsapi_wifi_set_sec_chan (37.4.0.17)
+ * \li \ref qcsapi_security_add_osu_server_param (37.4.0.17)
+ * \li \ref qcsapi_security_add_hs20_icon (37.4.0.17)
+ * \li \ref qcsapi_wifi_get_vap_default_state (37.4.0.17)
+ *
+ * \subsection v37_4_0_0_TO_v37_4_0_18Proto Function prototype changes
+ *
+ * The following function prototypes were modified between versions v37.4.0.0 and v37.4.0.18
+ *  - \ref qcsapi_security_del_venue_name (37.4.0.2)
+ *    - Old prototype: int qcsapi_security_del_venue_name(const char *ifname, char *lang_code, char *venue_name);
+ *    - New prototype: int qcsapi_security_del_venue_name(const char *ifname, const char *lang_code, const char *venue_name);
+ *  - \ref qcsapi_security_add_venue_name (37.4.0.2)
+ *    - Old prototype: int qcsapi_security_add_venue_name(const char *ifname, char *lang_code, char *venue_name);
+ *    - New prototype: int qcsapi_security_add_venue_name(const char *ifname, const char *lang_code, const char *venue_name);
+ *  - \ref qcsapi_security_del_oper_friendly_name (37.4.0.2)
+ *    - Old prototype: int qcsapi_security_del_oper_friendly_name(const char *ifname, char *lang_code, char *oper_friendly_name);
+ *    - New prototype: int qcsapi_security_del_oper_friendly_name(const char *ifname, const char *lang_code, const char *oper_friendly_name);
+ *  - \ref qcsapi_security_add_nai_realm (37.4.0.2)
+ *    - Old prototype: int qcsapi_security_add_nai_realm(const char *ifname, int encoding, char *nai_realm, char *eap_method);
+ *    - New prototype: int qcsapi_security_add_nai_realm(const char *ifname, const int encoding, const char *nai_realm, const char *eap_method);
+ *  - \ref qcsapi_security_add_oper_friendly_name (37.4.0.2)
+ *    - Old prototype: int qcsapi_security_add_oper_friendly_name(const char *ifname, char *lang_code, char *oper_friendly_name);
+ *    - New prototype: int qcsapi_security_add_oper_friendly_name(const char *ifname, const char *lang_code, const char *oper_friendly_name);
+ *  - \ref qcsapi_enable_vlan_pass_through (37.4.0.7)
+ *    - Old prototype: int qcsapi_enable_vlan_pass_through(int enabled);
+ *    - New prototype: int qcsapi_enable_vlan_pass_through(const char *ifname, int enabled);
+ *  - \ref qcsapi_get_uboot_info (37.4.0.9)
+ *    - Old prototype: int qcsapi_get_uboot_info(char *info, qcsapi_unsigned_int uboot_info);
+ *    - New prototype: int qcsapi_get_uboot_info(string_32 uboot_version, struct early_flash_config *ef_config);
+ *  - \ref qcsapi_wifi_set_group_key_interval (37.4.0.17)
+ *    - Old prototype: int qcsapi_wifi_set_group_key_interval(const char *ifname, const string_16 group_key_interval);
+ *    - New prototype: int qcsapi_wifi_set_group_key_interval(const char *ifname, const unsigned int key_interval);
+ *  - \ref qcsapi_wifi_show_vlan_config (37.4.0.17)
+ *    - Old prototype: int qcsapi_wifi_show_vlan_config(const char *ifname, string_1024 vcfg);
+ *    - New prototype: int qcsapi_wifi_show_vlan_config(const char *ifname, string_2048 vcfg, const char *flag);
+ *  - \ref qcsapi_wifi_get_group_key_interval (37.4.0.17)
+ *    - Old prototype: int qcsapi_wifi_get_group_key_interval(const char *ifname, string_16 group_key_interval);
+ *    - New prototype: int qcsapi_wifi_get_group_key_interval(const char *ifname, unsigned int *p_key_interval);
+ *  - \ref qcsapi_wifi_vlan_config (37.4.0.17)
+ *    - Old prototype: int qcsapi_wifi_vlan_config(const char *ifname, qcsapi_vlan_cmd cmd, uint32_t vlanid, uint32_t flags);
+ *    - New prototype: int qcsapi_wifi_vlan_config(const char *ifname, qcsapi_vlan_cmd cmd, uint32_t vlanid);
+ */

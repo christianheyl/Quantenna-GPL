@@ -1,0 +1,75 @@
+#!/bin/sh
+
+vbr_name_pref="vbr"
+vbr_dirs="/sys/devices/virtual/net/vbr*/"
+
+cmd=$1
+interface=$2
+vid=$3
+add=$4
+tag=$5
+default=$6
+
+
+usage()
+{
+	echo "Usage:"
+	echo "	qvlan <bind | unbind | access | trunk | hybrid> <wifi interface>"
+	echo "    <vlan id> <add | del> <tag | untag> <default | none>"
+	echo "	or qvlan <enable | disable | reset> <wifi interface>"
+	echo ""
+}
+
+vlan_config()
+{
+	sysfs_net_br_iface_path="/sys/class/net/$interface/bridge/"
+
+	# Create/remove vlan interface if the interface is a bridge interface
+	if [ -d "$sysfs_net_br_iface_path" ]
+	then
+		if [ "$add" == "add" ]
+		then
+			vconfig add $interface $vid
+		elif [ "$add" == "del" ]
+		then
+			vconfig rem $interface.$vid
+		fi
+
+		return $?
+	fi
+
+	echo "set vlan $interface $cmd $vid $add $tag $default" >/sys/devices/qdrv/control
+	return $?
+}
+
+reset()
+{
+	echo "set vlan $interface reset" >/sys/devices/qdrv/control
+	return $?
+}
+
+enable()
+{
+	echo "set vlan enable" >/sys/devices/qdrv/control
+}
+
+disable()
+{
+	echo "set vlan disable" >/sys/devices/qdrv/control
+}
+
+if [ "$cmd" = "reset" ]
+then
+	reset
+elif [ "$cmd" = "enable" ]
+then
+	enable
+elif [ "$cmd" = "disable" ]
+then
+	disable
+elif [ "$cmd" = "access" -o "$cmd" = "trunk" -o "$cmd" = "hybrid" ]
+then
+	vlan_config
+else
+	usage
+fi

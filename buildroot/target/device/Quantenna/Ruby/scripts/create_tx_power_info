@@ -1,0 +1,184 @@
+cat >/tmp/tx_power_eu.txt <<EOF
+# TX power customer's database table, region eu
+*band 1 eu
+36 18 16
+40 18 16
+44 18 16
+48 18 16
+*band 2 eu
+52 18 16
+56 18 16
+60 17 16
+64 17 14
+*band 3 eu
+100 20 20
+104 20 20
+108 20 20
+112 20 20
+132 21 20
+136 21 21
+140 21 21
+*band 5 eu
+1 20 20
+2 20 20
+3 20 20
+4 20 20
+5 20 20
+6 20 20
+7 20 20
+8 20 20
+9 20 20
+10 20 20
+11 20 20
+12 20 20
+13 20 20
+EOF
+
+cat >/tmp/tx_power_us.txt <<EOF
+# TX power customer's database table, region us
+*band 1 us
+36 11 11
+40 11 11
+44 11 11
+48 11 11
+*band 2 us
+52 18 18
+56 18 18
+60 14 18
+64 14 9
+*band 3 us
+100 13 16
+104 13 18
+108 18 18
+112 18 18
+132 18 18
+136 18 18
+*band 4 us
+149 20 20
+153 20 20
+157 20 20
+161 20 20
+*band 5 us
+1 30 30
+2 30 30
+3 30 30
+4 30 30
+5 30 30
+6 30 30
+7 30 30
+8 30 30
+9 30 30
+10 30 30
+11 30 30
+EOF
+
+cat >/tmp/tx_power_cn.txt <<EOF
+# TX power database table for QBox710, region cn
+*band 4 cn
+149 21 21
+153 21 21
+157 21 21
+161 21 21
+*band 5 cn
+1 18 18
+2 18 18
+3 18 18
+4 18 18
+5 18 18
+6 18 18
+7 18 18
+8 18 18
+9 18 18
+10 18 18
+11 18 18
+12 18 18
+13 18 18
+EOF
+
+cat >/tmp/tx_power_au.txt <<EOF
+# TX power database table for QBox710, region au
+*band 1 eu
+36 16 16
+40 16 16
+44 16 16
+48 16 16
+*band 2 eu
+52 16 16
+56 16 16
+60 16 16
+64 16 16
+*band 3 eu
+100 21 21
+104 21 21
+108 21 21
+112 21 21
+116 21 21
+132 21 21
+136 21 21
+*band 4 au
+149 21 21
+153 21 21
+157 21 21
+161 21 21
+*band 5 eu
+1 20 20
+2 20 20
+3 20 20
+4 20 20
+5 20 20
+6 20 20
+7 20 20
+8 20 20
+9 20 20
+10 20 20
+11 20 20
+12 20 20
+13 20 20
+EOF
+
+cat >/tmp/tx_power_jp.txt <<EOF
+# TX power database table for QBox710, region au
+*band 1 jp
+36 16 16
+40 16 16
+44 16 16
+48 16 16
+*band 2 jp
+52 16 16
+56 16 16
+60 16 16
+64 16 16
+*band 3 jp
+100 21 21
+104 21 21
+108 21 21
+112 21 21
+116 21 21
+120 21 21
+124 21 21
+128 21 21
+132 21 21
+136 21 21
+140 21 21
+*band 5 jp
+1 14 20
+2 14 20
+3 14 20
+4 14 20
+5 14 20
+6 14 20
+7 14 20
+8 14 20
+9 14 20
+10 14 20
+11 14 20
+12 14 20
+13 14 20
+EOF
+
+update_bootcfg_file /tmp/tx_power_eu.txt
+update_bootcfg_file /tmp/tx_power_us.txt
+update_bootcfg_file /tmp/tx_power_au.txt
+update_bootcfg_file /tmp/tx_power_jp.txt
+update_bootcfg_file /tmp/tx_power_cn.txt
+

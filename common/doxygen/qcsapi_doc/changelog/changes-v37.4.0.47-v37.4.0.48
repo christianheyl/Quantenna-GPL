@@ -1,0 +1,12 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_47_TO_v37_4_0_48 Version v37.4.0.47 to version v37.4.0.48 changes
+ *
+ * \subsection v37_4_0_47_TO_v37_4_0_48Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.47 and v37.4.0.48
+ * \li \ref qcsapi_wps_set_default_pbc_bss
+ * \li \ref qcsapi_wps_get_default_pbc_bss
+ */
+

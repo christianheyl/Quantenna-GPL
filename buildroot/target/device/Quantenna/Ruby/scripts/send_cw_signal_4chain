@@ -1,0 +1,52 @@
+#!/bin/sh
+
+wifi_cw_wave_start()
+{
+	channel=$1
+	if [ "$channel" == "" ] ; then
+		channel=36
+	fi
+	set_channel_by_calcmd $channel
+	writerfmem 0 135 0
+	writerfmem 0 136 0
+	writerfmem 0 144 fffff
+	writerfmem 0 145 3fffff
+	writerfmem 0 146 3fffff
+	writerfmem 0 147 3fffff
+	writerfmem 0 148 ffffff
+	writerfmem 0 149 ffffff
+	writerfmem 0 150 3fffff
+	writerfmem 0 151 3fffff
+	writerfmem 0 138 3fffff
+	writerfmem 0 137 ffffff
+	pa_control ectrl 0x13b5
+	pa_control ictrl 0x003b
+	echo "CW test started on channel $channel"
+}
+
+wifi_cw_wave_stop()
+{
+	writerfmem 0 135 00180380
+	writerfmem 0 136 00180180
+	writerfmem 0 144 0000c000
+	writerfmem 0 145 0000c000
+	writerfmem 0 146 0000c000
+	writerfmem 0 147 0000c000
+	writerfmem 0 148 00300030
+	writerfmem 0 149 00300030
+	writerfmem 0 150 00300030
+	writerfmem 0 151 00300030
+	writerfmem 0 138 00000000
+	writerfmem 0 137 00000000
+	pa_control ectrl 0x03b5
+	pa_control ictrl 0x0008
+	echo "CW test stopped"
+}
+
+if [ "$1" == "start" ] ; then
+	wifi_cw_wave_start $2
+elif [ "$1" == "stop" ] ; then
+	wifi_cw_wave_stop
+else
+	echo "send_cw_signal_4chain { start <channel> | stop }"
+fi

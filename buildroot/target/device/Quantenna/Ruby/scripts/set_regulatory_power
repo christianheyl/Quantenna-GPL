@@ -1,0 +1,28 @@
+#! /bin/sh
+channel=$1
+reg_region=$2
+pow_offset=$3
+
+if [ "$1" == "help" -o "$1" == "" ]
+then
+	echo "Usage: set_regulatory_power <channel> <regulatory region> <TX power offset>";
+	echo "<regulatory region> is either USA or Europe.";
+	echo "To get the maximum TX power for a channel in a regulatory region, enter:";
+	echo "set_regulatory_power <channel> <regulatory region>";
+	exit
+fi
+
+echo "*********************";
+echo "Channel: $channel";
+echo "Regulatory region: $reg_region";
+echo "Power offset: $pow_offset";
+echo "*********************";
+
+if [ "$pow_offset" == "" ]
+then
+	tmp=`call_qcsapi -u set_regulatory_channel wifi0 $channel $reg_region`
+else
+	tmp=`call_qscapi -u set_regulatory_channel wifi0 $channel $reg_region $pow_offset`
+fi
+echo $tmp;
+exit;

@@ -1,0 +1,2 @@
+echo "delete txpower.cal" > /proc/bootcfg/env
+

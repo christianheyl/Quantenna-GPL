@@ -1,0 +1,12 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_58_TO_v37_4_0_59 Version v37.4.0.58 to version v37.4.0.59 changes
+ *
+ * \subsection v37_4_0_58_TO_v37_4_0_59Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.58 and v37.4.0.59
+ * \li \ref qcsapi_wifi_set_br_isolate
+ * \li \ref qcsapi_wifi_get_br_isolate
+ */
+

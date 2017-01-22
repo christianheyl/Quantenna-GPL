@@ -1,0 +1,21 @@
+#!/bin/sh
+cmd=$1
+interval=$2
+
+if [ -z $cmd ]
+then
+	cmd="on"
+fi
+
+if [ -z $interval ]
+then
+	interval="1"
+fi
+
+if [ "$cmd" = "on" ]
+then
+	echo "pktlogger 0 start rate $interval" > /sys/devices/qdrv/control
+elif [ "$cmd" = "off" ]
+then
+	echo "pktlogger 0 stop rate" > /sys/devices/qdrv/control
+fi

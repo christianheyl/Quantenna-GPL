@@ -1,0 +1,19 @@
+#! /bin/sh
+
+POWER_TABLE_DIR=/etc/power_tables
+
+file_num=$(find ${POWER_TABLE_DIR} -name "tx_power_*.txt" | wc -l)
+if [ ${file_num} -gt 0 ]
+then
+	echo "Found power table in ${POWER_TABLE_DIR}"
+
+	for file in ${POWER_TABLE_DIR}/tx_power_*.txt
+	do
+		checksum=`md5sum ${file} | cut -d ' ' -f 1`
+		echo "set power_table_checksum ${file} ${checksum}" > /sys/devices/qdrv/control
+	done
+else
+	echo -e "\033[7mWarning: No power table was found in ${POWER_TABLE_DIR} !!!\033[0m"
+fi
+
+echo "set lock_checksum_list" > /sys/devices/qdrv/control

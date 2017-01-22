@@ -1,0 +1,32 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_43_TO_v37_4_0_44 Version v37.4.0.43 to version v37.4.0.44 changes
+ *
+ * \subsection v37_4_0_43_TO_v37_4_0_44Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.43 and v37.4.0.44
+ * \li \ref qcsapi_wifi_set_SSID_group_id
+ * \li \ref qcsapi_wifi_get_SSID_assoc_reserve
+ * \li \ref qcsapi_wifi_set_scs_leavedfs_chan_mtrc_mrgn
+ * \li \ref qcsapi_wifi_get_SSID_group_id
+ * \li \ref qcsapi_wifi_set_max_boot_cac_duration
+ * \li \ref qcsapi_set_custom_value
+ * \li \ref qcsapi_wifi_set_SSID_assoc_reserve
+ *
+ * \subsection v37_4_0_43_TO_v37_4_0_44Removed Removed functions
+ *
+ * The following functions were removed between versions v37.4.0.43 and v37.4.0.44
+ * \li \ref qcsapi_wifi_fget
+ *
+ * \subsection v37_4_0_43_TO_v37_4_0_44Proto Function prototype changes
+ *
+ * The following function prototypes were modified between versions v37.4.0.43 and v37.4.0.44
+ *  - \ref qcsapi_wifi_set_bss_assoc_limit
+ *    - Old prototype: int qcsapi_wifi_set_bss_assoc_limit(const char *ifname, qcsapi_unsigned_int assoc_limit);
+ *    - New prototype: int qcsapi_wifi_set_bss_assoc_limit(const qcsapi_unsigned_int group, const qcsapi_unsigned_int limit);
+ *  - \ref qcsapi_wifi_get_bss_assoc_limit
+ *    - Old prototype: int qcsapi_wifi_get_bss_assoc_limit(const char *ifname, qcsapi_unsigned_int *p_assoc_limit);
+ *    - New prototype: int qcsapi_wifi_get_bss_assoc_limit(qcsapi_unsigned_int group, qcsapi_unsigned_int *p_assoc_limit);
+ */
+

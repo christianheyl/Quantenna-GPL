@@ -1,0 +1,20 @@
+#!/bin/sh
+
+case $1 in
+client-id)
+	VAL=`cat /etc/custom/client-id`
+	;;
+device-id)
+	VAL=`cat /etc/custom/device-id`
+	;;
+secret)
+	VAL=`cat /etc/custom/secret`
+	;;
+*)
+	echo "qh_get_oauth client-id|device-id|secret"
+	exit 1
+	;;
+esac
+
+echo -n "$VAL"
+exit 0

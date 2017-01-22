@@ -1,0 +1,30 @@
+#!/bin/sh
+
+base_scripts="/scripts"
+
+# power_down() and power_up() functions can be extended
+# to reduce power consumption.
+
+power_up() {
+	$base_scripts/rfenable on
+}
+
+power_down() {
+	$base_scripts/rfenable off
+}
+
+if [ "$1" == "reboot" ]
+then
+	qevt_send_event "System reboot"
+	sleep 3
+	reboot
+elif [ "$1" == "powerdown" ]
+then
+	power_down
+	qevt_send_event "System powerdown"
+elif [ "$1" == "powerup" ]
+then
+	power_up
+	qevt_send_event "System powerup"
+fi
+

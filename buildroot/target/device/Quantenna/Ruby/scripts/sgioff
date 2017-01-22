@@ -1,0 +1,4 @@
+# Force SGI off (use LGI)
+iwpriv wifi0 gi_select 0
+iwpriv wifi0 setparam 105 1
+iwpriv wifi0 setparam 93 0

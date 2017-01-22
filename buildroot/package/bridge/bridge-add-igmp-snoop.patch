@@ -1,0 +1,83 @@
+diff -dur bridge-utils-1.0.6.orig/brctl/brctl_cmd.c bridge-utils-1.0.6/brctl/brctl_cmd.c
+--- bridge-utils-1.0.6.orig/brctl/brctl_cmd.c	2005-03-17 06:18:33.000000000 +1100
++++ bridge-utils-1.0.6/brctl/brctl_cmd.c	2011-09-29 14:02:59.413969617 +1000
+@@ -297,6 +297,28 @@
+ 	return err != 0;
+ }
+ 
++static int br_cmd_igmp_snoop(int argc, char *const* argv)
++{
++	int igmp, err;
++
++	if (!strcmp(argv[2], "on") || !strcmp(argv[2], "yes")
++	    || !strcmp(argv[2], "1"))
++		igmp = 1;
++	else if (!strcmp(argv[2], "off") || !strcmp(argv[2], "no")
++		 || !strcmp(argv[2], "0"))
++		igmp = 0;
++	else {
++		fprintf(stderr, "expect on/off for argument\n");
++		return 1;
++	}
++
++	err = br_set_igmp_snoop_state(argv[1], igmp);
++	if (err)
++		fprintf(stderr, "set IGMP snoop status failed: %s\n",
++			strerror(errno));
++	return err != 0;
++}
++
+ static int br_cmd_showstp(int argc, char *const* argv)
+ {
+ 	struct bridge_info info;
+@@ -418,6 +440,8 @@
+ 	  "<bridge>\t\tshow bridge stp info"},
+ 	{ 2, "stp", br_cmd_stp,
+ 	  "<bridge> {on|off}\tturn stp on/off" },
++	{ 2, "igmpsnoop", br_cmd_igmp_snoop,
++	  "<bridge> {on|off}\tturn IGMP snooping on/off" },
+ };
+ 
+ const struct command *command_lookup(const char *cmd)
+diff -dur bridge-utils-1.0.6.orig/libbridge/libbridge_devif.c bridge-utils-1.0.6/libbridge/libbridge_devif.c
+--- bridge-utils-1.0.6.orig/libbridge/libbridge_devif.c	2004-06-09 01:57:49.000000000 +1000
++++ bridge-utils-1.0.6/libbridge/libbridge_devif.c	2011-09-29 15:04:57.648028675 +1000
+@@ -234,6 +234,7 @@
+ 
+ 	info->root_port = fetch_int(sdir, "root_port");
+ 	info->stp_enabled = fetch_int(sdir, "stp_state");
++	info->igmp_snoop_enabled = fetch_int(sdir, "igmp_snoop_state");
+ 	info->topology_change = fetch_int(sdir, "topology_change");
+ 	info->topology_change_detected = fetch_int(sdir, "topology_change_detected");
+ 	sysfs_close_directory(sdir);
+@@ -390,6 +391,11 @@
+ 	return br_set(br, "stp_state", stp_state, BRCTL_SET_BRIDGE_STP_STATE);
+ }
+ 
++int br_set_igmp_snoop_state(const char *br, int igmp_snoop_state)
++{
++	return br_set(br, "igmp_snoop_state", igmp_snoop_state, BRCTL_SET_IGMP_SNOOP_STATE);
++}
++
+ int br_set_bridge_priority(const char *br, int bridge_priority)
+ {
+ 	return br_set(br, "priority", bridge_priority, 
+diff -dur bridge-utils-1.0.6.orig/libbridge/libbridge.h bridge-utils-1.0.6/libbridge/libbridge.h
+--- bridge-utils-1.0.6.orig/libbridge/libbridge.h	2004-06-09 01:57:49.000000000 +1000
++++ bridge-utils-1.0.6/libbridge/libbridge.h	2011-09-29 14:04:24.759375211 +1000
+@@ -41,6 +41,7 @@
+ 	struct timeval bridge_forward_delay;
+ 	u_int16_t root_port;
+ 	unsigned char stp_enabled;
++	unsigned char igmp_snoop_enabled;
+ 	unsigned char topology_change;
+ 	unsigned char topology_change_detected;
+ 	struct timeval ageing_time;
+@@ -100,6 +101,7 @@
+ extern int br_set_bridge_max_age(const char *br, struct timeval *tv);
+ extern int br_set_ageing_time(const char *br, struct timeval *tv);
+ extern int br_set_stp_state(const char *br, int stp_state);
++extern int br_set_igmp_snoop_state(const char *br, int igmp_snoop_state);
+ extern int br_set_bridge_priority(const char *br, int bridge_priority);
+ extern int br_set_port_priority(const char *br, const char *p, 
+ 				int port_priority);

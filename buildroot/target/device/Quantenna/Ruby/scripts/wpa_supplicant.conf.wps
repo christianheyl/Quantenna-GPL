@@ -1,0 +1,14 @@
+ctrl_interface=/var/run/wpa_supplicant
+ctrl_interface_group=0
+eapol_version=1
+ap_scan=1
+update_config=1
+
+
+# WPS setup - remove other network blocks and uncomment this one for WPS
+network={
+    key_mgmt=WPS
+    eap=WSC
+    identity="WFA-SimpleConfig-Enrollee-1-0"
+}
+

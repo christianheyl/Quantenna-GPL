@@ -1,0 +1,21 @@
+#!/bin/ash
+#install the new gain table
+echo "calcmd 4 0 6 0 1 1" > /sys/devices/qdrv/control
+echo "calcmd 2 0 6 0 1 3" > /sys/devices/qdrv/control
+
+#redo RX DC Offset calibration
+echo "calcmd 26 0 8 0 1 0 2 0" > /sys/devices/qdrv/control
+echo "calcmd 26 0 8 0 1 0 2 1" > /sys/devices/qdrv/control
+echo "calcmd 26 0 8 0 1 1 2 0" > /sys/devices/qdrv/control
+echo "calcmd 26 0 8 0 1 1 2 1" > /sys/devices/qdrv/control
+
+#write the RX DC residual values to SRAM for debug
+echo "calcmd 27 0 10 0 1 0 2 0 3 0" > /sys/devices/qdrv/control
+echo "calcmd 27 0 10 0 1 0 2 1 3 0" > /sys/devices/qdrv/control
+echo "calcmd 27 0 10 0 1 1 2 0 3 0" > /sys/devices/qdrv/control
+echo "calcmd 27 0 10 0 1 1 2 1 3 0" > /sys/devices/qdrv/control
+
+#reread the LO, and IQ Comp values from flash into RF registers
+echo "calcmd 23 0 6 0 1 255" > /sys/devices/qdrv/control
+echo "calcmd 24 0 6 0 1 255" > /sys/devices/qdrv/control
+echo "calcmd 25 0 6 0 1 255" > /sys/devices/qdrv/control

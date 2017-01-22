@@ -1,0 +1,72 @@
+echo "BB Registers"
+cat /proc/hw_revision | grep "bbic4" > /dev/null
+if [ $? -eq 0 ]
+then
+	echo "----Global Regs----"
+	readmem_multi e6000000 128
+	readmem_multi e6000200 76
+
+	echo "----BP Regs----"
+	readmem_multi e6010000 256
+	readmem_multi e6010360 4
+
+	echo "----MIMO Regs----"
+	readmem_multi e6050000 256
+	readmem_multi e6050360 90
+
+	echo "----TD Regs----"
+	readmem_multi e6090000 256
+	readmem_multi e6090360 256
+	readmem_multi e6091000 256
+	readmem_multi e6091360 138
+	readmem_multi e6092000 256
+	readmem_multi e6092360 136
+
+	echo "----Modem 11b----"
+	readmem_multi e60f0000 151
+
+else
+	echo "----Global Regs----"
+	readmem_multi e6000000 128
+	readmem_multi e6000200 74
+
+	echo "----BP Regs----"
+	readmem_multi e6010000 63
+
+	echo "----MIMO Regs----"
+	readmem_multi e6050000 128
+	readmem_multi e6050200 27
+fi
+
+echo "MAC Registers"
+echo "Registers relating to DMA"
+readmem_multi e503ffb0 20
+
+echo "Global Control Registers"
+readmem_multi e5042000 20
+
+echo "Registers relating to Tx Prefetch"
+readmem_multi e5050300 48
+
+echo "Contention / G0 Timer / G1 Timer"
+readmem_multi e5050400 12
+
+echo "Additional Registers relating to Tx"
+readmem_multi e5050440 87
+
+echo "Rx Frame Processor Registers"
+readmem_multi e5052000 41
+
+echo "Shared Registers"
+readmem_multi e5053000 14
+
+echo "Additional Registers (SIFS, AID, etc.)"
+readmem_multi e5053048 19
+
+cat /proc/hw_revision | grep "bbic4" > /dev/null
+if [ $? -eq 0 ]
+then
+	echo "Additional Registers for BBIC4"
+	readmem_multi e50520a8 12
+fi
+

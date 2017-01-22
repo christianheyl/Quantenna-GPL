@@ -1,0 +1,14 @@
+#!/bin/ash
+
+if [ -f /sys/devices/qdrv/control ]
+then
+	if [ "$1" = "" ]; then
+		echo "dump mem 80000000" > /sys/devices/qdrv/control
+	else
+		if [ "$2" = "" ]; then
+			echo "dump mem $1" > /sys/devices/qdrv/control
+		else
+			echo "dump mem $1 $2" > /sys/devices/qdrv/control
+		fi			
+	fi
+fi

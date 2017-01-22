@@ -1,0 +1,70 @@
+menu "Ruby filesystem configuration"
+
+config BR2_TARGET_RUBY_IPC_SUBNET
+	string "IPC point-to-point subnet"
+	default 192.168.101
+	help
+	  The IPC driver automatically creates a point-to-point
+	  network interface for communication between network
+	  stacks on the two Ruby processors. The point-to-point
+	  interface is given an IP address.
+
+choice
+	prompt "IP address on SOC1 Ethernet"
+	default BR2_TARGET_RUBY_SOC1_ETH_IP_DHCP
+	help
+	
+config BR2_TARGET_RUBY_SOC1_ETH_IP_NONE
+	bool "none"
+	
+config BR2_TARGET_RUBY_SOC1_ETH_IP_STATIC
+	bool "static"
+	
+config BR2_TARGET_RUBY_SOC1_ETH_IP_DHCP
+	bool "dhcp"
+
+endchoice
+
+if BR2_TARGET_RUBY_SOC1_ETH_IP_STATIC
+
+config BR2_TARGET_RUBY_SOC1_ETHERNET_IP_ADDRESS
+	string "IP address for Ethernet interface on SOC1"
+	help
+	  Static IP address for Ethernet interface on SOC1.
+
+endif
+
+choice
+	prompt "IP address on SOC2 Ethernet"
+	default BR2_TARGET_RUBY_SOC2_ETH_IP_NONE
+	help
+	
+config BR2_TARGET_RUBY_SOC2_ETH_IP_NONE
+	bool "none"
+	
+config BR2_TARGET_RUBY_SOC2_ETH_IP_STATIC
+	bool "static"
+	
+config BR2_TARGET_RUBY_SOC2_ETH_IP_DHCP
+	bool "dhcp"
+
+endchoice
+
+if BR2_TARGET_RUBY_SOC2_ETH_IP_STATIC
+
+config BR2_TARGET_RUBY_SOC2_ETHERNET_IP_ADDRESS
+	string "IP address for Ethernet interface on SOC2"
+	help
+	  Static IP address for Ethernet interface on SOC2.
+
+endif
+
+config BR2_TARGET_RUBY_STATELESS
+	bool "Stateless"
+	default n
+
+config BR2_TARGET_RUBY_STATELESS_HOST
+	bool "Host of stateless board"
+	default n
+
+endmenu

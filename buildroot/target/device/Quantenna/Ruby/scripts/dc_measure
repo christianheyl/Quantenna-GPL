@@ -1,0 +1,42 @@
+#! /bin/sh
+
+band_sel=$1
+gain_idx=$2
+reg_pin_mode=$3
+short_lna=$4
+measure_only=$5
+
+if [ "$band_sel" == "" ]
+then
+	band_sel=1
+fi
+
+if [ "$gain_idx" == "" ]
+then
+	gain_idx=-1
+fi
+
+if [ "$reg_pin_mode" == "" ]
+then
+	reg_pin_mode=1
+fi
+
+if [ "$short_lna" == "" ]
+then
+	short_lna=1
+fi
+
+if [ "$measure_only" == "" ]
+then
+	measure_only=0
+fi
+
+echo "==================================="
+echo "band_sel => $band_sel"
+echo "gain_idx => $gain_idx"
+echo "reg_pin_mode => $reg_pin_mode"
+echo "short_lna => $short_lna"
+echo "measure_only => $measure_only"
+echo "==================================="
+sleep
+echo "calcmd 27 0 14 0 1 $band_sel 2 $gain_idx 3 $reg_pin_mode 4 $short_lna 5 $measure_only" > /sys/devices/qdrv/control

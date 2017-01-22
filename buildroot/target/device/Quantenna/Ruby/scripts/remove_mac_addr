@@ -1,0 +1,17 @@
+#! /bin/sh
+
+target_mac_addr=$1
+target_file=$2
+
+if [ "$target_mac_addr" = "" -o "$target_file" = "" ]
+then
+    exit 1
+fi
+
+search_for_addr=`grep $target_mac_addr $target_file`
+if [ "$search_for_addr" != "" ]
+then
+    grep -v $target_mac_addr $target_file >${target_file}_tmp
+    mv -f ${target_file}_tmp $target_file
+    sync
+fi

@@ -1,0 +1,102 @@
+#! /bin/sh
+
+antenna=127
+mcs=14
+
+calstate=`get_bootval calstate`
+if [ "$calstate" -ne 1 ]
+then
+    echo "$0 only available when calstate = 1"
+    exit 1
+fi
+
+if [ "$3" = "" ]
+then
+    echo "Usage: $0 <regulatory region> <channel> <band width>"
+    exit 1
+fi
+
+bw=$3
+channel=$2
+region=$1
+
+#
+# MCS and antenna mask are optional arguments
+#
+
+if [ "$5" -ne "" ]
+then
+    antenna=$5
+else
+    antenna=127
+fi
+
+if [ "$4" -ne "" ]
+then
+    mcs=$4
+else
+    mcs=14
+fi
+
+if [ "$bw" -ne 40 -a "$bw" -ne 20 ]
+then
+    echo "$0: band width of $bw is not valid"
+    exit 1
+fi
+
+tx_power=`call_qcsapi -u get_configured_tx_power wifi0 $channel $region $bw`
+echo $tx_power | grep error >/dev/null
+if [ $? -eq 0 ]
+then
+    echo "$0: region $region or channel $channel not valid"
+    exit 1
+fi
+
+if [ "$bw" -eq 40 ]
+then
+    if [ $channel -eq 140 -o $channel -eq 165 ]
+    then
+        echo "$0: channel $channel is not valid with bandwidth of 40 MHz."
+        exit 1
+    fi
+
+    channel_not_valid=0
+    mod8=`expr $channel % 8`
+    if [ $channel -ge 184 ]
+    then
+        if [ "$mod8" -eq 4 ]
+        then
+            channel_40MHz=`expr $channel - 2`
+        elif [ "$mod8" -eq 0 ]
+        then
+            channel_40MHz=`expr $channel + 2`
+        else
+            channel_not_valid=1
+        fi
+    else
+        if [ "$mod8" -eq 4 -o "$mod8" -eq 5 ]
+        then
+            channel_40MHz=`expr $channel + 2`
+        elif [ "$mod8" -eq 0 -o "$mod8" -eq 1 ]
+        then
+            channel_40MHz=`expr $channel - 2`
+        else
+            channel_not_valid=1
+        fi
+    fi
+
+    if [ $channel_not_valid -ne 0 ]
+    then
+        echo "$0: problem with channel $channel"
+        exit 1
+    fi
+
+    echo "Region $region: setting TX power to $tx_power for channel $channel (centered at $channel_40MHz) with band width 40."
+else
+    channel_40MHz=$channel
+    echo "Region $region: setting TX power to $tx_power for channel $channel with band width 20."
+fi
+
+set_tx_pow $tx_power
+set_test_mode $channel_40MHz $antenna $mcs $bw 20 1
+send_test_packet

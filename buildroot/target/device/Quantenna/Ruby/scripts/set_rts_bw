@@ -1,0 +1,50 @@
+#!/bin/ash
+
+usage() {
+	[ $# -ne 0 ] && echo "$@"
+	echo "Usage: set_rts_bw"
+	echo "    -s <static|dynamic|off>                           - Type of RTS signalling. <off> turn off RTS BW signaling."
+	echo "    -b <20|40|80>                                    - RTS bandwidth."
+	exit 1
+}
+
+signalling=""
+bw=""
+
+while [ "$1" != "" ]; do
+	case "$1" in
+		-s) signalling="$2"
+			shift
+			;;
+		-b) bw="$2"
+			shift
+			;;
+		*) usage
+			;;
+	esac
+	shift
+done
+
+if [ $signalling = "off" ]
+then
+	iwpriv wifi0 set_rts_bw 0
+	exit $?
+fi
+
+flags=0
+
+case "$bw" in
+	20) flags=0x00 ;;
+	40) flags=0x10 ;;
+	80) flags=0x20 ;;
+	*) usage "bandwidth $bw is invalid"
+		;;
+esac
+
+case "$signalling" in
+	static) flags=$(($flags & ~0x01)) ;;
+	dynamic) flags=$(($flags | 0x01)) ;;
+	*) usage "signalling $signalling is invalid" ;;
+esac
+
+iwpriv wifi0 set_rts_bw $flags

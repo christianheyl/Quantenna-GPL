@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -n "$1" -a "$1" -eq 0 ]; then
+        touch /mnt/jffs2/telnet-disabled
+else
+        rm -f /mnt/jffs2/telnet-disabled
+fi
+
+/etc/init.d/S42inetd restart

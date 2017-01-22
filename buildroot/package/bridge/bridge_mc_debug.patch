@@ -1,0 +1,94 @@
+diff -dur bridge-utils-1.0.6.orig/brctl/brctl_cmd.c bridge-utils-1.0.6/brctl/brctl_cmd.c
+--- bridge-utils-1.0.6.orig/brctl/brctl_cmd.c	2014-07-01 11:10:12.895209163 +0800
++++ bridge-utils-1.0.6/brctl/brctl_cmd.c	2014-07-01 14:28:25.827346679 +0800
+@@ -344,6 +344,38 @@
+ 	return err != 0;
+ }
+ 
++static int br_cmd_mc_debug(int argc, char *const* argv)
++{
++	unsigned int mc_debug;
++	int err;
++
++	if (strcmp(argv[2], "on") == 0)
++		mc_debug = 1;
++	else if (strcmp(argv[2], "off") == 0)
++		mc_debug = 0;
++	else {
++		fprintf(stderr, "expect on/off for argument\n");
++		return 1;
++	}
++
++	err = br_set_mc_debug(argv[1], mc_debug);
++	if (err != 0)
++		fprintf(stderr, "set mc debug failed: %s\n", strerror(errno));
++
++	return err != 0;
++}
++
++static int br_cmd_show_mc(int argc, char *const* argv)
++{
++	int err;
++
++	err = br_get_mc_group(argv[1]);
++	if (err != 0)
++		fprintf(stderr, "show mc failed: %s\n", strerror(errno));
++
++	return err != 0;
++}
++
+ static int br_cmd_showstp(int argc, char *const* argv)
+ {
+ 	struct bridge_info info;
+@@ -469,6 +501,10 @@
+ 	  "<bridge> {on|off|hybrid}\tturn IGMP snooping on/off or use hybrid mode" },
+ 	{ 2, "ssdp_flood", br_cmd_ssdp_flood,
+ 	  "<bridge> {on|off}\tturn ssdp flooding on/off" },
++	{2, "mcdebug", br_cmd_mc_debug,
++	  "<bridge> {on|off}\tturn on/off multicast debug" },
++	{1, "showmc", br_cmd_show_mc,
++	  "<bridge>\t\tdump multicast groups" },
+ };
+ 
+ const struct command *command_lookup(const char *cmd)
+diff -dur bridge-utils-1.0.6.orig/libbridge/libbridge_devif.c bridge-utils-1.0.6/libbridge/libbridge_devif.c
+--- bridge-utils-1.0.6.orig/libbridge/libbridge_devif.c	2014-07-01 11:10:12.875209162 +0800
++++ bridge-utils-1.0.6/libbridge/libbridge_devif.c	2014-07-01 20:49:50.774555646 +0800
+@@ -409,6 +409,25 @@
+ 		      BRCTL_SET_BRIDGE_PRIORITY);
+ }
+ 
++int br_set_mc_debug(const char *br, unsigned int mc_debug)
++{
++	return br_set(br, "igmp_snoop_debug", mc_debug, BRCTL_SET_MC_DEBUG);
++}
++
++int br_get_mc_group(const char *br)
++{
++	unsigned long args[4] = { BRCTL_GET_MC_GROUP };
++	struct ifreq ifr;
++	int err;
++
++	strncpy(ifr.ifr_name, br, IFNAMSIZ);
++	ifr.ifr_data = (char *)args;
++
++	err = ioctl(br_socket_fd, SIOCDEVPRIVATE, &ifr);
++
++	return err;
++}
++
+ static int port_set(const char *bridge, const char *ifname, 
+ 		    const char *name, unsigned long value, 
+ 		    unsigned long oldcode)
+diff -dur bridge-utils-1.0.6.orig/libbridge/libbridge.h bridge-utils-1.0.6/libbridge/libbridge.h
+--- bridge-utils-1.0.6.orig/libbridge/libbridge.h	2014-07-01 20:43:00.611193472 +0800
++++ bridge-utils-1.0.6/libbridge/libbridge.h	2014-07-01 20:49:18.662554824 +0800
+@@ -104,6 +104,8 @@
+ extern int br_set_stp_state(const char *br, int stp_state);
+ extern int br_set_igmp_snoop_state(const char *br, int igmp_snoop_state);
+ extern int br_set_ssdp_flood_state(const char *br, int ssdp_flood_state);
++extern int br_set_mc_debug(const char *br, unsigned int mc_debug);
++extern int br_get_mc_group(const char *br);
+ extern int br_set_bridge_priority(const char *br, int bridge_priority);
+ extern int br_set_port_priority(const char *br, const char *p, 
+ 				int port_priority);

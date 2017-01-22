@@ -1,0 +1,7 @@
+config BR2_PACKAGE_MIIDL
+	bool "miidl"
+	default n
+	help
+	  MII/RGMII userspace boot utility to load images
+	  towards target qdevices
+

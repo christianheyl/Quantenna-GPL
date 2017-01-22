@@ -1,0 +1,41 @@
+#!/bin/sh
+
+post_func=`get_bootval post_function`
+post_mask=`get_bootval post_mask`
+post_result=`get_bootval post_result`
+
+rfloop_mask=4
+rfloop_offset=2
+rfloop_old_res=$(( (post_result >> rfloop_offset) & 1 ))
+
+rfloop_result_get () {
+	echo "calcmd 60 0 4 0" > /sys/devices/qdrv/control
+	success=`cat /proc/qdrvdata`	# 1: success, 0: failure
+
+	return $success
+}
+
+if [ $(( post_func & rfloop_mask )) -eq 0 ]
+then
+	post_func=$(( post_func | rfloop_mask ))
+        call_qcsapi -u update_bootcfg_param post_function $post_func
+fi
+
+#echo "post mask: $post_mask rfloop_old: $rfloop_old_res"
+if [ $(( post_mask & rfloop_mask )) -ne 0 ]
+then
+	# RF loopback function is executed in bb_rf_init() based on the value of post_mask
+	# Here we call function rfloop_result_get() to retrieve the result
+	rfloop_result_get
+	rfloop_new_res=$?
+
+	# Update flash if necessary
+	if [ $rfloop_old_res -ne $rfloop_new_res ]
+	then
+		post_result=$(( post_result & ~rfloop_mask ))
+		post_result=$(( post_result | (rfloop_new_res << rfloop_offset) ))
+
+		call_qcsapi -u update_bootcfg_param post_result $post_result
+	fi
+fi
+

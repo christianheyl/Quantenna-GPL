@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# Start inetd
+#
+
+start() {
+    platform_file=/scripts/platform_id
+    if [ -f $platform_file ]; then
+	platform_id=`cat $platform_file`
+    else
+	platform_id=00
+    fi
+# do not start inetd if it is MSFT MSMR production build
+
+    if [ "$platform_id" != "425" ]; then
+        if [ -f /mnt/jffs2/telnet-disabled ]; then
+                echo "Telnet disabled"
+        elif [ -f /etc/inetd.conf ]; then
+                echo "Starting inetd ..."
+                /usr/sbin/inetd
+        fi
+    fi
+}
+stop() {
+        if [ -f /etc/inetd.conf ]; then
+                echo -n "Stopping inetd ..."
+                killall -q inetd
+        fi
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+        start
+	;;
+  stop)
+  	stop
+	;;
+  restart|reload)
+  	restart
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

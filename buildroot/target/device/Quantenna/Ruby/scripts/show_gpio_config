@@ -1,0 +1,46 @@
+#! /bin/sh
+
+maxpin=31
+pin=0
+
+add_pin()
+{
+    local_string=$1
+    local_pin=$2
+
+    if [ "$local_string" == "" ]
+    then
+        local_string=$local_pin
+    else
+        local_string="$local_string $local_pin"
+    fi
+
+    echo $local_string
+}
+
+not_avail=""
+input_only=""
+input_output=""
+
+while [ $pin -le $maxpin ]
+do
+    pin_config=`call_qcsapi -u get_gpio_config $pin`
+
+    if [ "$pin_config" == "2" ]
+    then
+        input_output=`add_pin "$input_output" $pin`
+    elif [ "$pin_config" == "1" ]
+    then
+        input_only=`add_pin "$input_only" $pin`
+    else
+        not_avail=`add_pin "$not_avail" $pin`
+    fi
+
+    pin=`expr $pin + 1`
+done
+
+echo "GPIO Pin configuration:"
+echo "Input / Output: ${input_output}"
+echo "Input only:     ${input_only}"
+echo "Not available:  ${not_avail}"
+

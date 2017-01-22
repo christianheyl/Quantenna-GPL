@@ -1,0 +1,9 @@
+#!/bin/ash
+
+if [ -f /sys/devices/qdrv/control ]
+then
+	echo "read addr $1 $2 $3" > /sys/devices/qdrv/control
+	cat /proc/qdrvdata
+else
+	echo "WiFi services have not been started.\n"
+fi

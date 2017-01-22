@@ -1,0 +1,14 @@
+# 20MHZ only
+cat /proc/txbftest > /scripts/txbf_outvec_bb0
+cat /proc/txbftest > /scripts/txbf_outvec_bb1
+/scripts/int_testing/script_bf/txbf_test_format_arm 1 1 128 /scripts/stVec.txt 
+
+# for 40MHZ not tested
+#cat /proc/txbftest > /scripts/out1.tmp
+#cat /proc/txbftest > /scripts/out2.tmp
+#cat /proc/txbftest > /scripts/out3.tmp
+#cat /scripts/out0.tmp /scripts/out1.tmp > /scripts/txbf_outvec_bb0
+#cat /scripts/out2.tmp /scripts/out3.tmp > /scripts/txbf_outvec_bb1
+#rm -f /scripts/out*.tmp
+#/scripts/txbf_test_format_arm 1
+

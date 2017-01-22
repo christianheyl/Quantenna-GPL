@@ -1,0 +1,6 @@
+config BR2_PACKAGE_DFS_DAEMON
+	bool "DFS_DAEMON"
+	default n
+	help
+	  Quantenna DFS Daemon, including DFS Re-entry.
+

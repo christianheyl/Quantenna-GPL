@@ -1,0 +1,358 @@
+diff -dur nemesis-1.4/config.sub nemesis-1.4-mod/config.sub
+--- nemesis-1.4/config.sub	2003-11-01 08:29:34.000000000 +1100
++++ nemesis-1.4-mod/config.sub	2011-09-26 16:01:35.009619710 +1000
+@@ -118,7 +118,8 @@
+ # Here we must recognize all the valid KERNEL-OS combinations.
+ maybe_os=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\2/'`
+ case $maybe_os in
+-  nto-qnx* | linux-gnu* | storm-chaos* | os2-emx* | windows32-* | rtmk-nova*)
++  nto-qnx* | linux-gnu* | linux-dietlibc | linux-newlib* | linux-uclibc* | \
++  uclinux-uclibc* | uclinux-gnu* | storm-chaos* | os2-emx* | windows32-* | rtmk-nova*)
+     os=-$maybe_os
+     basic_machine=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\1/'`
+     ;;
+@@ -1085,7 +1086,8 @@
+ 	      | -udi* | -eabi* | -lites* | -ieee* | -go32* | -aux* \
+ 	      | -chorusos* | -chorusrdb* \
+ 	      | -cygwin* | -pe* | -psos* | -moss* | -proelf* | -rtems* \
+-	      | -mingw32* | -linux-gnu* | -uxpv* | -beos* | -mpeix* | -udk* \
++	      | -mingw32* | -linux-gnu* | -linux-newlib* | -linux-uclibc* \
++	      | -uxpv* | -beos* | -mpeix* | -udk* \
+ 	      | -interix* | -uwin* | -rhapsody* | -darwin* | -opened* \
+ 	      | -openstep* | -oskit* | -conix* | -pw32* | -nonstopux* \
+ 	      | -storm-chaos* | -tops10* | -tenex* | -tops20* | -its* \
+diff -dur nemesis-1.4/configure nemesis-1.4-mod/configure
+--- nemesis-1.4/configure	2004-10-07 11:24:21.000000000 +1000
++++ nemesis-1.4-mod/configure	2011-09-27 11:35:11.645125103 +1000
+@@ -4550,12 +4550,7 @@
+ echo "$as_me:$LINENO: result: $ac_cv_lib_nsl_inet_ntoa" >&5
+ echo "${ECHO_T}$ac_cv_lib_nsl_inet_ntoa" >&6
+ if test $ac_cv_lib_nsl_inet_ntoa = yes; then
+-  cat >>confdefs.h <<_ACEOF
+-#define HAVE_LIBNSL 1
+-_ACEOF
+-
+-  LIBS="-lnsl $LIBS"
+-
++  echo "Not enabling nsl"
+ fi
+ 
+ 
+@@ -4709,8 +4704,8 @@
+ 
+ LNET=""
+ 
+-echo "$as_me:$LINENO: checking for libnet_build_ip in -lnet" >&5
+-echo $ECHO_N "checking for libnet_build_ip in -lnet... $ECHO_C" >&6
++echo "$as_me:$LINENO: checking for libnet_build_ipv4 in -lnet" >&5
++echo $ECHO_N "checking for libnet_build_ipv4 in -lnet... $ECHO_C" >&6
+ if test "${ac_cv_lib_net_libnet_build_ip+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+@@ -4729,11 +4724,11 @@
+ #endif
+ /* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+-char libnet_build_ip ();
++char libnet_build_ipv4 ();
+ int
+ main ()
+ {
+-libnet_build_ip ();
++libnet_build_ipv4 ();
+   ;
+   return 0;
+ }
+diff -dur nemesis-1.4/src/nemesis-functions.c nemesis-1.4-mod/src/nemesis-functions.c
+--- nemesis-1.4/src/nemesis-functions.c	2004-10-07 12:16:50.000000000 +1000
++++ nemesis-1.4-mod/src/nemesis-functions.c	2011-09-27 10:25:28.357925911 +1000
+@@ -15,6 +15,10 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#if (__GLIBC__)
++# include <netinet/if_ether.h>
++# include <net/if_arp.h>
++#endif
+ #if defined(TIME_WITH_SYS_TIME) || defined(WIN32)
+     #include <sys/time.h>
+     #include <time.h>
+diff -dur nemesis-1.4/src/nemesis.h nemesis-1.4-mod/src/nemesis.h
+--- nemesis-1.4/src/nemesis.h	2004-10-07 12:22:29.000000000 +1000
++++ nemesis-1.4-mod/src/nemesis.h	2011-09-27 13:24:27.549480519 +1000
+@@ -96,6 +96,7 @@
+ typedef struct libnet_ethernet_hdr ETHERhdr;
+ typedef struct libnet_icmp_hdr ICMPhdr;
+ typedef struct libnet_igmp_hdr IGMPhdr;
++typedef struct libnet_igmpv3_hdr IGMPV3hdr;
+ typedef struct libnet_ip_hdr IPhdr;
+ typedef struct libnet_lsa_hdr LSAhdr;
+ typedef struct libnet_lsr_hdr LSRhdr;
+diff -dur nemesis-1.4/src/nemesis-igmp.c nemesis-1.4-mod/src/nemesis-igmp.c
+--- nemesis-1.4/src/nemesis-igmp.c	2003-11-01 08:29:37.000000000 +1100
++++ nemesis-1.4-mod/src/nemesis-igmp.c	2011-09-27 14:22:14.208462975 +1000
+@@ -18,9 +18,23 @@
+ static ETHERhdr etherhdr;
+ static IPhdr iphdr;
+ static IGMPhdr igmphdr;
++static IGMPV3hdr *p_igmpv3hdr = NULL;
++static int igmpv3_len = 0;
+ static FileData pd, ipod;
+-static int got_payload;
+-static int got_group, got_type, got_code;
++static int got_payload = 0;
++static int got_group = 0, got_type = 0, got_code = 0;
++static int is_v3 = 0;
++static int got_s1 = 0;
++static int got_s2 = 0;
++static int got_s3 = 0;
++static int got_s4 = 0;
++static u_int32_t sources[16] = {0};
++static u_int8_t resvd = 0;
++static u_int8_t igmp_s = 0;
++static u_int8_t qrv = 0;
++static u_int8_t qqic = 0;
++static int count_sources = 0;
++static u_int16_t num_sources = 0;
+ static char *payloadfile = NULL;       /* payload file name */
+ static char *ipoptionsfile = NULL;     /* IP options file name */
+ static char *device = NULL;            /* Ethernet device */
+@@ -72,7 +86,7 @@
+             igmp_exit(1);
+     }
+ 
+-    if (buildigmp(&etherhdr, &iphdr, &igmphdr, &pd, &ipod, device) < 0)
++    if (buildigmp(&etherhdr, &iphdr, &igmphdr, p_igmpv3hdr, igmpv3_len, &pd, &ipod, device) < 0)
+     {
+         puts("\nIGMP Injection Failure");
+         igmp_exit(1);
+@@ -174,6 +188,16 @@
+            "  -p <IGMP type>\n"
+            "  -c <IGMP code (unused field)>\n"
+            "  -i <IGMP group IP address>\n"
++	   "  -r <IGMP reserved field>\n"
++	   "  -s <IGMP S field>\n"
++	   "  -q <IGMP QRV field>\n"
++	   "  -C <IGMP QQIC field>\n"
++	   "  -n <Num sources>\n"
++	   "  -1 <IP source 1>\n"
++	   "  -2 <IP source 2>\n"
++	   "  -3 <IP source 3>\n"
++	   "  -4 <IP source 4>\n"
++	   "  -h <IGMP v3>\n"
+            "  -P <Payload file>\n\n");
+     printf("IP options: \n"
+            "  -S <Source IP address>\n"
+@@ -217,7 +241,7 @@
+   #if defined(WIN32)
+     igmp_options = "c:d:D:F:H:i:I:M:O:p:P:S:t:T:vZ?";
+   #else
+-    igmp_options = "c:d:D:F:H:i:I:M:O:p:P:S:t:T:v?";
++    igmp_options = "1:2:3:4:c:C:d:D:F:h:H:i:I:M:n:O:p:P:q:r:s:S:t:T:v?";
+   #endif
+ #endif
+ 
+@@ -225,10 +249,53 @@
+     {
+         switch (opt)
+         {
++            case '1':
++                if ((nemesis_name_resolve(optarg, 
++                        (u_int32_t *)&sources[0])) < 0)
++                {
++                    fprintf(stderr, "ERROR: Invalid IGMP source address 1: \"%s\"."
++                            "\n", optarg);
++                    igmp_exit(1);
++                }
++		count_sources++;
++		break;
++            case '2':
++                if ((nemesis_name_resolve(optarg, 
++                        (u_int32_t *)&sources[1])) < 0)
++                {
++                    fprintf(stderr, "ERROR: Invalid IGMP source address 2: \"%s\"."
++                            "\n", optarg);
++                    igmp_exit(1);
++                }
++		count_sources++;
++		break;
++            case '3':
++                if ((nemesis_name_resolve(optarg, 
++                        (u_int32_t *)&sources[2])) < 0)
++                {
++                    fprintf(stderr, "ERROR: Invalid IGMP source address 3: \"%s\"."
++                            "\n", optarg);
++                    igmp_exit(1);
++                }
++		count_sources++;
++		break;
++            case '4':
++                if ((nemesis_name_resolve(optarg, 
++                        (u_int32_t *)&sources[3])) < 0)
++                {
++                    fprintf(stderr, "ERROR: Invalid IGMP source address 4: \"%s\"."
++                            "\n", optarg);
++                    igmp_exit(1);
++                }
++		count_sources++;
++		break;
+             case 'c':   /* IGMP code */
+                 igmphdr.igmp_code = xgetint8(optarg);
+                 got_code = 1;
+                 break;
++            case 'C':
++		qqic = xgetint8(optarg);
++		break;
+             case 'd':   /* Ethernet device */
+ #if defined(WIN32)
+                 if (nemesis_getdev(atoi(optarg), &device) < 0)
+@@ -264,6 +331,9 @@
+                 if (parsefragoptions(&iphdr, optarg) < 0)
+                     igmp_exit(1);
+                 break;
++            case 'h':
++		is_v3 = 1;
++		break;
+             case 'H':   /* Ethernet source address */
+                 memset(addr_tmp, 0, sizeof(addr_tmp));
+                 sscanf(optarg, "%02X:%02X:%02X:%02X:%02X:%02X", &addr_tmp[0],
+@@ -293,6 +363,9 @@
+                 for (i = 0; i < 6; i++)
+                     etherhdr.ether_dhost[i] = (u_int8_t)addr_tmp[i];
+                 break;
++            case 'n':
++		num_sources = xgetint16(optarg);
++		break;
+             case 'O':   /* IP options file */
+                 if (strlen(optarg) < 256)
+                 {
+@@ -323,6 +396,15 @@
+                     igmp_exit(1);
+                 }
+                 break;
++            case 'q':
++		qrv = xgetint8(optarg);
++		break;
++            case 'r':
++		resvd = xgetint8(optarg);
++		break;
++            case 's':
++		igmp_s = xgetint8(optarg);
++		break;
+             case 'S':   /* source IP address */
+                 if ((nemesis_name_resolve(optarg, 
+                         (u_int32_t *)&iphdr.ip_src.s_addr)) < 0)
+@@ -357,6 +439,25 @@
+                 break;
+         }
+     }
++    if (is_v3) {
++        igmpv3_len = sizeof(*p_igmpv3hdr) - sizeof(ulong) + (count_sources * sizeof(ulong));
++	p_igmpv3hdr = malloc(igmpv3_len);
++	if (p_igmpv3hdr) {
++		u_int32_t *p_source = &sources[0];
++		u_int32_t *p_igmp_source = (u_int32_t *)&p_igmpv3hdr->source_addr;
++		p_igmpv3hdr->igmp_type = igmphdr.igmp_type;
++		p_igmpv3hdr->igmp_max_resp_code = igmphdr.igmp_code;
++		p_igmpv3hdr->group_addr = igmphdr.igmp_group.s_addr;
++		p_igmpv3hdr->igmp_flags = (resvd & 0x7) | ((igmp_s << 4) & 0x10) | ((qrv << 5) & 0xE0);
++		p_igmpv3hdr->qqic = qqic;
++		p_igmpv3hdr->igmp_ns = num_sources;
++		for (i = 0; i < count_sources; i++) {
++			*p_igmp_source = *p_source;
++			p_igmp_source++;
++			p_source++;
++		}
++	}
++    }
+     argc -= optind;
+     argv += optind;
+     return;
+diff -dur nemesis-1.4/src/nemesis-igmp.h nemesis-1.4-mod/src/nemesis-igmp.h
+--- nemesis-1.4/src/nemesis-igmp.h	2003-11-01 08:29:37.000000000 +1100
++++ nemesis-1.4-mod/src/nemesis-igmp.h	2011-09-27 14:12:49.623003206 +1000
+@@ -32,7 +32,7 @@
+ #include <libnet.h>
+ #include "nemesis.h"
+ 
+-int buildigmp(ETHERhdr *, IPhdr *ip, IGMPhdr *igmp, FileData *pd,
++int buildigmp(ETHERhdr *, IPhdr *ip, IGMPhdr *igmp, IGMPV3hdr *p_igmp_v3, int igmp_v3_len, FileData *pd,
+         FileData *ipod, char *device);
+ 
+ #endif /* __NEMESIS_IGMP_H__ */
+diff -dur nemesis-1.4/src/nemesis-proto_igmp.c nemesis-1.4-mod/src/nemesis-proto_igmp.c
+--- nemesis-1.4/src/nemesis-proto_igmp.c	2003-11-01 08:29:37.000000000 +1100
++++ nemesis-1.4-mod/src/nemesis-proto_igmp.c	2011-09-27 14:29:56.723059503 +1000
+@@ -11,8 +11,9 @@
+ 
+ #include "nemesis-igmp.h"
+ #include "nemesis.h"
++#define DEBUG
+ 
+-int buildigmp(ETHERhdr *eth, IPhdr *ip, IGMPhdr *igmp, FileData *pd,
++int buildigmp(ETHERhdr *eth, IPhdr *ip, IGMPhdr *igmp, IGMPV3hdr *p_igmp_v3, int igmp_v3_len, FileData *pd,
+         FileData *ipod, char *device)
+ {
+     int n;
+@@ -56,8 +57,13 @@
+ #endif
+     }
+ 
+-    igmp_packetlen = link_offset + LIBNET_IP_H + LIBNET_IGMP_H + 
+-            pd->file_s + ipod->file_s;
++    if (p_igmp_v3) {
++    	igmp_packetlen = link_offset + LIBNET_IP_H + igmp_v3_len + 
++            	pd->file_s + ipod->file_s;
++    } else {
++    	igmp_packetlen = link_offset + LIBNET_IP_H + LIBNET_IGMP_H + 
++            	pd->file_s + ipod->file_s;
++    }
+ 
+     igmp_meta_packetlen = igmp_packetlen - (link_offset + LIBNET_IP_H);
+ 
+@@ -81,9 +87,17 @@
+             ip->ip_ttl, ip->ip_p, ip->ip_src.s_addr, ip->ip_dst.s_addr, 
+             NULL, 0, pkt + link_offset);
+ 
+-    libnet_build_igmp(igmp->igmp_type, igmp->igmp_code, 
++    if (p_igmp_v3) {
++        libnet_build_igmpv3(p_igmp_v3->igmp_type, p_igmp_v3->igmp_max_resp_code, 
++                p_igmp_v3->group_addr, p_igmp_v3->igmp_flags, p_igmp_v3->qqic,
++	       	p_igmp_v3->igmp_ns, (u_long *)&p_igmp_v3->source_addr,
++		pd->file_mem, pd->file_s, pkt + 
++                link_offset + LIBNET_IP_H);
++    } else {
++        libnet_build_igmp(igmp->igmp_type, igmp->igmp_code, 
+                 igmp->igmp_group.s_addr, pd->file_mem, pd->file_s, pkt + 
+                 link_offset + LIBNET_IP_H);
++    }
+ 
+     if (got_ipoptions)
+     {
+@@ -95,12 +109,18 @@
+         }
+     }
+ 
+-    if (got_link)
++    if (got_link) {
+         libnet_do_checksum(pkt + LIBNET_ETH_H, IPPROTO_IP, LIBNET_IP_H + 
+                 ipod->file_s);
++    }
+ 
+-    libnet_do_checksum(pkt + link_offset, IPPROTO_IGMP, LIBNET_IGMP_H + 
+-            pd->file_s + ipod->file_s);
++    if (p_igmp_v3) {
++    	libnet_do_checksum(pkt + link_offset, IPPROTO_IGMP, igmp_v3_len + 
++            	pd->file_s + ipod->file_s);
++    } else {
++    	libnet_do_checksum(pkt + link_offset, IPPROTO_IGMP, LIBNET_IGMP_H + 
++            	pd->file_s + ipod->file_s);
++    }
+ 
+     if (got_link)
+         n = libnet_write_link_layer(l2, device, pkt, igmp_packetlen);
+@@ -135,3 +155,4 @@
+         libnet_close_raw_sock(sockfd);
+     return n;
+ }
++#undef DEBUG

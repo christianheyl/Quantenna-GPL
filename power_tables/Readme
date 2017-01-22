@@ -1,0 +1,29 @@
+This directory have the power table and power_selection.conf files for different platform configurations.
+
+For QTN devices, there are 2 directories which are used to store power tables -- "/proc/bootcfg/" and "/etc/power_tables/", the former is in uboot config block and it is independent of image, the latter is built into image.
+Since there are two places for power tables, to search for the target power table, we defined 4 kinds of power selection mode which define the sequence of searching, as below,
+
+0 - Search for the target power table in "/proc/bootcfg/" only, it is the default mode.
+1 - Search for the target power table in "/proc/bootcfg/" at first, if not find, then search for the target power table in "/etc/power_tables/";
+2 - Search for the target power table in "/etc/power_tables/" at first, if not find, then search for the target power table in "/proc/bootcfg/";
+3 - Search for the target power table in "/etc/power_tables/" only;
+
+To set the power selection mode as "x", please define "power_selection=x" in power_table.conf which locates in SDK directory "power_tables/<board_config>/".
+
+
+For the name of power table, it must be one of below two formats,
+
+tx_power_QSR1000_<region>.txt
+tx_power_QSR1000_sta_<region>.txt (for STA mode only)
+
+For example,
+
+tx_power_QSR1000_us.txt
+tx_power_QSR1000_eu.txt
+tx_power_QSR1000_sta_us.txt
+tx_power_QSR1000_sta_eu.txt
+
+
+Note:
+
+The power tables in original SDK are for QTN RDK boards, if you want to enable the power tables in "/etc/power_tables/", please replace them with your power tables which match your boards. 

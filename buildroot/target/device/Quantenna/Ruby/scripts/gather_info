@@ -1,0 +1,501 @@
+#!/bin/sh
+# Copyright (c) 2010-2013 Quantenna Communications, Inc.
+
+current_level=`cat /proc/sys/kernel/printk | cut -c 1-2`
+current_dprintk=`cat /proc/sys/kernel/dprintk_en`
+trap clean_up EXIT INT
+dmesg -n1
+echo 0 > /proc/sys/kernel/dprintk_en
+
+all_nc_idx=`show_assoc | grep 'wifi' | sed s/' '*/' '/g | cut -d' ' -f 3`
+
+clean_up()
+{
+	echo $current_level > /proc/sys/kernel/printk
+	echo $current_dprintk > /proc/sys/kernel/dprintk_en
+	exit
+}
+
+delim()
+{
+        echo "==================================================================="
+}
+
+delim2()
+{
+        echo "----------------------"
+}
+
+run_with_dmesg()
+{
+	sleep 1
+	dmesg -c > /dev/null
+	eval $@
+	dmesg
+	sleep 1
+}
+run_wifi_cmd_with_dmesg()
+{
+	if [ "$has_wifi" ]; then
+		run_with_dmesg $*
+	else
+		echo "N/A"
+	fi
+}
+
+qcsapi_iterate_vap()
+{
+	if [ $# -ne 1 ]; then
+		return
+	fi
+	for wifi_dev in `ls -1 /sys/devices/virtual/net/ | grep -E "wifi"`; do
+		if [ `ifconfig $wifi_dev | grep MTU | awk '{print $1}'` == 'UP' ] ; then
+			echo -n "$wifi_dev: "
+			call_qcsapi $1 $wifi_dev
+		fi
+	done
+}
+
+delim
+
+platform=`cat /proc/hw_revision`
+if [ "$platform" = "unknown" ]; then
+	has_wifi=
+else
+	has_wifi=1
+fi
+
+echo "Device:"
+if [ "$has_wifi" ]; then
+	ifconfig wifi0|awk '/HWaddr/ {print "Wifi MAC: " $5}'
+else
+	echo "Wifi MAC: none"
+fi
+
+ifconfig br0 | \
+	awk '/HWaddr/ {print "Eth MAC:  " $5} /inet addr:/ {print "IP:       " substr($2, 6, 20)}'
+delim
+
+echo "Revision:"
+get_rev_num
+delim2
+echo "HW revision:"
+platform_main_id=`echo $platform | cut -d '_' -f 1`
+echo $platform
+delim2
+echo "Kernel:"
+uname -a
+delim2
+
+echo "Info:"
+run_wifi_cmd_with_dmesg info
+delim
+
+echo "/var/log/messages:"
+cat /var/log/messages
+delim
+
+echo "MuC Crashes:"
+for crashfile in `find /mnt/jffs2/ -name muc_crash\*` ; do
+	delim2
+	ls -l $crashfile
+	cat $crashfile
+	rm -f $crashfile
+done
+delim
+
+echo "Modules:"
+lsmod
+delim2
+cat /proc/modules
+delim
+
+echo "Interrupts:"
+cat /proc/interrupts
+echo "..."
+sleep 5
+cat /proc/interrupts
+echo "..."
+sleep 5
+cat /proc/interrupts
+delim
+
+echo "Statistics:"
+echo "MuC Tx Stats:"
+stats muc_tx
+delim2
+echo "MuC Rx Stats:"
+stats muc_rx
+delim2
+echo "LHost Stats:"
+stats
+if [ "$platform_main_id" == "bbic4" ]; then
+	delim2
+	echo "AuC Stats:"
+	stats auc
+	delim2
+	echo "DSP Stats:"
+	stats dsp
+	delim2
+	echo "TQE Stats:"
+	cat /proc/topaz_tqe
+	delim2
+	echo "HBM Stats:"
+	cat /proc/topaz_hbm
+	run_with_dmesg echo "stats" \> /proc/topaz_hbm_if
+	delim2
+	echo "FWT Stats:"
+	run_with_dmesg echo "print" \> /proc/topaz_fwt_if
+fi
+delim
+
+echo "bfinfo:"
+run_wifi_cmd_with_dmesg bfinfo
+delim
+
+echo "TC stats:"
+tc -s qdisc show
+delim2
+echo "qdrv qdisc:"
+qdrvcmd get 0 assoc_q
+cat /proc/qdrvdata
+delim2
+echo "eth1_0 qdisc:"
+cat /sys/class/net/eth1_0/qdrv_sch
+delim
+
+echo "Interfaces:"
+ifconfig -a
+iwconfig
+delim
+
+echo "show_assoc:"
+show_assoc all
+delim
+
+echo "show_tx_power_table:"
+show_tx_power_table
+delim
+
+echo "Free:"
+free
+delim
+
+echo "WLAN memory:"
+run_wifi_cmd_with_dmesg iwpriv wifi0 showmem 0x1
+delim
+
+echo "vmstat:"
+cat /proc/vmstat
+delim
+
+echo "slabinfo:"
+cat /proc/slabinfo
+delim
+
+echo "ps:"
+ps
+delim
+
+echo "uptime:"
+uptime
+delim
+
+echo "df -k"
+df -k
+delim
+
+echo "ls -al /mnt/jffs2/"
+ls -al /mnt/jffs2
+delim
+
+echo "ls -alr /tmp/"
+ls -lar /tmp/
+delim
+
+echo "Config:"
+echo "cat /mnt/jffs2/wireless_conf.txt"
+cat /mnt/jffs2/wireless_conf.txt
+local_mcs=`get_wifi_config wifi0 mcs`
+if [ $? -eq 0 ]
+then
+	if [ "$local_mcs" -ne 0 ]
+	then
+		echo "Warning: mcs is fixed at $local_mcs"
+	fi
+fi
+
+delim2
+echo "cat /mnt/jffs2/hostapd.conf"
+cat /mnt/jffs2/hostapd.conf
+delim2
+echo "cat /mnt/jffs2/wpa_supplicant.conf"
+cat /mnt/jffs2/wpa_supplicant.conf
+delim
+
+echo "Clients:"
+cat /proc/net/madwifi/wifi0/associated_sta
+delim
+
+echo "Boot environment:"
+cat /proc/bootcfg/env
+delim
+
+echo "Bridge info:"
+brctl show
+delim2
+echo "MAC addresses:"
+brctl showmacs br0
+delim2
+echo "Bridge Isolation:"
+run_wifi_cmd_with_dmesg qdrvcmd get 0 br_isolate
+delim2
+echo "Reserved MAC addresses:"
+call_qcsapi get_macaddr_reserve wifi0
+delim
+
+echo "VLAN configuration"
+mode=`call_qcsapi get_mode wifi0`
+if [ "$mode" = "Access point" ]; then
+	disable=`call_qcsapi show_vlan_config wifi0 | grep -i disabled`
+	if [ -z "$disable" ]; then
+		for intf in `ls /sys/class/net/ | grep '^wifi'`
+		do
+			echo "$intf VLAN configuration:"
+			call_qcsapi show_vlan_config $intf
+		done
+	else
+		echo "VLAN disabled"
+	fi
+fi
+delim2
+echo "VLAN interfaces"
+if [ -f /proc/net/vlan/config ]
+then
+	cat /proc/net/vlan/config
+	delim2
+	for file in `ls /proc/net/vlan/vlan*`
+	do
+		echo "VLAN interface $file"
+		cat $file
+		delim2
+	done
+else
+	echo "No VLAN interfaces configured"
+fi
+delim
+
+echo "MAC/BB state:"
+run_with_dmesg dump_mac_bb_debug
+delim
+
+echo "Tx hang info:"
+debug_hang
+delim
+
+echo "Page 0 Checksum:"
+pg0_csum $platform_main_id
+delim
+
+echo "SCS:"
+iwpriv wifi0 scs_get
+delim
+
+echo "VSP config:"
+vsp show config
+delim2
+echo "VSP streams:"
+vsp show all
+delim2
+echo "VSP stats:"
+vsp show stats
+delim
+
+echo "LDPC State:"
+iwpriv wifi0 get_ldpc
+delim
+
+echo "Tx Config:"
+iwpriv wifi0 get_swret_agg
+iwpriv wifi0 get_swret_noagg
+delim
+
+echo "Arasan Stats:"
+for emac in /proc/arasan_emac* ; do
+	echo $emac
+	cat $emac
+done
+delim
+
+echo "PHY Stats:"
+dmesg -n4
+for phy in /proc/phy_reg* ; do
+	sleep 1
+	echo $phy
+	echo "RXERC:"
+	echo "r 18" > $phy
+	sleep 1
+done
+delim
+
+echo "tweak_qcomm:"
+cat /mnt/jffs2/tweak_qcomm
+delim
+
+echo "Bootcfg dir:"
+ls -la /proc/bootcfg
+delim
+
+echo "Cause:"
+readmem 0xe0000010
+
+echo "RGMII Timing:"
+readmem 0xe00000b4
+
+if [ "$platform_main_id" == "bbic3" ]
+then
+	echo "SRAM controller register:"
+	readmem 0xe3000028
+	delim
+fi
+
+if [ -f /mnt/jffs2/soc_event_cntr ]; then
+	soc_event_cntr=`cat /mnt/jffs2/soc_event_cntr`
+	echo "soc_event_cntr: $soc_event_cntr"
+	delim
+fi
+
+echo "MuC Timers:"
+dmesg -c > /dev/null
+run_with_dmesg iwpriv wifi0 setparam 141 0x4
+dmesg -n7
+delim
+
+echo "MuC FDs:"
+dmesg -c > /dev/null
+run_with_dmesg iwpriv wifi0 dbg_dump 1
+run_with_dmesg iwpriv wifi0 dbg_dump 2
+
+dmesg -n7
+delim
+
+echo "AP Isolation:"
+call_qcsapi -u get_ap_isolate wifi0
+delim
+
+echo "Radar:"
+if [ -f /proc/radar ]; then
+	cat /proc/radar
+fi
+delim
+
+echo "CTRL Mem:"
+dmesg -c > /dev/null
+dump_ctrl_pktmem
+delim
+
+echo "Pktlogger config:"
+run_wifi_cmd_with_dmesg qdrvcmd pktlogger 0 show
+delim
+
+echo "Regulatory Database Path:"
+qtn_regulatory_db_path=`cat /tmp/qtn_regulatory_db_path`
+echo "$qtn_regulatory_db_path"
+delim2
+echo "Regulatory Database Version:"
+cat /tmp/qtn_regulatory_db_version
+delim2
+echo "$qtn_regulatory_db_path:"
+which regulatory_database_bin_print > /dev/null
+if [ $? -eq 0 ]; then
+    regulatory_database_bin_print "$qtn_regulatory_db_path"
+else
+    hexdump -C "$qtn_regulatory_db_path"
+fi
+delim
+
+echo "TX Power:"
+show_tx_power_table
+delim
+
+echo "Board Config:"
+get_board_config all
+delim
+
+echo "Optional features:"
+call_qcsapi get_swfeat_list
+delim
+
+echo "Congestion queue:"
+run_with_dmesg echo "0" \> /sys/class/net/tqe/dbg
+delim
+
+echo "TACMAP:"
+for elt in $all_nc_idx;
+do
+        run_with_dmesg iwpriv wifi0 auc_tx_dbg $elt;
+done
+delim
+
+echo "RTS/CTS on/off:"
+iwpriv wifi0 get_rtscts
+delim2
+
+echo "RTS Threshold:"
+qcsapi_iterate_vap get_rts_threshold
+delim2
+
+echo "QTM/VAP:"
+if [ $(call_qcsapi qtm wifi0 get enabled) == "1" ]; then
+	call_qcsapi qtm wifi0 show
+else
+	echo "Disabled"
+fi
+delim2
+
+echo "PMF:"
+qcsapi_iterate_vap get_pmf
+delim2
+
+echo "AMSDU:"
+qcsapi_iterate_vap get_tx_amsdu
+delim2
+
+echo "PPPC:"
+iwpriv wifi0 get_pppc
+delim2
+
+echo "SCS:"
+call_qcsapi get_scs_params wifi0
+delim2
+
+echo "Band Width:"
+call_qcsapi get_bw wifi0
+delim2
+
+echo "Channel:"
+call_qcsapi get_channel wifi0
+delim2
+
+echo "Security Mode:"
+qcsapi_iterate_vap get_WPA_authentication_mode
+qcsapi_iterate_vap get_WPA_encryption_modes
+delim2
+
+echo "Operation Mode:"
+call_qcsapi get_mode wifi0
+delim2
+
+echo "DFS Reentry Scheduled:"
+call_qcsapi get_scs_dfs_reentry_request wifi0
+delim2
+
+echo "Regulatory Region:"
+call_qcsapi get_regulatory_region wifi0
+delim2
+
+echo "Qhop:"
+call_qcsapi get_extender_status wifi0
+
+delim
+echo "end"

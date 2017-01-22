@@ -1,0 +1,22 @@
+Changes to core bridging code for IGMP snooping and multicast conversion
+Adding in SoC specific routines and drivers.
+ - LED
+ - GPIO
+ - unaligned access handler
+ - UART
+Support for IPV6
+ - Compliance with test plan.
+ - MLD support.
+ - SSDP6 support.
+Adding in various debugging aids.
+ - Improved stacktrace.
+ - iperf connection tracing.
+ - Cache performance aids.
+ - Load monitoring.
+ - Text section snapshotting.
+Support for different hardwares such as SPI flashes, Ethernet switches.
+Performance enhancements.
+ - Changes to core skb allocation routines for performance enhancements.
+ - Move stack to SRAM.
+ - Modifications to allow userspace interactivity under heavy system load.
+Various bugfixes.

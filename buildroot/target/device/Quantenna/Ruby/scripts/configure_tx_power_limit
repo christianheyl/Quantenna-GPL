@@ -1,0 +1,297 @@
+#! /bin/sh
+
+scratchpad=/tmp
+bootcfg_base=/proc/bootcfg
+
+basefile=eirp_info
+default_default_tx_power=28
+default_min_tx_power=9
+wifi_vap="wifi0"
+
+base_region=""
+channel_list=""
+scratchfile=""
+
+get_default_tx_power()
+{
+    ret_tx_power=`get_bootval max_tx_power`
+    if [ "$ret_tx_power" = "" -o $ret_tx_power -eq 0 ]
+    then
+        ret_tx_power=$default_default_tx_power
+        set_bootval max_tx_power $default_default_tx_power
+    fi
+
+    echo $ret_tx_power
+}
+
+get_min_tx_power()
+{
+    ret_tx_power=`get_bootval min_tx_power`
+    if [ "$ret_tx_power" = "" -o $ret_tx_power -eq 0 ]
+    then
+        ret_tx_power=$default_min_tx_power
+        set_bootval min_tx_power $default_min_tx_power
+    fi
+
+    echo $ret_tx_power
+}
+
+create_new_file()
+{
+    headerline="# TX power database table"
+    if [ $base_region != "none" ]
+    then
+        headerline="$headerline for region $base_region"
+    fi
+
+    power_offset=0
+
+    echo $headerline | cat >$scratchfile
+
+    for channel in $channel_list
+    do
+        if [ $base_region != "none" ]
+        then
+            tx_power=`call_qcsapi -u get_regulatory_tx_power $wifi_vap $channel $base_region`
+	    let tx_power=tx_power+power_offset
+	    if [ $tx_power -gt $default_tx_power ]
+            then
+		tx_power=$default_tx_power
+            fi
+        else
+            let tx_power=tx_power+power_offset
+        fi
+
+	echo "$channel $tx_power" >>$scratchfile
+    done
+}
+
+verify_current_file()
+{
+    if [ "$1" = "" ]
+    then
+        echo "$0: 0-length file in verify current file"
+        exit 1
+    else
+        source_file=$1
+    fi
+
+    cat $source_file | awk -v region=$base_region -v vap=$wifi_vap -v min_tx_power=$min_tx_power -v default_tx_power=$default_tx_power '
+    function verify_tx_power( chan, tx_pwr, reg_pwr, bandwidth )
+    {
+        ret_pwr = tx_pwr
+
+        reg_pwr = reg_pwr + 0
+        tx_pwr = tx_pwr + 0
+        ret_pwr = ret_pwr + 0
+
+        if (reg_pwr < min_tx_power)
+        {
+            print "Channel " chan " not supported in regulatory region " region "." >"/dev/stderr"
+            exit 1
+        }
+        else if (reg_pwr < tx_pwr)
+        {
+            if (bandwidth == 20)
+            {
+                print "For channel " chan ", reducing the 20 MHz TX power to regulatory maximum of " reg_pwr "." >"/dev/stderr"
+                line_got_changed=1
+            }
+            else
+            {
+                print "For channel " chan ", reducing the TX power to regulatory maximum of " reg_pwr "." >"/dev/stderr"
+                line_got_changed=1
+            }
+            
+            ret_pwr = reg_pwr
+        }
+
+        return( ret_pwr )
+    }
+
+    BEGIN {
+        min_tx_power=min_tx_power + 0
+        default_tx_power=default_tx_power + 0
+    }
+    /^#/ {
+        print $0
+        next
+    }
+    NF!=3 && NF!=2 && NF!=0 {
+        print "Found", NF, "fields, expected 2 or 3." >"/dev/stderr"
+        exit 1
+    }
+    NF==3 || NF==2 {
+        channel=$1
+        tx_power=$2
+        line_got_changed=0
+        if (NF==3)
+        {
+            tx_power_20MHz=$3
+        }
+
+        if (region !~ /^none$/)
+        {
+            "call_qcsapi -u get_regulatory_tx_power " vap " " channel " " region | getline regulated_power
+            if (regulated_power ~ /error/)
+            {
+                print "Channel " channel " not available in regulatory region " region "." >"/dev/stderr"
+                exit 1
+            }
+
+            tx_power = verify_tx_power( channel, tx_power, regulated_power, 40 )
+            if (NF==3)
+            {
+                tx_power_20MHz = verify_tx_power( channel, tx_power_20MHz, regulated_power, 20 )
+            }
+        }
+
+	if (default_tx_power < tx_power)
+        {
+            print "For channel " channel ", reducing the TX power to board default of " default_tx_power "." >"/dev/stderr"
+            tx_power = default_tx_power
+            line_got_changed=1
+        }
+
+        if (NF==3 && default_tx_power < tx_power_20MHz)
+        {
+            print "For channel " channel ", reducing the 20 MHz TX power to board default of " default_tx_power "." >"/dev/stderr"
+            tx_power_20MHz = default_tx_power
+            line_got_changed=1
+        }
+
+        if (line_got_changed == 0)
+        {
+             print $0
+        }
+        else
+        {
+            if (NF==3)
+            {
+	        print channel, tx_power, tx_power_20MHz
+	    }
+            else
+            {
+	        print channel, tx_power
+	    }
+	}
+    }
+    NF==0 {
+        print
+    }' >$scratchfile
+
+    if [ $? -ne 0 ]
+    then
+        echo "$0: verification of $source_file failed"
+        exit 1
+    fi
+}
+
+
+default_tx_power=`get_default_tx_power`
+min_tx_power=`get_min_tx_power`
+
+if [ "$1" = "" ]
+then
+    echo "$0 requires a regulatory region and (optional) a file name"
+    exit 1
+fi
+
+create_file=0
+if [ "$2" = "" ]
+then
+    create_file=1
+else
+    calstate=`get_bootval calstate`
+    if [ "$calstate" -ne 1 ]
+    then
+        echo "$0 cannot update the TX power database using a file."
+        exit 1
+    fi
+
+    source_file=$2
+    if [ ! -f $source_file -o ! -r $source_file ]
+    then
+        echo "$0: cannot access source file $source_file"
+        exit 1
+    else
+        base_path=`echo $source_file | awk -F / '{print FS $2 FS $3}'`
+        if [ $base_path = $bootcfg_base ]
+        then
+            echo "$0: cannot use a source file in $bootcfg_base"
+            exit 1
+        fi
+    fi
+fi
+
+regulatory_region=$1
+if [ $regulatory_region = "us" -o \
+     $regulatory_region = "US" -o \
+     $regulatory_region = "usa" -o \
+     $regulatory_region = "USA" -o \
+     $regulatory_region = "fcc" -o \
+     $regulatory_region = "FCC" ]
+then
+    base_region="us"
+elif [ $regulatory_region = "eu" -o \
+       $regulatory_region = "EU" -o \
+       $regulatory_region = "Europe" -o \
+       $regulatory_region = "ce" -o \
+       $regulatory_region = "CE" ]
+then
+    base_region="eu"
+elif [ $regulatory_region = "Japan" -o \
+       $regulatory_region = "jp" ]
+then
+    base_region="jp"
+elif [ $regulatory_region = "Russia" -o \
+       $regulatory_region = "ru" ]
+then
+    base_region="ru"
+elif [ $regulatory_region = "au" -o \
+       $regulatory_region = "AU" -o \
+       $regulatory_region = "Australia" ]
+then
+    base_region="au"
+elif [ $regulatory_region = "none" ]
+then
+    base_region="none"
+else
+    echo "$0: unrecognized regulatory region $regulatory_region"
+    exit 1
+fi
+
+if [ $base_region = "none" ]
+then
+    channel_list="36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140,149,153,157,161,165"
+else
+    channel_list=`call_qcsapi -u get_list_regulatory_channels $base_region 20`
+fi
+
+channel_list=`echo $channel_list | sed 's/,/ /g'`
+
+if [ $base_region = "none" ]
+then
+    file_suffix=".txt"
+else
+    file_suffix="_${base_region}.txt"
+fi
+
+scratchfile=${scratchpad}/${basefile}${file_suffix}
+rm -f $scratchfile
+
+if [ $create_file -ne 0 ]
+then
+    bootcfg_file=${bootcfg_base}/${basefile}${file_suffix}
+    if [ -f $bootcfg_file ]
+    then
+        echo "$0: TX power table is already present for region $regulatory_region"
+        exit 1
+    else
+        create_new_file
+    fi
+else
+    verify_current_file $source_file
+fi
+
+update_bootcfg_file $scratchfile

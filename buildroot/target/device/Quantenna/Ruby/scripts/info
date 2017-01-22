@@ -1,0 +1,3 @@
+#!/bin/ash
+call_qcsapi -q get_info wifi0
+call_qcsapi get_regulatory_db_version

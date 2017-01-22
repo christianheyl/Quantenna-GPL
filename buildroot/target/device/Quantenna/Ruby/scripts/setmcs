@@ -1,0 +1,80 @@
+#!/bin/sh
+# Set allowed MCS rates
+
+bin=${0##*/}
+
+usage() {
+    echo "Usage: "
+	echo "    $bin { <mcs_rate> | -mcs <mcs_cap> | -nss <nss_cap> } [ -ldpc <ldpc> ] [ -flags <muc_flags> ]"
+	echo ""
+	echo "Parameters"
+	echo "    <mcs_rate>    legacy rate or rate mask in the format 0x7faabbcc for 11n rate"
+	echo "                  or rate mask in format 0x7e0000ab for 11ac rate"
+	echo "    <mcs_cap>     disable MCS rates with PHY rates greater than for this MCS rate (0 to 76)"
+	echo "    <nss_cap>     disable MCS rates with NSS greater than this (1 to 4)"
+	echo "    <ldpc>        enable or disable LDPC (0 or 1)"
+	echo "    <muc_flags>   MuC global settings"
+	exit 1
+}
+
+do_cmd() {
+	echo $*
+	$*
+}
+
+check_params() {
+	if [ "$mcs_cap" != "" -o "$nss_cap" != "" -o "$fixed_rates" != "" ]; then
+		usage
+	fi
+}
+
+while [ "$1" != "" ]; do
+	case "$1" in
+	-mcs)		check_params
+				mcs_cap=$2
+				shift
+				;;
+	-nss)		check_params
+				nss_cap=$2
+				if [ $nss_cap -lt 1 -o $nss_cap -gt 4 ]; then
+					usage
+				fi
+				shift
+				;;
+	-ldpc)		ldpc=$2
+				if [ "$ldpc" != 0 -a "$ldpc" != 1 ]; then
+					usage
+				fi
+				shift
+				;;
+	-flags)		muc_flags=$2
+				shift
+				;;
+	-*)			usage
+				;;
+	*)			check_params
+				fixed_rates=$1
+				;;
+	esac
+	shift
+done
+
+if [ "$mcs_cap" != "" ]; then
+	do_cmd iwpriv wifi0 mcs_cap $mcs_cap
+elif [ "$nss_cap" != "" ]; then
+	do_cmd iwpriv wifi0 set_ht_nss_cap $nss_cap
+	do_cmd iwpriv wifi0 set_vht_nss_cap $nss_cap
+elif [ "$fixed_rates" != "" ]; then
+	do_cmd iwpriv wifi0 fixedtxrate $fixed_rates
+else
+	usage
+fi
+
+if [ "$ldpc" != "" ]; then
+	do_cmd iwpriv wifi0 set_ldpc $ldpc
+fi
+
+if [ "$muc_flags" != "" ]; then
+	do_cmd iwpriv wifi0 muc_flags $muc_flags
+fi
+

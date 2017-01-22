@@ -1,0 +1,15 @@
+#!/bin/sh
+
+base_scripts="/scripts"
+. $base_scripts/start-helpers.sh
+
+rfenable=0
+
+for dev in `ls -1 /sys/devices/virtual/net/ | grep -E 'wifi|wds'` ; do
+    if [ `ifconfig $dev | grep MTU | awk '{print $1}'` = 'UP' ] ; then
+	rfenable=1
+	break
+    fi
+done
+
+exit $rfenable

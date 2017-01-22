@@ -1,0 +1,8 @@
+enable_vco_cal 0
+enable_txpow_cal 0
+ANT=0;
+while [ $ANT -lt 4 ]; 
+do
+	echo "calcmd 63 0 12 0 1 ${ANT} 2 $1 3 236 4 12" > /sys/devices/qdrv/control
+	let ANT=ANT+1;
+done

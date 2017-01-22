@@ -1,0 +1,966 @@
+/**@defgroup APIInitializationAPIs API Initialization and Process Management
+ * @brief Unlike most APIs, the ones documented in this section cannot be called from the scripting interface, call_qcsapi.
+ *
+ * These functions are used internally, and in linked applications (using libqcsapi), in order to setup the runtime
+ * environment for further QCSAPI calls.
+ */
+
+ /**@defgroup SystemAPIs System APIs
+ * @brief APIs to deal with general system configuration.
+ *
+ * This section contains functions for general system configuration not suitable for other sections.
+ */
+
+/**@defgroup ParameterConfAPIs Parameter Configuration
+ * @section mysection2_1 Working with the Persistent Configuration
+ * Typically a WiFi device will have a configuration that persists across a reboot or power-cycle.
+ * Examples include the WiFi Mode (AP or Station), the WiFi Channel and the Regulatory Region.<br>
+ * Security configuration parameters - those parameters that are handled by the @ref SecurityAPIs "Security APIs" and
+ * the @ref SSIDAPIs "SSID APIs" - are stored separately.  Security parameters include the SSID, the WiFi Security Protocol and the Passphrase.
+ * Security parameters should not be stored in a separate persistent configuration.
+ * 
+ * Thus parameters such as the SSID name, the WiFi Security Protocol or the Passphrase
+ * should NOT be stored using the Persistent Configuration facility described below.
+ * 
+ * @section mysection2_2 Helper Scripts and Configuration Requirements
+ * The Update (Persistent) Configuration Parameter API will modify a parameter that has been stored in the persistent configuration.
+ * This API relies on a helper script, <c>update_wifi_config</c>, to complete the change.
+ * If this script is not present in <c>/scripts</c>, the Update Persistent Configuration Parameter API will fail.
+ * The script itself uses the Get File Path API with parameter security to locate the folder that contains the persistent configuration.
+ * The persistent configuration is then stored in <c>wireless_conf.txt</c>.
+ * Its format consists of pairs of parameter name=value, each pair separated by an ampersand ('&').
+ * 
+ * Thus the persistent configuration file <c>wireless_conf.txt</c> is stored in the same place on the device as the security configuration files
+ * hostapd.conf and wpa_supplicant.conf.<br>
+ * Example <c>wireless_conf.txt</c> file:<br>
+ * <c>mode=ap&bw=40&region=us&channel=44&</c>
+ * 
+ * All of these conditions must be met:<br>
+ * The <c>/scripts</c> folder has an executable script <c>update_wifi_config</c><br>
+ * Folder with the persistent configuration can be located using the Get File Path API with parameter security<br>
+ * Persistent configuration stored in <c>wireless_conf.txt</c><br>
+ * Format of <c>wireless_conf.txt</c> consists of pairs of parameter name=value, each pair separated by an ampersand ('&')
+ * 
+ * otherwise the Update Persistent) Configuration Parameter API will fail.<br>
+ * The display script <c>get_wifi_config</c> will display the parameter name, value pairs.  Enter:<br>
+ * <c>get_wifi_config wifi0</c><br>
+ * to display the persistent configuration.<br>
+ * With the example <c>wireless_conf.txt</c> above, <c>get_wifi_config</c> would display:<br>
+ *	@code
+ *	mode=ap
+ *	bw=40
+ *	region=us
+ *	channel=44
+ *	@endcode
+ * 
+ * @section mysection2_3 Additional Notes
+ * The <c>update_wifi_config</c> script verifies the values for selected parameters:
+ * <TABLE>
+ * <TR>	<TD>\b Parameter</TD>  <TD>\b Explanation    </TD>	<TD><b> Valid value</b></TD>	</TR>
+ * <TR>	<TD>mode     </TD>  <TD>wifi mode            </TD>	<TD>ap<br>sta	</TD>		</TR>
+ * <TR>	<TD>bw       </TD>  <TD>Bandwidth (802.11n)<br>Bandwidth (802.11ac)  </TD>	<TD>20/40<br>20/40/80	</TD>		</TR>
+ * <TR>	<TD>channel  </TD>  <TD>WiFi channel (802.11)</TD>	<TD>Range:0 - 255</TD>		</TR>
+ * <TR>	<TD>pmf  </TD>  <TD>PMF capability (802.11w)</TD>	<TD>0 (disabled), 1 (optional) or 2 (disabled)</TD>		</TR>
+ * </TABLE>
+ * Special note regarding the WiFi channel parameter check - this should be considered a sanity check,
+ * as the list of valid WiFi channels is much more restricted than the range [0 - 255].<br>
+ * A change to one of these persistent parameters will not take effect until the device is rebooted.
+ * Selected parameters, e.g. the channel, can be updated dynamically using other APIs.
+ * 
+ * @section mysection2_4 Update (Persistent) Configuration Parameter
+ * refer to functon qcsapi_config_update_parameter
+ *
+ * \sa qcsapi_config_update_parameter
+ */
+
+/**@defgroup FilePathAPIs File Path configuration
+ * @anchor File_Path_conf
+ * @brief These APIs manage file paths.  Each file path is the location where groups of files that the APIs work with are found.
+ * At this time the only file path configuration available is for security.<br>
+ * \note A number of APIs rely on the security file path setting, including all APIs documented in the @ref SecurityAPIs "Security APIs",
+ * the @ref MACFilterAPIs "MAC address filtering APIs" and the @ref SSIDAPIs "SSID APIs".
+ * Results from these APIs may be inconsistent or incorrect if the security file path has not been set properly.
+ */
+
+/**@defgroup NetInterfaceAPIs Network Interface APIs
+ * @brief Network interface APIs apply to all network interfaces on the Quantenna device,
+ * including Ethernet and bridge devices as well as WiFi devices.
+ */
+
+/**@defgroup WiFiAPIs WiFi APIs
+ * @brief Wifi APIs require the interface to be a Wireless Extension (WE) device, and return Not Supported for other network interfaces.<br>
+ * Special note regarding the call_qcsapi interface:  the default WiFi interface name is wifi0,
+ *  and this interface is used to describe all interfaces to the WiFi APIs thru call_qcsapi.
+ * If a different WiFi interface name is present, that name should be used to access the WiFi APIs.
+ * @section mygroup5_1 Multiple Basic Service Sets (MBSSID)
+ * One can create multiple Basic Service Sets (BSSIDs) on a device initially configured as an access point (AP).
+ * This capability is not available on a device configured as a STA.
+ * The first step in creating an additional BSSID is to create the wireless interface device for that BSSID.
+ * Use the Set (WiFi) Mode API for this purpose.
+ * 
+ * @section mygroup5_2 Primary versus Secondary Wireless Interface
+ * A number of APIs change or report properties of the WiFi radio.  An example is the current WiFi channel.
+ * A change in the WiFi channel affects all wireless interfaces.  To prevent unexpected side effects, the concept of the Primary Wireless Interface is introduced.
+ * Selected WiFi APIs only work on the primary interface.  An example is the Set Channel API.
+ * If one of these APIs is called with a wireless interface that is not the primary interface, the API will fail.<br>
+ * To get the primary interface, use the Get Primary Interface API.<br>
+ * It may be necessary to get a list of all wireless interfaces.
+ * The Get Interface by Index API facilitates this.  It takes as a parameter an index, an unsigned integer.
+ * If the index is 0, the primary wireless interface will be returned.
+ * For index greater than 0, the API returns the corresponding wireless interface, or <c>-ERANGE</c>, numeric value out of range, if the index is too large.
+ * 
+ * @section mygroup5_3 APIs Only Available on the Primary Interface
+ * The following APIs only work when called with the primary interface:<br>
+ * 	@code
+ 	Get WiFi Bandwidth
+ 	Set WiFi Bandwidth
+ 	Get WiFi Channel
+ 	Set WiFi Channel
+ 	Start Scan
+ 	Get Regulatory TX Power
+ 	Get Configured TX Power
+ 	Get WiFi Current Transmit Power
+ 	Set Regulatory Channel
+ 	Get Regulatory Region
+ 	Set Regulatory Region
+ 	Get IEEE 802.11 Standard
+ 	Get List Wifi Channels
+ 	Get WiFi Noise
+ 	Get WiFi RSSI by RF Chain
+ 	Get MCS Rate
+ 	Set MCS Rate
+ 	Reload in WiFi mode
+	@endcode
+ *
+ * @section mygroup5_4 Quality of Service (QoS) extensions
+ * A number of APIs handle QoS enhancements parameters for WiFi. The enhancements are based on WMM (Wireless MultiMedia extensions) specification by WiFi aliance,
+ * which, in turn, is a subset of 802.11e amendment.<br>
+ * Under WMM, all outgoing traffic is divided into four logical queues, and each queue is set in correspondence with one of four access categories (AC). Specification
+ * references access categories by their symbolic names AC_BK, AC_BE, AC_VI and AC_VO, but APIs reference ACs by their corresponding numeric indexes. Mapping between
+ * AC's symbolic name and it's index, as well as AC's relative priorities are given in a table:
+ *
+ * <TABLE>
+ * <TR><TD>\b ACname</TD><TD>\b ACindex</TD><TD>\b Priority</TD><TD>\b Description</TD></TR>
+ * <TR><TD>AC_BK</TD><TD>1</TD><TD>Lowest</TD><TD>Background traffic</TD></TR>
+ * <TR><TD>AC_BE</TD><TD>0</TD><TD> </TD><TD>Best effort traffic</TD></TR>
+ * <TR><TD>AC_VI</TD><TD>2</TD><TD> </TD><TD>Video traffic</TD></TR>
+ * <TR><TD>AC_VO</TD><TD>3</TD><TD>Highest</TD><TD>Voice traffic</TD></TR>
+ * </TABLE>
+ *
+ * Access category is merely a label for a certain set of medium access parameters of one respective outgoing traffic queue. Each transmission queue competes
+ * for medium access using it's own set of parameters, and variations in ACs parameters value ensures statistical prioritization of one outgoing traffic queue over another.<br>
+ * APIs differentiate between ACs parameters applied to prioritize outgoing traffic by device itself (short, "self params"), and ACs parameters of a BSS the device is associated with
+ * (short, "BSS params"). In case of operating in AP mode, device uses "self params" internally for prioritizing it's own outgoing traffic, while it signals "BSS params"
+ * to it's client STAs in managment frames headers. In case of operating in STA mode, only "self params" set have a meaning. STA receives it's QoS parameters from associated AP,
+ * and it doesn't use its "BSS params" set in any way. Still, APIs allow to set/get both "self" and "BSS" parameters sets in either STA or AP mode.<br>
+ * There are in total six QoS parameters, and APIs use numeric indexes to reference them. Mapping of parameters symbolic names to their corresponding
+ * indexes are showed in a table:
+ * <TABLE>
+ * <TR><TD>\b Name</TD><TD>\b Index</TD><TD>\b Description</TD></TR>
+ * <TR><TD>ECWMin</TD><TD>1</TD><TD>Contention window exponent (MIN value)</TD></TR>
+ * <TR><TD>ECWMax</TD><TD>2</TD><TD>Contention window exponent (MAX value)</TD></TR>
+ * <TR><TD>AIFS</TD><TD>3</TD><TD>Arbitration InterFrame Spacing number</TD></TR>
+ * <TR><TD>TXOP</TD><TD>4</TD><TD>Transmit Opportunity limit</TD></TR>
+ * <TR><TD>ACM</TD><TD>5</TD><TD>Admission Control Mandatory</TD></TR>
+ * <TR><TD>AckPolicy</TD><TD>6</TD><TD>Frame Ack Policy</TD></TR>
+ * </TABLE>
+ *
+ * Following is a short description of AC parameters and their possible values. Parameters are per-VAP, per-AC.
+ * @subsection mysection5_4_1 ECWMin
+ * Exponent of minimum possible value for contention window (CWMin). This encodes the values of CWMin as an exponent: CWMin = 2^ECWMin - 1.<br>
+ * For example, if ECWMin is 8, then CWMin is 2^8 - 1, or 255. Possible values are 0-15.
+ * @subsection mysection5_4_2 ECWMax
+ * Exponent of maximum possible value for contention window (CWMax). This encodes the values of CWMax as an exponent: CWMax = 2^ECWMax - 1.<br>
+ * For example, if ECWMax is 8, then CWMax is 2^8 - 1, or 255. Possible values are 0-15.
+ * @subsection mysection5_4_3 AIFS
+ * Arbitration Inter Frame Spacing Number - the number of time slots in the arbitration interframe space.<br>
+ * Possible values are 0-15.
+ * @subsection mysection5_4_4 TXOP
+ * Transmit Opportunity limit, in microseconds. A limit to a length of time interval during which device can acquire medium for private use.<br>
+ * Possible values are 0-8192.
+ * @subsection mysection5_4_5 ACM
+ * Admission Control Mandatory flag. Applies to "BSS params" set only and allows AP to signal to it's client STAs that admission control is mandatory for some AC,
+ * and STA has to start traffic transmission for this particular AC by issuing TSPEC request first.<br>
+ * Possible values are 0 and 1. APIs will not allow to set or query ACM parameter for "self params" set.
+ * @subsection mysection5_4_6 AckPolicy
+ * Acknowledge policy expected by sender device. Only meaningful for outgoing traffic. Whether or not sender expects the receiver to send an ACK in response to 
+ * normally received frame.<br>
+ * Possible values are 0 and 1. APIs will not allow to set or query AckPolicy parameter for "BSS params" set.
+ */
+
+/**@defgroup MBSSIDAPIs MBSSID APIs
+ * @brief MBSSID is a feature that allows additional AP-mode virtual interfaces to be configured on a single device.
+ * Each additional virtual interface is created as a new network interface,
+ * so existing security APIs and generic interface APIs can be used on the new interface.<br>
+ * \note All MBSSID APIs work with the host AP daemon security configuration file, hostapd.conf.
+ * Its location is determined by the @ref File_Path_conf "get file path configuration API".
+ * Results from these APIs may be inconsistent or incorrect if the file path to the security configuration files has not been correctly configured.
+ */
+
+/**@defgroup WDSAPIs WDS APIs
+ * @brief WDS (Wireless Distribution System) here means a link between two APs on the same 802.11 channel,
+ * between which traffic is allowed to flow using 4 address frames.<br>
+ * It is important to note that the implementation of WDS peering is not an official 802.11 standard.
+ * 802.11 only details the implementation of 4 address frames, not any of the setup or negotiation between peers.<br>
+ * The implementation is largely targeted at interoperability with units produced by a specific customer using a competitor's chipset.<br>
+ * A WDS peer is identified by its primary BSSID.  Recall a BSSID is represented as a MAC address, in this context the MAC address of the peer AP.<br>
+ * The WDS peering agreement is symmetric.  Both sides need to have the peer address of the other added. Otherwise no WDS connection will be established.
+ * If only one side of a WDS link has added the other, the peer AP will not recognize the connection.
+ */
+
+/**@defgroup SecurityAPIs Security APIs
+ *
+ * @brief These APIs are for the Access Point (AP) and do not work on a Station (STA).
+ *
+ * For the equivalent STA APIs, see section @ref SSIDAPIs "SSID APIs".
+ * The interface parameter must reference either the primary interface or a previously created AP-mode virtual interface (MBSSID feature).<br>
+ * \note All Security APIs work with the host AP daemon security configuration file, hostapd.conf.
+ * Its location is determined by the get file path configuration API (section @ref File_Path_conf "File Path configuration").
+ * Results from these APIs may be inconsistent or incorrect if the file path to the security configuration files
+ * has not been correctly configured.
+ *
+ * @section CommonSecurityDefinitions Security definitions
+ *
+ * The following table outlines the defined string <b>authentication protocols</b> as used commonly throughout the QCSAPI.
+ * 
+ * <TABLE>
+ * <TR><TD>\b Value</TD><TD>\b Interpretation</TD></TR>
+ * <TR><TD>Basic</TD><TD>No security in use</TD></TR>
+ * <TR><TD>WPA</TD><TD>WPA version 1 authentication protocol</TD></TR>
+ * <TR><TD>11i</TD><TD>802.11i authentication protocol</TD></TR>
+ * <TR><TD>WPAand11i</TD><TD>Both WPA and 802.11i authentication protocols are available</TD></TR>
+ * </TABLE>
+ *
+ * The following table outlines the defined string <b>encryption</b> types as used commonly throughout the QCSAPI.
+ * 
+ * <TABLE>
+ * <TR><TD>\b Value</TD><TD>\b Interpretation</TD></TR>
+ * <TR><TD>AESEncryption</TD><TD>AES(CCMP) Encryption in use.</TD></TR>
+ * <TR><TD>TKIPEncryption</TD><TD>TKIP Encryption in use.</TD></TR>
+ * <TR><TD>TKIPandAESEncryption</TD><TD>TKIP and AES(CCMP) Encryption in use.</TD></TR>
+ * </TABLE>
+ * 
+ * The following table outlines the defined string <b>authentication types</b> as used commonly througout the QCSAPI.
+ * <TABLE>
+ * <TR><TD>\b Value</TD><TD>\b Interpretation</TD></TR>
+ * <TR><TD>PSKAuthentication</TD><TD>Pre-shared key authentication.</TD></TR>
+ * <TR><TD>EAPAuthentication</TD><TD>Use of an EAP server for authentication.</TD></TR>
+ * </TABLE>
+ *
+ * @section APSTADualFunctions Authentication protocols and encryption
+ *
+ * This section has a few sentences to try and clarify the difference between authentication and encryption, and the different methods
+ * as documented in the previous tables. All are closely inter-related, but are different parts of the same stick.
+ *
+ * Authentication is the act of verifying an entity is allowed access to a resource. In the case of 802.11 devices, authentication is
+ * done through one of multiple methods:
+ *
+ * \li NULL authentication (eg, OPEN networks) - "None"
+ * \li Pre-shared WEP key (obsolete - not mentioned further).
+ * \li Pre-shared key with WPA/WPA2 authentication - "WPA" or "11i" or "WPAand11i" - collectively "PSKAuthentication"
+ * \li Extensible Authentication Protocol (EAP). - EAP-FAST, EAP-PEAP, ... - collectively "EAPAuthentication"
+ *
+ * The Quantenna software implicitly supports "None" and "PSKAuthentication". "EAPAuthentication" can be added by customers, as it sits
+ * at the userspace level.
+ *
+ * Typically, once authentication has completed, one of the outputs from the authentication protocol will be a set of temporary keys.
+ *
+ * These keys are then used for the second part of the security equation, for <b>encryption</b>.
+ *
+ * Encryption takes plain text (or packets) and applies a cryptographic algorithm, using a known (or derived) shared key, to generate
+ * encrypted text (or packets). The different algorithms used for encryption are negotiated during initial connection establishment,
+ * and the supported encryption algorithms are:
+ *
+ * \li NONE (no encryption)
+ * \li TKIP (Rotating WEP or RC4 key)
+ * \li CCMP (or AES key)
+ *
+ * Generally speaking, devices using an encryption key will have two keys - one for unicast (AP->STA and STA->AP), and one for broadcast
+ * and multicast (AP-> all STAs in the BSS).
+ *
+ * Functions within the QCSAPI that deal with security have three broad categories for defining the security setup:
+ *
+ * \li Setting the authentication type (eg, PSK, EAP, NONE, etc.)
+ * \li Setting the specific authentication protocol (eg, WPA, WPA2, PEAP etc.)
+ * \li Setting the encryption type (eg, TKIP, CCMP)
+ *
+ * The following table shows the different functions used for these different tasks - both set and get functions.
+ * <TABLE>
+ * <TR><TD>\b Function</TD><TD>\b Get</TD><TD>\b Set</TD></TR>
+ * <TR><TD>Get/set authentication type</TD><TD>\ref qcsapi_wifi_get_WPA_authentication_mode, \ref qcsapi_SSID_get_authentication_mode</TD><TD>\ref qcsapi_wifi_set_WPA_authentication_mode, \ref qcsapi_SSID_set_authentication_mode</TD></TR>
+ * <TR><TD>Get/set authentication protocol</TD><TD>\ref qcsapi_wifi_get_beacon_type, \ref qcsapi_SSID_get_protocol</TD><TD>\ref qcsapi_wifi_set_beacon_type, \ref qcsapi_SSID_set_protocol</TD></TR>
+ * <TR><TD>Get/set encryption type</TD><TD>\ref qcsapi_wifi_get_WPA_encryption_modes, \ref qcsapi_SSID_get_encryption_modes</TD><TD>\ref qcsapi_wifi_set_WPA_encryption_modes, \ref qcsapi_SSID_set_encryption_modes</TD></TR>
+ */
+
+/**@defgroup MACFilterAPIs MAC Address Filtering APIs
+ * @brief The AP can block a selected station from associating based on its MAC (hardware interface) address.
+ * This section lists and describes the APIs that manage this capability.
+ * The interface parameter to these APIs must reference a Wireless Extension (WE) device configured as an AP.<br>
+ * By default, MAC address filtering is disabled.  Use the Set MAC Address Filtering API to configure this capability.
+ * Consult section 5.1.1 on the format of a MAC address when working with the scripting interface to the MAC address filtering APIs.<br>
+ *
+ * \note All MAC Address Filtering APIs work with security configuration files.
+ * Their location is determined by the get file path configuration API (section @ref File_Path_conf "File Path configuration").
+ * Results from these APIs may be inconsistent or incorrect if the file path to this security configuration files has not been correctly configured.
+ *
+ * @section mysection9_1 Data Type to Configure MAC Address Filtering
+ *
+ * @section mysection9_2 Error Codes from MAC Address Filtering APIs
+ * The API that returns a list of authorized MAC addresses will fail with an error code of Configuration Error if the MAC address filtering is not set to Deny Unless Authorized.
+ * The API that returns a list of denied or blocked MAC addresses will fail with error code Configuration Error if the MAC address filtering is not set to Authorize Unless Denied.<br>
+ * Both of those APIs will fail with an error code of Buffer Overflow if the length of the string is too short to store all MAC addresses. <br>
+ * See @ref mysection4_1_4 "QCSAPI Return Values" for more details on error codes and error messages.
+ */
+
+/**@defgroup MACReserveAPIs MAC Address Reservation APIs
+ * @brief MAC address reservation can be used to prevent associated WiFi devices and downstream
+ * devices from hijacking MAC addresses that belong to core network devices.
+ *
+ * MAC address reservation is implemented on an Access Point by configuring a list of up to six
+ * reserved MAC addresses.  An optional mask can be supplied with each entry in order to reserve a
+ * range of MAC addresses.
+ *
+ * The following example reserves 1c:6f:65:d1:bf:01 and the 16 MAC addresses from 1c:6f:65:d1:bf:10
+ * to 1c:6f:65:d1:bf:1f are reserved for devices on the wired side of the Access Point.
+ *
+ * <c>call_qcsapi set_macaddr_reserve wifi0 1c:6f:65:d1:bf:01</c>
+ *
+ * <c>call_qcsapi set_macaddr_reserve wifi0 1c:6f:65:d1:bf:10 ff:ff:ff:ff:ff:f0</c>
+ *
+ * Any association request with a source address that matches an entry in the reserved MAC address
+ * list is refused, and any Ethernet packet with a source address that matches an entry in the
+ * reserved MAC address list is dropped.
+ */
+
+/**@defgroup OptionsAPIs Options
+ * @brief A variety of options can be accessed or set.
+ * See the discussion of the datatype qcsapi_option_type for the list of available options.
+ * See the discussion of the datatype qcsapi_wifi_param_type for the list of available parameters.
+ * Relevant entry points follow:
+ *
+ * @section mysection10_3 WiFi Options and the call_qcsapi Interface
+ * The table below lists selected options as listed in the enumerated type and how to pass them to call_qcsapi.
+ * <TABLE>
+ * <TR>		<TD><b>Option</b></TD>		<TD><b>call_qcsapi representation</b></TD>	</TR>
+ * <TR>		<TD>qcsapi_channel_refresh</TD>		<TD>channel_refresh</TD>	</TR>
+ * <TR>		<TD>qcsapi_DFS</TD>		<TD>DFS</TD>	</TR>
+ * <TR>		<TD>qcsapi_wmm</TD>		<TD>WMM</TD>	</TR>
+ * <TR>		<TD>qcsapi_beacon_advertise</TD>		<TD>beacon_advertise</TD>	</TR>
+ * <TR>		<TD>qcsapi_wifi_radio</TD>		<TD>radio</TD>	</TR>
+ * <TR>		<TD>qcsapi_autorate_fallback</TD>		<TD>autorate</TD>	</TR>
+ * <TR>		<TD>qcsapi_security</TD>		<TD>security</TD>	</TR>
+ * <TR>		<TD>qcsapi_SSID_broadcast</TD>		<TD>SSID_broadcast</TD>	</TR>
+ * <TR>		<TD>qcsapi_short_GI</TD>		<TD>shortGI</TD>	</TR>
+ * <TR>		<TD>qcsapi_802_11h</TD>		<TD>802_11h</TD>	</TR>
+ * <TR>		<TD>qcsapi_tpc_query</TD>		<TD>tpc_query</TD>	</TR>
+ * <TR>		<TD>qcsapi_dfs_fast_channel_switch</TD>		<TD>dfs_fast_switch</TD>	</TR>
+ * <TR>		<TD>qcsapi_dfs_avoid_dfs_scan</TD>		<TD>avoid_dfs_scan</TD>	</TR>
+ * <TR>		<TD>qcsapi_uapsd</TD>		<TD>uapsd</TD>	</TR>
+ * <TR>		<TD>qcsapi_sta_dfs</TD>		<TD>sta_dfs</TD>	</TR>
+ * <TR>		<TD>qcsapi_specific_scan</TD>		<TD>specific_scan</TD>	</TR>
+ * <TR>		<TD>qcsapi_GI_probing</TD>		<TD>GI_probing</TD>	</TR>
+ * <TR>		<TD>qcsapi_GI_fixed</TD>		<TD>GI_fixed</TD>	</TR>
+ * <TR>		<TD>qcsapi_stbc</TD>		<TD>stbc</TD>	</TR>
+ * <TR>		<TD>qcsapi_beamforming</TD>		<TD>beamforming</TD>	</TR>
+ * <TR>		<TD>qcsapi_short_slot</TD>		<TD>short_slot</TD>	</TR>
+ * <TR>		<TD>qcsapi_short_preamble</TD>		<TD>short_preamble</TD>	</TR>
+ * <TR>		<TD>qcsapi_rts_cts</TD>		<TD>rts_cts</TD>	</TR>
+ * <TR>		<TD>qcsapi_40M_only</TD>		<TD>40M_bw_only</TD>	</TR>
+ * <TR>		<TD>qcsapi_obss_coexist</TD>		<TD>obss_coexist</TD>	</TR>
+ * <TR>		<TD>qcsapi_11g_protection</TD>		<TD>11g_protection</TD>	</TR>
+ * <TR>		<TD>qcsapi_11n_protection</TD>		<TD>11n_protection</TD>	</TR>
+ * </TABLE>
+ * To access the get option API enter:<br>
+ * <c>call_qcsapi get_option wifi0 \<option\>	</c><br>
+ * Unless an error occurs, the output will be either TRUE or FALSE.<br>
+ * To access the set option API enter:<br>
+ * <c>call_qcsapi set_option wifi0 \<option\> \<1 | TRUE | 0 | FALSE\></c><br>
+ * Unless an error occurs, the output will be the string <c>complete</c>.
+ *
+ * @section mysection10_4 Notes on Selected Options
+ *
+ * - The autorate fallback option (qcsapi_autorate_fallback) can be considered a rate setting.
+ *   This option can be enabled from the set option API, but disabling is not allowed.  To disable autorate fallback,
+ *   call the Set MCS rate API with a valid MCS rate.
+ * - WiFi MultiMedia (WMM, qcsapi_wmm) is required for 802.11n.  As Quantenna devices always operate in 802.11n mode,
+ *   this option is enabled by default and thus cannot be disabled thru the Set Option API.
+ * - Dynamic Frequency Selection (DFS, qcsapi_DFS) is a read-only option.
+ *   If enabled, the programming on the Quantenna WiFi device supports DFS.
+ *   It is not possible to enable or disable DFS through the set option API.
+ * - SSID Broadcast controls whether the name of the SSID is included in beacons broadcast by the AP.
+ *   This option is not available if the device is configured as a STA.
+ * - Security is a read-only option.  On an AP, security is determined by the Set Beacon API.
+ *   On a STA, security is determined by the security policy of the AP it associates with.
+ * - DFS Fast Switch enhances availability if a channel covered by DFS / radar protocols is selected.
+ *   The protocol requires the AP to immediately switch channels if radar is detected on the current channel.
+ *   By default, the AP scans available channels to find the channel with least interference.
+ *   This operation typically leads to a gap in traffic lasting from 20 seconds to over 1 minute.
+ *   With DFS Fast Switch enabled, the AP immediately switches to a non-DFS channel.
+ *   Testing with this option enabled shows there should be no loss of traffic if radar is detected.<br>
+ *   If both DFS Fast Switch and Avoid DFS Scan are enabled, DFS Fast Switch takes precedence.<br>
+ *   Examples using <c>call_qcsapi</c>:<br>
+ *   To enable DFS Fast Swich:<br>
+ *      <c>call_qcsapi set_option wifi0 dfs_fast_switch 1	</c><br>
+ *   To disable DFS Fast Switch:<br>
+ *      <c>call_qcsapi set_option wifi0 dfs_fast_switch 0	</c><br>
+ *   To query this option:<br>
+ *      <c>call_qcsapi get_option wifi0 dfs_fast_switch		</c><br>
+ * - Avoid DFS Scan causes the AP to scan only non-DFS channels if radar is detected and a switch of channels is required.
+ *   Enabling this option ensures that the Channel Availability Check (CAC) will not be required after radar is detected.
+ *   A gap in traffic should still be expected after radar is detected, but without the CAC, the maximum gap should be less than 30 seconds. <br>
+ *   If both DFS Fast Switch and Avoid DFS Scan are enabled, DFS Fast Switch takes precedence.<br>
+ *   Examples using call_qcsapi:<br>
+ *   To enable Avoid DFS Fast Swich:<br>
+ *      <c>call_qcsapi set_option wifi0 avoid_dfs_scan 1		</c><br>
+ *   To disable DFS Fast Switch:<br>
+ *      <c>call_qcsapi set_option wifi0 avoid_dfs_scan 0		</c><br>
+ *   To query this option:<br>
+ *      <c>call_qcsapi get_option wifi0 avoid_dfs_scan		</c>
+ * - For options that are not supported yet, API will return
+ *   <c>-qcsapi_option_not_supported</c> and for call_qcsapi, it shows<br>
+ *      <c>QCS API error 1044: Option is not supported</c><br>
+ *   Caller can check the return value <c>-qcsapi_option_not_supported</c> to query
+ *   if the option is supported.
+ *
+ * @section mysection10_5 WiFi Parameters and the call_qcsapi Interface
+ * The table below lists selected parameters as listed in the enumerated type and how to pass them to call_qcsapi.
+ * <TABLE>
+ * <TR>		<TD><b>Option</b></TD>		<TD><b>call_qcsapi representation</b></TD>	</TR>
+ * <TR>		<TD>qcsapi_wifi_param_dtim_period</TD>		<TD>dtim_period</TD>	</TR>
+ * </TABLE>
+ * To access the get parameter API enter:<br>
+ * <c>call_qcsapi get_wifi_param wifi0 \<parameter\>	</c><br>
+ * Unless an error occurs, the output will be the numeric value of the parameter.<br>
+ * To access the set parameter API enter:<br>
+ * <c>call_qcsapi set_wifi_param wifi0 \<parameter\> \<numeric value\></c><br>
+ * Unless an error occurs, the output will be the string <c>complete</c>.
+ *
+ * @section mysection10_6 Notes on Selected Parameters
+ *
+ * - The dtim period is an AP only parameter.<br>
+ *   It controls how often the broadcast/multicast traffic indication bit set in beacon unit.<br>
+ */
+
+
+/**@defgroup SSIDAPIs SSID APIs
+ * @brief The WPA Supplicant configuration file (STA only) allows multiple service sets to be configured.
+ *
+ * Parameters configured in a service set include encryption modes, authentication mode, pre-shared keys (PSK) and the passphrase.
+ * Thus these APIs mirror the "WPA" APIs, with the exception that the SSID APIs require a service set identifier (SSID).
+ * Two additional APIs verify an SSID is present in the configuration file and create a new service set.
+ *
+ * \note All SSID APIs work with the WPA Supplicant security configuration file, wpa_supplicant.conf.
+ * This file's location is determined by the get file path configuration API (section @ref File_Path_conf "File Path configuration").
+ * Results from these APIs may be inconsistent or incorrect if the file path to the security configuration files has not been correctly configured.
+ * 
+ * @section mysection11_1 Error Codes from SSID APIs
+ * Two failure conditions are restricted to the SSID APIs.
+ *
+ * The first failure condition is if the referenced SSID is not present in the configuration file.
+ * The error code in this situation will be:
+ *
+ * <c>-qcsapi_SSID_not_found</c>
+ *
+ * and the error message from the <c>call_qcsapi</c> scripting interface will be:
+ *
+ * <c>QCS API error 1002: SSID not found</c>
+ *
+ * Use the Verify SSID API (\ref qcsapi_SSID_verify_SSID) to confirm an SSID is present in the configuration file.
+ *
+ * The second failure condition is if the referenced SSID is present in the configuration file, but a required
+ * parameter is not present.
+ *
+ * An example is calling the SSID Get (Security) Protocol for an SSID that is configured without security.
+ *
+ * Here the error code will be:
+ *
+ * <c>-qcsapi_SSID_parameter_not_found</c>
+ *
+ * and the error message from the <c>call_qcsapi</c> scripting interface will be:
+ *
+ * <c>QCS API error 1012: Required parameter not found in the SSID configuration block.</c>
+ */
+
+/**@defgroup WPSAPIs WPS APIs
+ * @section mysection12_1 Overview
+ * Under the WPS standard, a WiFi device can be either a Registrar or an Enrollee.
+ * In this context, currently an AP is always a Registrar and a STA is always an Enrollee.
+ */
+
+/**@defgroup LEDGPIOAPIs LED and GPIO APIs
+ * @brief Although the APIs make a formal distinction between LEDs and GPIO pins, currently all LEDs are controlled thru GPIO pins.<br>
+ * To accommodate different board designs, all LEDs / GPIO pins must be configured prior to use by software.
+ * The configuration is persistent and should only need to be done once.  GPIO pin configuration is one of:
+ *  - qcsapi_gpio_not_available = 0
+ *  - qcsapi_gpio_input_only = 1
+ *  - qcsapi_gpio_output = 2
+ * .
+ * Default configuration is qcsapi_gpio_not_available.  A pin configured for output can be read as input.<br>
+ * All GPIO pins are accessed through the LED APIs, including GPIO pins that do not control an LED.
+ * An LED / GPIO pin can be either HIGH (value for setting is 1) or low (value for setting is 0).
+ * Be aware that a particular LED / GPIO pin can either be active high or active low.
+ * Consult the board documentation or schematics for details on the logic for each GPIO pin.<br>
+ * GPIO pin numbers range from 0 to 31.
+ */
+
+/**@defgroup PerAssocAPIs Per Association APIs
+ * @brief These APIs report on items available for each association.
+ * The first two only work on the AP; remaining APIs work on both an AP and a STA.
+ * On a STA, the association index must be 0.
+ */
+
+/**@defgroup RegulatoryAPIs APIs for Regulatory Compliance
+ * @brief This section describes APIs that assist with regulatory compliance.
+ * "Get" APIs are present for reference and convenience; "set" APIs are recommended to insure regulatory compliance.
+ * Also included are details on how to configure and manage transmit (TX) power, since the "set" APIs rely on this TX power configuration to set the transmit power.
+ * All APIs qcsapi_regulatory_xxx are used for regulatory database, and other APIs qcsapi_wifi_xxx which are used for EIRP table will be discarded.
+ * @section mysection15_1 Overview
+ * Regulatory compliance covers the choice of WiFi channels and how much power can be transmitted on each channel.
+ * The choice of WiFi channels is pretty straightforward.  Typically either a channel is available or is not available.
+ * Currently the APIs either grant access to a channel or block access to that channel (if a channel cannot be used the API returns -EINVAL as its error code return value).
+ * If a channel is available by regulatory authority, no further restrictions are imposed on its use, except for the amount of power that can be transmitted.
+ * 
+ * Transmit power (TX power) is more complicated.  First, the regulatory authority imposes a limit on the overall TX power.
+ * But sometimes the TX power that should be configured is lower than the limit established by the regulatory authority.
+ * For example, each board design usually has a maximum TX power for the board, a power level that should not be exceeded on any channel.
+ * Also, during testing for regulatory compliance,
+ * sometimes it is found the TX power for a particular channel needs to be reduced to meet the detailed requirements of the regulatory authority.
+ * This latter limit on the TX power can change from channel to channel, and from one regulatory region to another.
+ * 
+ * Transmit power is always measured and reported for an individual antenna chain.  The overall TX power that the system broadcasts is not measured or considered.
+ * It is expect regulatory requirements will be mapped to TX power   limitations on a per-chain / per-antenna basis,
+ * and that testing for regulatory compliance will be based on per-chain / per-antenna results.
+ * @section mysection15_2 Managing TX Power
+ * The TX power that should be configured for a channel is derived from the three sources described above:
+ *  -# TX power limit set by regulatory authority.
+ *  -# TX power limit established for the board.  This limit is independent of the regulatory authority, but can lower the TX power below what the regulatory authority specifies.
+ *  -# TX power limit established for each channel - the TX power database.  The limit for each channel can differ depending on the controlling regulatory authority.
+      This limit also can lower the TX power below what the regulatory authority specifies.
+ * .
+ * All TX power values are expressed as integers in units of dBm.  All values are absolute power settings, not offsets.<br>
+ * The rule for deriving the TX power for a channel is: take the minimum of the values from each of the three sources, regulatory authority,
+ * board limit and the TX power database.
+ * @section mysection15_3 The Calibration State
+ * A boot configuration environmental variable, calstate, helps determine the capabilities of the WiFi device when it boots up.
+ * If calstate is set to 1, the system installs special programming that facilitates testing for regulatory compliance.
+ * In this state though, the WiFi device will not associate or pass traffic.
+ * Set calstate to 3 to get the system to boot up so that it will associate and pass traffic.
+ * With calstate set to 3 though, testing for regulatory compliance may be less straightforward.  This latter state is also referred to as production mode.
+ * 
+ * To make changes in the TX power database, calstate must be set to 1.
+ * @section mysection15_4 Selecting the Regulatory Region
+ * The regulatory region is specified using a string.  The table below lists currently supported regulatory regions and
+ * what strings will select that region.  Base name is what would be returned by the Get Regulatory Region and
+ * the Get List of WiFi Regulatory Region APIs.
+ * <TABLE>
+ * <TR>	<TD>Region</TD>	<TD>Base Name</TD>	<TD>Synonyms</TD></TR>
+ * <TR>	
+ * 	<TD>United States of America – Federal Communications Commission (FCC)</TD>
+ * 	<TD>us</TD>
+ * 	<TD>US, usa, USA, FCC</TD>
+ * </TR>
+ * <TR>
+ * 	<TD>European Community</TD>	<TD>eu</TD>	<TD>EU, CE, ce, Europe</TD>
+ * </TR>
+ * </TABLE>
+ * 
+ * @section mysection15_5 TX Power Configuration
+ * This section describes where the 3 sources for configuring TX power are located.
+ *
+ * @section mysection15_6 Limit by Regulatory Authority
+ * The TX power limit that is set by regulatory authority is stored in tables that are part of the
+ * binary QCSAPI library (libqcsapi.so) and cannot be edited.
+ * The value for each available channel is available from an API.  The same API also reports if a channel is available,
+ * for if it is called with an invalid channel, it will return an error (error code return value: <c>-EINVAL</c>).
+ * An example is WiFi channel 188, a valid 5 GHz channel by the 802.11 standard, but not available in Europe or the USA.
+ *
+ * @section mysection15_7 Per Channel Limits
+ * The TX power limit established for each channel is stored in flash memory, in the boot configuration sector.
+ * (All boards are required to have a boot configuration sector in flash memory.)
+ * Entries in this table are typically obtained while testing the WiFi device at a laboratory
+ * that verifies regulatory compliance.
+ * Here is an example file of TX power limits configured for each WiFi channel:<br>
+ * @code
+ * # TX power database table
+ * # Chan   TX power
+ *   36      14
+ *   40      15
+ *   44      15
+ *   48      15
+ *   52      15
+ *   56      15
+ *   60      15
+ *   64      14
+ *   100     18
+ *   104     19
+ *   108     19
+ *   112     19
+ *   116     19
+ *   132     19
+ *   136     19
+ *   140     18
+ * @endcode
+ * (Caution: above table is an example and should not be used.
+ * Actual values for the max TX power have to be derived from testing for regulatory compliance.)
+ *
+ * Each channel is listed together with the max TX power for that channel.
+ * The table should then be stored in a file, with one entry per line.
+ * Each line is expected to have 2 numbers (3 numbers are also possible, as explained later).
+ * The first number is the channel; the second is the max TX power for that channel.
+ * A separate file should be created for each regulatory region.
+ *
+ * This file then needs to be loaded into the TX power database, as shown in section @ref mysection15_12 "Reviewing and Updating the TX Power Configuration".
+ *
+ * @section mysection15_8 Board Limits
+ * The overall max TX power for the board is stored in a boot configuration environmental
+ * variable, <c>max_tx_power</c>.  A related variable, <c>min_tx_power</c>,
+ * stores the minimum TX power that should be configured.
+ * If the regulatory limit for transmit power for a a channel is below the value for <c>min_tx_power</c>,
+ * access to that channel will be denied under that regulatory region.
+ *
+ * Values for both are expected to be obtained from testing the board.
+ *
+ * @section mysection15_9 Bandwidth 20 MHz vs. Bandwidth 40 MHz
+ * The usual bandwidth when the system is in production mode is 40 MHz.  However,
+ * it is possible to configure the bandwidth to be 20 MHz.
+ * When configured this way, the WiFi device will limit the bandwidth to 20 MHz,
+ * even if its partner in association supports 40 MHz.
+ *
+ * It turns out the per-channel power limits can differ based on the configured bandwidth,
+ * 20 MHz vs 40 MHz.  Regulatory requirements though do not change based on how the bandwidth is configured;
+ * nor does the overall board limit, the value in the boot configuration environmental variable, <c>max_tx_power</c>.
+ *
+ * To support a different TX power limit when the bandwidth is configured to 20 MHz,
+ * each entry in the TX power database table can have 2 TX power values.
+ * The first value is the one to be used if the bandwidth is configured to 40 MHz.
+ * If present, a second value will be used if the bandwidth is configured to 20 MHz.
+ * This second value is optional.  If this second value is not present,
+ * the same TX power will be used for bandwidth configured to 40 MHz or 20 MHz, obtained from the first entry.
+ *
+ * Below is an example file of TX power limits with separate entries for bandwidth of 40 MHz and 20 MHz.<br>
+ * @code
+ * # TX power database table
+ * # chan 40/20  20
+ * #-----------------
+ *    36   14    14
+ *    40   14    15
+ *    44   15    15
+ *    48   15    15
+ *    52   15    15
+ *    56   15    15
+ *    60   14    15
+ *    64   14    15
+ *    100   15    15
+ *    104   15    17
+ *    108   17    17
+ *    112   17    17
+ *    116   17    17
+ *    132   17    17
+ *    136   15    17
+ *    140   15    15
+ * @endcode
+ * (Caution: above table is an example and should not be used.
+ * Actual values for the max TX power need to be derived from testing for regulatory compliance.)
+ *
+ * @section mysection15_10 Defaults for TX Power
+ * Regulatory limits are stored in the QCSAPI library binary and cannot be changed.
+ * The per-channel and board limits are expected to be configured for each board.
+ * If either are missing, the API programming will create defaults.
+ *
+ * For the boot configuration environmental variables, the default value for <c>max_tx_power</c> is 19;
+ * for <c>min_tx_power</c> it is 9.
+ *
+ * The TX power database has a separate table for each regulatory region.
+ * The table has an entry of channel, max TX power for each channel.  If this table is absent for a regulatory region,
+ * the software will create this table, using the minimum of the regulatory limit and the board limit to
+ * obtain the max TX power for each channel.  Note the default board limit is 19 dBm,
+ * so the "default default" max TX power is 19 dBm.  Only one TX power value will be configured for each channel,
+ * so by default no distinction will be made between bandwidth configured to 40 MHz vs 20 MHz.
+ *
+ * These defaults are provided to prevent problems if for any reason the per-channel limits or
+ * the board limits are not configured.  It is expected that both will be configured before
+ * bringing the system up in production mode (<c>calstate = 3</c>), using the commands described in the next section.
+ *
+ * @section mysection15_11 Reducing TX Power on the STA Independent of the AP
+ * For various reasons it may be necessary to reduce power on the STA separately from the AP.
+ * This distinction is required because a particular WiFi device can switch roles, Access Point and Station,
+ * by simply changing the configuration.  If a device changes from STA mode to AP mode,
+ * any power reduction applied due to it being a STA should no longer be applied.
+ *
+ * For this reason, another boot configuration parameter, <c>max_sta_tx_power</c>,
+ * is available that will limit the max TX power, but only on the STA.  This parameter is optional;
+ * If not present, the system will look for and work with <c>max_tx_power</c> as described previously.
+ *
+ * @section mysection15_12 Reviewing and Updating the TX Power Configuration
+ * As mentioned previously, regulatory limited are stored in the API binaries and cannot be modified.
+ * Use the API Get Regulatory TX Power, described in detail below, to access regulatory requirements,
+ * including the maximum TX power allowed by regulatory authority.
+ * Use the API Get List Regulatory Channels, described in detail below,
+ * to display the list of channels allowed in a particular regulatory region.
+ *
+ * The boot configuration environmental variables <c>calstate, max_tx_power</c> and <c>min_tx_power</c> can
+ * all be accessed from the u-boot prompt, or by using the <c>get_bootval</c> command once the system boots up.
+ * Their values can be changed at the u-boot prompt, or by using the <c>set_bootval</c> command after the system boots up.
+ * Be aware that when setting a value from the u-boot prompt, the new value needs to be saved with the <c>saveenv</c>
+ * u-boot command.  Updates to boot configuration environmental variables are automatically saved with
+ * the <c>set_bootval</c> command.
+ *
+ * Three commands are available to work with the TX power database, the tables of TX power limits for each channel.
+ * The boot parameter <c>calstate</c> must be set to 1 to make changes to the TX power database.
+ *
+ * The command <c>configure_tx_power_limit</c> sets up the TX power database for a particular regulatory region.
+ * The command takes either one or two parameters.  If two parameters are present, the first is interpreted as the
+ * regulatory region and the second as the path to a file with the table of channels and TX power limits.  Example file
+ * contents are shown in sections 8.15.7 and 8.15.9.  If only one parameter is present, it will be interpreted as the
+ * regulatory region.  See section @ref mysection15_4 for details on selecting a regulatory region.  Boot parameter
+ * <c>calstate</c> must be set to 1.
+ *
+ * The command <c>display_tx_power_limit</c> displays the TX power limits for a particular channel, or the entire table
+ * for a regulatory region.  This command expects two parameters.  The first is the regulatory region; the second is the
+ * WiFi channel.  If the 2nd parameter is "all", the entire table for the selected regulatory region is displayed.  See
+ * section @ref mysection15_4 "HERE" for details on selecting a regulatory region.
+ *
+ * The command <c>update_tx_power_limit</c> updates the TX power limits for a particular channel.  This command takes
+ * either three or four parameters.  The first is the regulatory region; the second is the WiFi channel; the third is the
+ * limit on TX power.  A fourth parameter will be interpreted as the limit on TX power when the bandwidth is configured to
+ * 20 MHz.  Boot parameter <c>calstate</c> must be set to 1.
+ */
+
+/**@defgroup DFSAPIs DFS, Radar and OCAC APIs
+ * Selected channels in the 5 GHz frequency range are also used by weather and military radar.
+ * To prevent unwanted interference, WiFi devices using those channels are required to follow special protocols, as describe in 802.11h.
+ * APIs are available that list channels that are subject to the DFS protocols and channels that are not subject to those protocols.
+ * A separate API reports whether a particular channel is subject to DFS protocols.
+ * As the exact DFS-related regulations are determined by the regulatory authority,
+ * the regulatory region is a required parameter for all these APIs.
+ *
+ * @section mysection16_1 OCAC
+ * OCAC is a feature where the DFS master device will periodically scan off-channel in order to detect radar on a channel different to
+ * the current operating channel. This feature is limited to operation with up to 2 BSSes only.
+ */
+
+/**@defgroup ScanAPIs Scan APIs
+ * This section describes APIs that report on properties of APs that were found when the STA scanned the WiFi channels.<br>
+ * When a WiFi device configured as a STA starts up, it typically scans the WiFi channels for APs in its neighborhood.
+ *
+ * \note The list of channels will be limited to those legal in the local regulatory region by calling the Set Regulatory Region API.
+ *
+ * Two APIs are available to report on the results of the last AP scan. The first API gets the results and caches them in memory.
+ * A second API then reports the properties of a particular AP. The AP is selected by index, starting at 0.
+ * An application that wants to examine all APs can call Get Properties AP (see qcsapi_wifi_get_properties_AP), starting first with
+ * the index set to 0, and incrementing that index in each subsequent call until the API returns an error (-ERANGE).
+ * 
+ * If either API is called on a WiFI device configured as an AP, the API will return an error (see enum qcsapi_only_on_STA).<br>
+ *
+ * \note The Get Properties API uses the results it finds in the in-memory cache.
+ * To insure the results from the latest AP scan are used, an application should always call the get results AP scan API first
+ * (see qcsapi_wifi_get_results_AP_scan).
+ * The example application shows how this should be programmed.
+ *
+ * @section mysection17_1 Data Structure to Report the Properties of an AP
+ * The properties of an AP are returned in the data structure shown below (see struct qcsapi_ap_properties for full details):<br>
+ * @code
+ *	typedef struct qcsapi_ap_properties
+ *	{
+ *		qcsapi_SSID             ap_name_SSID;
+ *		qcsapi_mac_addr         ap_mac_addr;
+ *		qcsapi_unsigned_int     ap_flags;
+ *		int                     ap_channel;
+ *		int                     ap_RSSI;
+ *		int                     ap_protocol;
+ *		int                     ap_encryption_modes;
+ *		int                     ap_authentication_mode;
+ *		int			ap_best_rate;
+ *		int			ap_wps;
+ *		int			ap_80211_proto;
+ *	} qcsapi_ap_properties;
+ * @endcode
+ * As can be seen from the data struct definition, properties returned by the Get AP Properties API include its SSID,
+ * its MAC address, what channel it is broadcasting beacons on and the relative signal strength (RSSI) from that AP.
+ * RSSI will range from 1 up to 70; the larger this value, the stronger the signal from the AP is on the local STA.
+ *
+ * Flags (ap_flags) is a bit mask and currently only reports on whether the AP has enabled security.
+ * If the low-order bit (0x01) is set, the referenced AP has enabled security; if that bit is cleared,
+ * the referenced AP has disabled security.  Remaining bits have no meaning currently.
+ *
+ * If security is reported as enabled, the security protocol(s) in use, the encryption mode(s) and the authentication mode are all reported.<br>
+ * Possible values for the protocol(s) (ap_protocol ) are derived from these two values:
+ * @code
+ *	qcsapi_protocol_WPA_mask = 1
+ *	qcsapi_protocol_11i_mask = 2
+ * @endcode
+ * Since an AP can enable both WPA and 11i (WPA2) at the same time, the two values are actually bit masks.<br>
+ * Possible values for the authentication mode (ap_encryption_modes) are shown below:<br>
+ * @code
+ *	qcsapi_ap_PSK_authentication = 1
+ *	qcsapi_ap_EAP_authentication = 2
+ * @endcode
+ * Possible values for the encryption mode(s) (ap_authentication_mode) are derived from these two values:<br>
+ * @code
+ *	qcsapi_ap_TKIP_encryption_mask = 0x01
+ *	qcsapi_ap_CCMP_encryption_mask = 0x02
+ * @endcode
+ * Since an AP can enable both CCMP and TKIP as encryption modes at the same time, the two values are actually bit masks.<br>
+ * The value of WPS capability (ap_wps) is 1 when AP supports WPS, or 0 when not.<br>
+ * The value of IEEE802.11 protocol (ap_80211_proto) may be any combination of following values:<br>
+ * @code
+ *	802.11b	0x01
+ *	802.11g	0x02
+ *	802.11a	0x04
+ *	802.11n	0x08
+ * @endcode
+ *
+ * @section mysection17_4 Demonstration Application for AP Scan APIs
+ * A demonstration command line application, <c>show_access_points</c>, is included with the SDK.
+ *
+ * This application details how to use the Get Results AP Scan API before getting the properties for individual APs.
+ *
+ * Look at the code fragment below:
+ *	@code
+
+	errorval = qcsapi_wifi_get_results_AP_scan( ifname, &count_APs );
+
+	if (errorval >= 0) {
+		qcsapi_unsigned_int     iter;
+		qcsapi_ap_properties    ap_properties;
+
+		for (iter = 0; iter < count_APs && errorval >= 0; iter++) {
+			errorval = qcsapi_wifi_get_properties_AP( ifname, iter, &ap_properties );
+			if (errorval >= 0) {
+				show_ap_properties( iter + 1, &ap_properties );
+			}
+		}
+	} else {
+		/* come here if the initial call to get the results of the AP scan fails */
+	}
+	@endcode
+ * 
+ * Notice the program first calls qcsapi_wifi_get_results_AP_scan before looping over the individual APs,
+ * calling qcsapi_wifi_get_properties_AP to get the properties for individual APs.
+ * Such a programming model is recommended whenever an application reviews or lists the properties of individual APs.
+ */
+
+
+/**@defgroup SecurityMisAPIs Security Mismatch Backoff APIs
+ * @brief Two APIs are available on the WiFi station (WiFi mode is "Station") to manage retries when a mismatch in security is discovered with its partner Access Point.
+ * Because the STA can eventually back off and stop attempting to associate for a period of time, these APIs are referred to as Backoff APIs.<br>
+ * These API configure the number of time to try before backing off and the amount of time to wait before trying again after backing off.
+ */
+
+
+/**@defgroup EngineeringAPIs Engineering and Test APIs
+ * @brief These APIs are not expected to be called in normal programming.
+ * They are present to assist with engineering testing and performance evaluation.
+ */
+
+/**@defgroup vsp_group Video Stream Protection APIs
+ * @brief VSP ensures that video streams transmitted through Quantenna Access Points are protected from interference by other intra-BSS traffic and channel interference.
+ * VSP pro-actively monitors and adjusts the streams running across the network to ensure video streams do not drop or suffer artefacts. These APIs provide configuration for the VSP module.
+ */
+ */
+
+/**@defgroup invoke_script API to call scripts for EMI testing and RF testing
+ *
+ * This chapter describes APIs to call scripts on the board to run EMI testing and RF testing in
+ * calstate=1 mode.
+ */
+
+/**@defgroup CalcmdAPI API for PHY testing
+ * \brief These APIs are used for PHY testing.
+ */
+
+/**@defgroup BootConfigAPIs Bootcfg APIs
+ * \brief These APIs deal with the bootcfg interface.
+ *
+ * These APIs deal with the low level, early boottime configuration of the board.
+ *
+ * \note The update bootcfg API (qcsapi_bootcfg_update_parameter) can only be called in bringup mode, NOT in production mode.
+ */
+
+/**@defgroup FirmwareAPIs Firmware Management APIs
+ * \brief These APIs are used for firmware management functions.
+ */
+
+/**@defgroup PowerAPIs Power Management APIs
+ * \brief These APIs are used for power management functions.
+ */
+
+/**@defgroup SCSAPIs Smart Channel Select (SCS) APIs
+ * \brief These APIs are used to configure and get status for the Quantenna Smart Channel Select (SCS) feature.
+ */
+
+/**@defgroup VLANAPIs VLAN APIs
+ * \brief These APIs are used to configure, control and obtain status for VLANs within the Quantenna device.
+ *
+ * @section VLANsection_31_1 VLAN concepts in wireless networking
+ *
+ * This section outlines some key concepts in wireless networking relating specifically to VLANs.
+ *
+ * In order to understand the different uses for VLANs, some terminology will be introduced. The following table outlines the three different types of VLAN which apply to wireless systems.
+ *
+ * <TABLE>
+ * <TR><TD><b>Term</b></TD><TD><b>Description</b></TD></TR>
+ * <TR><TD>VLAN termination</TD><TD>A type of VLAN which terminates on the Quantenna device Linux host. That is, the Linux host is a member of the given VLAN. In networking terminology, this can be considered the Linux host is part of the VLAN access port.</TD></TR>
+ * <TR><TD>VLAN passthrough</TD><TD>A type of VLAN which is transparently bridged across 4-address wireless hops (ie, not terminated or mapped). In networking terminology, this can be considered a VLAN trunk port.</TD></TR>
+ * <TR><TD>VLAN mapping</TD><TD>A type of VLAN which maps to a given BSS, for which the 802.1q header is stripped prior to forwarding the packet to the wireless client. Packets received from the wireless client are tagged with an appropriate 802.1q tag prior to forwarding to the Ethernet interface. In networking terminology, this can be considered a VLAN access port.</TD></TR>
+ * </TABLE>
+ *
+ * The three different modes of VLANs for the Quantenna firmware are shown operating in the following diagram.
+ *
+ * \image latex VLAN-types.png " " width=\textwidth
+ *
+ * @section VLANsection_31_4 Example VLAN configuration - VLAN mapping
+ *
+ * This section presents a concrete example of how to map VLANs to configured BSSes (SSIDs). In this case, the Quantenna device being configured is running a pure AP function, mapping clients per BSS into the appropriate VLAN on the Ethernet side of the Quantenna device.
+ *
+ * First ensure the Quantenna device is configured with at least two additional BSSes (and corresponding SSIDs). See the section @ref MBSSIDAPIs for details of configuring multiple BSSes on a single Quantenna device. This example gives a very simple configuration including both BSS creation and VLAN mapping to the SSID.
+ *
+ * Second, select two VLAN IDs to map onto the different BSSes. In this example, VLAN 10 and 20 are used.
+ *
+ * The script shown in the following code snippet shows how to map VLAN 10 onto SSID Qtn-Open-BSS (with no authentication or encryption), and VLAN 20 onto SSID Qtn-WPA2-BSS (with WPA2 authentication/CCMP encryption enabled).
+ *
+ * @code
+ * #Enable VLAN functionality
+ * call_qcsapi vlan_config wifi0 enable 0
+ * #Create wifi1, bind to VLAN 10
+ * call_qcsapi wifi_create_bss wifi1
+ * call_qcsapi set_SSID wifi1 "Qtn-Open-BSS"
+ * call_qcsapi set_beacon wifi1 Basic
+ * call_qcsapi vlan_config wifi1 bind 10
+ * #Create wifi2, bind to VLAN 20
+ * call_qcsapi wifi_create_bss wifi2
+ * call_qcsapi set_SSID wifi2 "Qtn-WPA2-BSS"
+ * call_qcsapi set_beacon wifi2 11i
+ * call_qcsapi set_WPA_encryption_modes wifi2 AESEncryption
+ * call_qcsapi set_passphrase wifi2 "This is the passphrase!" 0
+ * call_qcsapi vlan_config wifi2 bind 20
+ * @endcode
+ */
+
+/**@defgroup StatisticsAPIs Statistics APIs
+ * \brief These APIs are used to obtain statistics from the device.
+ */
+
+/**@defgroup ServicesAPIs Linux Services APIs
+ * \brief These APIs are used for Linux daemon control.
+ */
+
+/**@defgroup QTM_group Quantenna Traffic Management (QTM) APIs
+ * \brief These APIs are used for Quantenna Traffic Management (QTM) configuration.
+ */
+
+/**@defgroup TDLS_group TDLS APIs
+ * \brief These APIs are used for configuration and control of TDLS.
+ */
+
+/**@defgroup MU_group Multi-user MIMO APIs
+ * \brief These APIs are used for debugging and display of MU details.
+ */
+
+/**@defgroup WOWLAN_group Wake on WLAN (WoWLAN) APIs
+ * \brief These APIs are used for Wake on WLAN configuration and control.
+ */
+
+/**@defgroup ANDROID_group Android APIs
+ * \brief These APIs are used for integrating QTN firmware with Android host.
+ */

@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+
+base_scripts="/scripts"
+
+. $base_scripts/start-helpers.sh
+
+start() {
+	export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/scripts:/usr/local/bin
+	export LD_LIBRARY_PATH=/lib:/usr/lib
+
+	if [ -f /sbin/qserv ]
+	then
+		calstate=`get_bootval calstate`
+		if [ $calstate == "3" ]
+		then
+			#STB auto detect active eth/wifi port
+			active_port=`cat /var/lib/dhcp/active_port`
+			if [ "$active_port" == "102" -o "$active_port" == "202" ]; then
+				#active port is wifi
+				echo "wifi0 is enabled by default"
+				call_qcsapi -u -q set_emac_switch 1
+			else
+				#active port is ethernet
+				echo "wifi0 is disabled"
+				call_qcsapi -u -q enable_interface wifi0 0
+				call_qcsapi -u -q rfenable 0
+				#ethernet switch is not blocked by default
+			fi
+			#activate TX aggregation timeout 0
+			call_qcsapi -u -q set_txqos_sched_tbl wifi0 1
+		fi
+	fi
+}
+
+stop() {
+	echo "Stopping switch control not supported"
+}
+
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload)
+	restart
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

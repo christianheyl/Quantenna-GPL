@@ -1,0 +1,159 @@
+#!/bin/sh
+
+base_scripts="/scripts"
+
+. ${base_scripts}/start-helpers.sh
+
+if [ -f ${base_persistent_files}/stateless_slave_config ]; then
+	. ${base_persistent_files}/stateless_slave_config
+else
+	. ${base_scripts}/stateless_slave_config
+fi
+
+ifconfig_all_ether() {
+	echo_with_logging "=== Disabling network interfaces"
+	if [ -e /sys/class/net/eth1_0 ]; then
+		ifconfig eth1_0 $@
+	fi
+
+	if [ -e /sys/class/net/eth1_1 ]; then
+		ifconfig eth1_1 $@
+	fi
+}
+
+export QCSAPI_RPC_TARGET=${qcsapi_rpc_target}
+
+if [ `get_board_config bd_pcie` = "0" ]; then
+	INVOKE_QCSAPI="qcsapi_sockrpc"
+else
+	INVOKE_QCSAPI="qcsapi_pcie"
+fi
+
+echo_with_logging "=== Waiting for slave to boot up"
+timeout=$((`date +%s` + 60))
+while true
+do
+	${INVOKE_QCSAPI} get_macaddr br0 1>/dev/null 2>1
+	if [ $? -eq 0 ]; then
+		break
+	fi
+	sleep 1
+	loopcount=$(($loopcount + 1))
+
+	if [ `date +%s` -ge $timeout ]; then
+		#Either qcsapi_rpcd is not started or wrong target IP address
+		#exit booting stateless slave
+		echo_with_logging "=== Exit starting stateless slave for timeout"
+		return 1
+	fi
+done
+
+#start stateless mode if startprod is not done in 10 seconds
+timeout=$((`date +%s` + 10))
+while [ `date +%s` -le $timeout ]
+do
+	if [ `${INVOKE_QCSAPI} is_startprod_done wifi0` -eq 1 ]; then
+		echo_with_logging "=== Exit starting stateless slave"
+
+		# Store the core dump, if it exists
+		$base_scripts/store_core_dump
+
+		return 0
+	fi
+	sleep 1
+done
+
+echo_with_logging "=== Starting stateless slave configuration"
+
+config_param_list="
+	bf
+	bw
+	channel
+	dhcpv6
+	f40
+	leds
+	mode
+	monitorreset
+	monitorrfenable
+	mcs
+	pwr
+	region
+	ssdp_flood
+	staticip
+	scs
+	vsp
+	tx_restrict
+	use3way
+	vht"
+
+for param in ${config_param_list}
+do
+	param_variable=wifi0_${param}
+	param_value=`eval echo -n $"$param_variable"`
+	if [ -n "${param_value}" ]; then
+		echo_with_logging "=== Setting ${param} to ${param_value}"
+		${INVOKE_QCSAPI} update_config_param wifi0 ${param} ${param_value}
+	fi
+done
+
+if [ -n "${slave_ipaddr}" ]; then
+	echo_with_logging "=== Setting IP address and netmask to ${slave_ipaddr}"
+	${INVOKE_QCSAPI} store_ipaddr ${slave_ipaddr}
+fi
+
+echo_with_logging "=== Running start-prod"
+${INVOKE_QCSAPI} startprod
+
+# On non PCIe boards we may lose ability to use QCSAPI RPC if we don't know slave IP address
+if [ ! `get_board_config bd_pcie` -gt 0 ]; then
+	if [ -n "${slave_ipaddr}" ]; then
+		export QCSAPI_RPC_TARGET=`echo ${slave_ipaddr} | awk -F'/' '{print $1}'`
+	else
+		echo_with_logging "=== Warning! PRC target IP is unknown!"
+	fi
+fi
+
+# Waiting for start-prod to finish
+sleep 10
+
+echo_with_logging "=== Setting security parameters"
+
+if [ "${wifi0_mode}" = "ap" ]; then
+	echo_with_logging "=== Setting AP parameters"
+	if [ -n "${wifi0_SSID}" ]; then
+		echo_with_logging "=== Setting SSID to ${wifi0_SSID}"
+		${INVOKE_QCSAPI} set_ssid wifi0 "${wifi0_SSID}"
+	fi
+	if [ -n "${wifi0_auth_mode}" ]; then
+		echo_with_logging "=== Setting WPA authentication mode to ${wifi0_auth_mode}"
+		${INVOKE_QCSAPI} set_WPA_authentication_mode wifi0 "${wifi0_auth_mode}"
+	fi
+	if [ -n "${wifi0_passphrase}" ]; then
+		echo_with_logging "=== Setting passphrase to ${wifi0_auth_mode}"
+		${INVOKE_QCSAPI} set_passphrase wifi0 0 "${wifi0_passphrase}"
+	fi
+
+	echo_with_logging "=== Starting wireless"
+	${INVOKE_QCSAPI} rfenable 1
+
+elif [ "${wifi0_mode}" = "sta" ]; then
+	echo_with_logging "=== Setting STA parameters"
+	if [ -n "${wifi0_SSID}" ]; then
+		echo_with_logging "=== Setting SSID to ${wifi0_SSID}"
+		${INVOKE_QCSAPI} create_SSID wifi0 "${wifi0_SSID}"
+	fi
+	if [ -n "${wifi0_auth_mode}" ]; then
+		echo_with_logging "=== Setting WPA authentication mode to ${wifi0_auth_mode}"
+		${INVOKE_QCSAPI} SSID_set_authentication_mode wifi0 "${wifi0_SSID}" "${wifi0_auth_mode}"
+	fi
+	if [ -n "${wifi0_passphrase}" ]; then
+		echo_with_logging "=== Setting passphrase to ${wifi0_auth_mode}"
+		${INVOKE_QCSAPI} SSID_set_passphrase wifi0 "${wifi0_SSID}" 0 "${wifi0_passphrase}"
+	fi
+
+	echo_with_logging "=== Applying security configuration"
+	${INVOKE_QCSAPI} apply_security_config wifi0
+fi
+
+
+echo_with_logging "=== Done setting up stateless slave"

@@ -1,0 +1,5 @@
+config BR2_PACKAGE_MSWBSP
+	bool "MS Wireless BSP"
+	default y
+	help
+	  Quantenna RPC for MS Wireless BSP.

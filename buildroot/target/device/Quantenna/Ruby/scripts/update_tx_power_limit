@@ -1,0 +1,216 @@
+#! /bin/sh
+
+scratchpad=/tmp
+basefile=eirp_info
+ro_bootcfg_base=/ro/bootcfg
+proc_bootcfg_base=/proc/bootcfg
+
+if [ -d /ro/bootcfg ]
+then
+    bootcfg_base=/ro/bootcfg
+else
+    bootcfg_base=/proc/bootcfg
+fi
+wifi_vap="wifi0"
+
+# these global script variables get set as the script proceeds
+
+base_region=""
+scratchfile=""
+using_proc_bootcfg=false
+
+# capture the output from get_default_tx_power in backquotes
+
+get_default_tx_power()
+{
+    ret_tx_power=`get_bootval max_tx_power`
+    if [ "$ret_tx_power" = "" -o $ret_tx_power -eq 0 ]
+    then
+        ret_tx_power=$default_default_tx_power
+        set_bootval max_tx_power $default_default_tx_power
+    fi
+
+    echo $ret_tx_power
+}
+
+# capture the output from get_min_tx_power in backquotes
+
+get_min_tx_power()
+{
+    ret_tx_power=`get_bootval min_tx_power`
+    if [ "$ret_tx_power" = "" -o $ret_tx_power -eq 0 ]
+    then
+        ret_tx_power=$default_min_tx_power
+        set_bootval min_tx_power $default_min_tx_power
+    fi
+
+    echo $ret_tx_power
+}
+
+
+calstate=`get_bootval calstate`
+if [ "$calstate" -ne 1 ]
+then
+    echo "$0 not available unless calstate = 1."
+    exit 1
+fi
+
+default_tx_power=`get_default_tx_power`
+min_tx_power=`get_min_tx_power`
+
+if [ "$3" = "" ]
+then
+    echo "Usage: $0 <regulatory region> <channel> <max TX power>"
+    echo "where <max TX power> is the maximum TX power for that channel in the referenced region."
+    exit 1
+fi
+
+new_tx_power=$3
+channel=$2
+regulatory_region=$1
+
+if [ "$4" != "" ]
+then
+    new_20MHz_tx_power=$4
+else
+    new_20MHz_tx_power=none
+fi
+
+if [ $regulatory_region = "us" -o \
+     $regulatory_region = "US" -o \
+     $regulatory_region = "usa" -o \
+     $regulatory_region = "USA" -o \
+     $regulatory_region = "fcc" -o \
+     $regulatory_region = "FCC" ]
+then
+    base_region="us"
+elif [ $regulatory_region = "eu" -o \
+       $regulatory_region = "EU" -o \
+       $regulatory_region = "Europe" -o \
+       $regulatory_region = "ce" -o \
+       $regulatory_region = "CE" ]
+then
+    base_region="eu"
+elif [ $regulatory_region = "Japan" -o \
+       $regulatory_region = "jp" ]
+then
+    base_region="jp"
+elif [ $regulatory_region = "Russia" -o \
+       $regulatory_region = "ru" ]
+then
+    base_region="ru"
+elif [ $regulatory_region = "au" -o \
+       $regulatory_region = "AU" -o \
+       $regulatory_region = "Australia" ]
+then
+    base_region="au"
+elif [ $regulatory_region = "none" ]
+then
+    base_region="none"
+else
+    echo "$0: unrecognized regulatory region $regulatory_region."
+    exit 1
+fi
+
+if [ $base_region != "none" ]
+then
+    regulatory_tx_power=`call_qcsapi -u get_regulatory_tx_power $wifi_vap $channel $base_region`
+    echo $regulatory_tx_power | grep error >/dev/null
+    if [ $? -eq 0 ]
+    then
+        echo "$0: channel $channel not valid in region $regulatory_region."
+        exit 1
+    elif [ $regulatory_tx_power -lt $min_tx_power ]
+    then
+        echo "$0: channel $channel not available in region $regulatory_region."
+        exit 1
+    elif [ $new_tx_power -gt $regulatory_tx_power ]
+    then
+        echo "$0: for channel $channel, TX power of $new_tx_power exceeds the regulatory limit of $regulatory_tx_power."
+        exit 1
+    elif [ $new_tx_power -gt $default_tx_power ]
+    then
+        echo "$0: for channel $channel, TX power of $new_tx_power exceeds the regulatory limit of $default_tx_power."
+        exit 1
+    fi
+
+    if [ $new_20MHz_tx_power != "none" ]
+    then
+        if [ $new_20MHz_tx_power -gt $regulatory_tx_power ]
+        then
+            echo "$0: for channel $channel, 20MHz TX power of $new_20MHz_tx_power exceeds the regulatory limit of $regulatory_tx_power."
+            exit 1
+	elif [ $new_20MHz_tx_power -gt $default_tx_power ]
+        then
+            echo "$0: for channel $channel, 20MHz TX power of $new_20MHz_tx_power exceeds the board limit of $default_tx_power."
+            exit 1
+        fi
+    fi
+
+    file_suffix="_${base_region}.txt"
+else
+    file_suffix=".txt"
+fi
+
+scratchfile=${scratchpad}/${basefile}${file_suffix}
+rm -f $scratchfile
+
+targetfile=${basefile}${file_suffix}
+targetpath=${ro_bootcfg_base}/${targetfile}
+
+if [ ! -f $targetpath -o ! -r $targetpath ]
+then
+    targetpath=${proc_bootcfg_base}/${targetfile}
+    if [ ! -f $targetpath -o ! -r $targetpath ]
+    then
+        echo "TX power database not set up for region $regulatory_region ($base_region)."
+        exit 1
+    else
+        using_proc_bootcfg=true
+    fi
+fi
+
+cp $targetpath $scratchfile
+grep -v "^#" $scratchfile | awk '{ print $1 }' | grep $channel >/dev/null
+if [ $? -ne 0 ]
+then
+    echo "$channel $new_tx_power" >>$scratchfile
+else
+    rm -f $scratchfile
+    cat $targetpath | awk -v channel=$channel -v new_tx_power=$new_tx_power -v new_20MHz_tx_power=$new_20MHz_tx_power '
+    /^#/ {
+        print $0
+        next
+    }
+    NF==0 {
+        print $0
+        next
+    }
+    $1==channel {
+	if (new_20MHz_tx_power ~ "none")
+        {
+            print channel, new_tx_power
+        }
+        else
+        {
+            print channel, new_tx_power, new_20MHz_tx_power
+        }
+
+        next
+    }
+    NF==3 || NF==2 {
+	print $0
+    }' >$scratchfile
+fi
+
+if [ $using_proc_bootcfg ]
+then
+    update_bootcfg_file $scratchfile
+else
+    if [ -L $targetpath ]
+    then
+        targetpath=`ls -l $targetpath | awk '{print $NF}'`
+    fi
+
+    cp $scratchfile $targetpath
+fi

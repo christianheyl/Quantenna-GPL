@@ -1,0 +1,75 @@
+--- ./include/usage.h	2015-02-11 01:54:12.900578479 +0300
++++ .include/usage.new.h	2015-02-11 01:57:24.692290266 +0300
+@@ -2902,6 +2902,7 @@
+      "\n	-4, -6		Force IPv4 or IPv6 hostname resolution" \
+      "\n	-c CNT		Send only CNT pings" \
+      "\n	-W TIMEOUT	Time to wait for a response, in seconds." \
++     "\n	-i INTERVAL	Wait interval seconds between sending each packet." \
+      "\n	-s SIZE		Send SIZE data bytes in packets (default=56)" \
+      "\n	-I iface/IP	Use interface or IP address as source" \
+      "\n	-q		Quiet, only displays output at start" \
+--- ./networking/ping.c	2015-02-11 01:54:12.848578479 +0300
++++ ./networking/ping.new.c	2015-02-11 01:59:24.811855701 +0300
+@@ -46,9 +46,10 @@
+ 	MAXPACKET = 65468,
+ 	MAX_DUP_CHK = (8 * 128),
+ 	MAXWAIT = 10,
+-	PINGINTERVAL = 1, /* 1 second */
+ };
+ 
++static int PINGINTERVAL = 1; /* 1 second */
++
+ /* common routines */
+ 
+ static int in_cksum(unsigned short *buf, int sz)
+@@ -224,7 +225,7 @@
+ 
+ /* full(er) version */
+ 
+-#define OPT_STRING ("qvc:s:I:W:4" USE_PING6("6"))
++#define OPT_STRING ("qvc:s:I:W:4" USE_PING6("6") "i:")
+ enum {
+ 	OPT_QUIET = 1 << 0,
+ 	OPT_VERBOSE = 1 << 1,
+@@ -234,6 +235,7 @@
+ 	OPT_W = 1 << 5,
+ 	OPT_IPV4 = 1 << 6,
+ 	OPT_IPV6 = (1 << 7) * ENABLE_PING6,
++	OPT_INTERVAL = (1 << 8),
+ };
+ 
+ 
+@@ -241,6 +243,7 @@
+ 	int pingsock;
+ 	int if_index;
+ 	char *opt_I;
++	char *opt_i;
+ 	len_and_sockaddr *source_lsa;
+ 	unsigned datalen;
+ 	unsigned long ntransmitted, nreceived, nrepeats, pingcount;
+@@ -264,6 +267,7 @@
+ #define if_index     (G.if_index    )
+ #define source_lsa   (G.source_lsa  )
+ #define opt_I        (G.opt_I       )
++#define opt_i        (G.opt_i       )
+ #define datalen      (G.datalen     )
+ #define ntransmitted (G.ntransmitted)
+ #define nreceived    (G.nreceived   )
+@@ -701,7 +705,7 @@
+ 
+ 	/* exactly one argument needed, -v and -q don't mix */
+ 	opt_complementary = "=1:q--v:v--q:W+";
+-	getopt32(argv, OPT_STRING, &opt_c, &opt_s, &opt_I, &timeout);
++	getopt32(argv, OPT_STRING, &opt_c, &opt_s, &opt_I, &timeout, &opt_i);
+ 	if (option_mask32 & OPT_c)
+ 		pingcount = xatoul(opt_c); // -c
+ 	if (option_mask32 & OPT_s)
+@@ -714,6 +718,8 @@
+ 			opt_I = NULL; /* don't try to bind to device later */
+ 		}
+ 	}
++	if (option_mask32 & OPT_INTERVAL)
++		PINGINTERVAL = xatoul(opt_i);
+ 	myid = (uint16_t) getpid();
+ 	hostname = argv[optind];
+ #if ENABLE_PING6

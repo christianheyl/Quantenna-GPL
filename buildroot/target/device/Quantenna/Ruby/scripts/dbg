@@ -1,0 +1,32 @@
+#!/bin/ash
+
+usage() {
+        echo "Usage"
+        echo "    dbg set <module name> <function mask> <debug level>  - Set specific module's debug function mask and debug log level"
+        echo "    dbg get <module name>  - Get specific module's debug level setttings"
+}
+
+if [ -f /sys/devices/qdrv/control -a $# != 0 ]
+then
+	if [ $1 == "set" ]
+	then
+	       if [ $# != 4 ]
+	       then
+	               usage
+	       else
+	               echo "dbg set $2 $3 $4" > /sys/devices/qdrv/control
+	       fi
+	elif [ $1 == "get" ]
+	then
+	       if [ $# != 2 ]
+               then
+                       usage
+               else
+	               echo "dbg get $2" > /sys/devices/qdrv/control
+	       fi
+	else
+	       usage
+	fi
+else
+        usage
+fi

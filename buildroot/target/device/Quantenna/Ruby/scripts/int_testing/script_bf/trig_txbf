@@ -1,0 +1,7 @@
+# 20MHZ only
+/scripts/int_testing/script_bf/txbf_test_format_arm 0 0 256 /scripts/int_testing/script_bf/ndpTestVec.txt
+echo 1 > /proc/txbftest
+
+
+
+ 

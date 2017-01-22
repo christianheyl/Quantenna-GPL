@@ -1,0 +1,5 @@
+config BR2_PACKAGE_TESTIPC
+	bool "testipc"
+	default n
+	help
+	  Test IPC client driver

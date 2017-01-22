@@ -1,0 +1,382 @@
+dir /dev 755 0 0
+dir /bin 755 0 0
+dir /etc 755 0 0
+dir /lib 755 0 0
+dir /proc 755 0 0
+dir /sbin 755 0 0
+dir /usr 755 0 0
+dir /disk 755 0 0
+dir /nfs 755 0 0
+dir /arc_bin 755 0 0
+
+file /bin/busybox ../arc_initramfs/bin/busybox 755 0 0
+slink /bin/addgroup /bin/busybox 755 0 0
+slink /bin/adduser /bin/busybox 755 0 0
+slink /bin/ash /bin/busybox 755 0 0
+slink /bin/bbconfig /bin/busybox 755 0 0
+slink /bin/cat /bin/busybox 755 0 0
+slink /bin/catv /bin/busybox 755 0 0
+slink /bin/chattr /bin/busybox 755 0 0
+slink /bin/chgrp /bin/busybox 755 0 0
+slink /bin/chmod /bin/busybox 755 0 0
+slink /bin/chown /bin/busybox 755 0 0
+slink /bin/cp /bin/busybox 755 0 0
+slink /bin/cpio /bin/busybox 755 0 0
+slink /bin/date /bin/busybox 755 0 0
+slink /bin/dd /bin/busybox 755 0 0
+slink /bin/delgroup /bin/busybox 755 0 0
+slink /bin/deluser /bin/busybox 755 0 0
+slink /bin/df /bin/busybox 755 0 0
+slink /bin/dmesg /bin/busybox 755 0 0
+slink /bin/dumpkmap /bin/busybox 755 0 0
+slink /bin/echo /bin/busybox 755 0 0
+slink /bin/ed /bin/busybox 755 0 0
+slink /bin/egrep /bin/busybox 755 0 0
+slink /bin/false /bin/busybox 755 0 0
+slink /bin/fdflush /bin/busybox 755 0 0
+slink /bin/fgrep /bin/busybox 755 0 0
+slink /bin/getopt /bin/busybox 755 0 0
+slink /bin/grep /bin/busybox 755 0 0
+slink /bin/gunzip /bin/busybox 755 0 0
+slink /bin/gzip /bin/busybox 755 0 0
+slink /bin/hostname /bin/busybox 755 0 0
+slink /bin/ip /bin/busybox 755 0 0
+slink /bin/ipaddr /bin/busybox 755 0 0
+slink /bin/ipcalc /bin/busybox 755 0 0
+slink /bin/iplink /bin/busybox 755 0 0
+slink /bin/iproute /bin/busybox 755 0 0
+slink /bin/iprule /bin/busybox 755 0 0
+slink /bin/iptunnel /bin/busybox 755 0 0
+slink /bin/kill /bin/busybox 755 0 0
+slink /bin/linux32 /bin/busybox 755 0 0
+slink /bin/linux64 /bin/busybox 755 0 0
+slink /bin/ln /bin/busybox 755 0 0
+slink /bin/login /bin/busybox 755 0 0
+slink /bin/ls /bin/busybox 755 0 0
+slink /bin/lsattr /bin/busybox 755 0 0
+slink /bin/mkdir /bin/busybox 755 0 0
+slink /bin/mknod /bin/busybox 755 0 0
+slink /bin/mktemp /bin/busybox 755 0 0
+slink /bin/more /bin/busybox 755 0 0
+slink /bin/mount /bin/busybox 755 0 0
+slink /bin/mountpoint /bin/busybox 755 0 0
+slink /bin/mt /bin/busybox 755 0 0
+slink /bin/mv /bin/busybox 755 0 0
+slink /bin/netstat /bin/busybox 755 0 0
+slink /bin/nice /bin/busybox 755 0 0
+slink /bin/pidof /bin/busybox 755 0 0
+slink /bin/ping /bin/busybox 755 0 0
+slink /bin/ping6 /bin/busybox 755 0 0
+slink /bin/pipe_progress /bin/busybox 755 0 0
+slink /bin/printenv /bin/busybox 755 0 0
+slink /bin/ps /bin/busybox 755 0 0
+slink /bin/pwd /bin/busybox 755 0 0
+slink /bin/rm /bin/busybox 755 0 0
+slink /bin/rmdir /bin/busybox 755 0 0
+slink /bin/rpm /bin/busybox 755 0 0
+slink /bin/run-parts /bin/busybox 755 0 0
+slink /bin/sed /bin/busybox 755 0 0
+slink /bin/setarch /bin/busybox 755 0 0
+slink /bin/sh /bin/busybox 755 0 0
+slink /bin/sleep /bin/busybox 755 0 0
+slink /bin/stat /bin/busybox 755 0 0
+slink /bin/stty /bin/busybox 755 0 0
+slink /bin/su /bin/busybox 755 0 0
+slink /bin/sync /bin/busybox 755 0 0
+slink /bin/tar /bin/busybox 755 0 0
+slink /bin/touch /bin/busybox 755 0 0
+slink /bin/true /bin/busybox 755 0 0
+slink /bin/umount /bin/busybox 755 0 0
+slink /bin/uname /bin/busybox 755 0 0
+slink /bin/uncompress /bin/busybox 755 0 0
+slink /bin/usleep /bin/busybox 755 0 0
+slink /bin/vi /bin/busybox 755 0 0
+slink /bin/watch /bin/busybox 755 0 0
+slink /bin/zcat /bin/busybox 755 0 0
+
+file /etc/busybox.conf ../arc_initramfs/etc/busybox.conf 755 0 0
+file /etc/group ../arc_initramfs/etc/group 755 0 0
+file /etc/hosts ../arc_initramfs/etc/hosts 755 0 0
+file /etc/inetd.conf ../arc_initramfs/etc/inetd.conf 755 0 0
+file /etc/inittab ../arc_initramfs/etc/inittab 755 0 0
+file /etc/issue ../arc_initramfs/etc/issue 755 0 0
+file /etc/issue.net ../arc_initramfs/etc/issue.net 755 0 0
+file /etc/mime.types ../arc_initramfs/etc/mime.types 755 0 0
+file /etc/passwd ../arc_initramfs/etc/passwd 755 0 0
+file /etc/profile ../arc_initramfs/etc/profile 755 0 0
+file /etc/protocols ../arc_initramfs/etc/protocols 755 0 0
+file /etc/resolv.conf ../arc_initramfs/etc/resolv.conf 755 0 0
+file /etc/services ../arc_initramfs/etc/services 755 0 0
+dir /etc/init.d 755 0 0 
+file /etc/init.d/rcS ../arc_initramfs/etc/init.d/rcS 755 0 0
+slink /init bin/busybox 755 0 0
+
+file /lib/ld-uClibc-0.9.29.so ../arc_initramfs/lib/ld-uClibc-0.9.29.so 755 0 0
+file /lib/libcrypt-0.9.29.so ../arc_initramfs/lib/libcrypt-0.9.29.so 755 0 0
+file /lib/libdl-0.9.29.so ../arc_initramfs/lib/libdl-0.9.29.so 755 0 0
+file /lib/libm-0.9.29.so ../arc_initramfs/lib/libm-0.9.29.so 755 0 0
+file /lib/libnsl-0.9.29.so ../arc_initramfs/lib/libnsl-0.9.29.so 755 0 0
+file /lib/libpthread-0.9.29.so ../arc_initramfs/lib/libpthread-0.9.29.so 755 0 0
+file /lib/libresolv-0.9.29.so ../arc_initramfs/lib/libresolv-0.9.29.so 755 0 0
+file /lib/librt-0.9.29.so ../arc_initramfs/lib/librt-0.9.29.so 755 0 0
+file /lib/libthread_db-0.9.29.so ../arc_initramfs/lib/libthread_db-0.9.29.so 755 0 0
+file /lib/libuClibc-0.9.29.so ../arc_initramfs/lib/libuClibc-0.9.29.so 755 0 0
+file /lib/libutil-0.9.29.so ../arc_initramfs/lib/libutil-0.9.29.so 755 0 0
+
+slink /lib/ld-uClibc.so.0 /lib/ld-uClibc-0.9.29.so 755 0 0
+slink /lib/libcrypt.so.0 /lib/libcrypt-0.9.29.so 755 0 0
+slink /lib/libc.so.0 /lib/libuClibc-0.9.29.so 755 0 0
+slink /lib/libdl.so.0 /lib/libdl-0.9.29.so 755 0 0
+slink /lib/libm.so.0 /lib/libm-0.9.29.so 755 0 0
+slink /lib/libnsl.so.0 /lib/libnsl-0.9.29.so 755 0 0
+slink /lib/libpthread.so.0 /lib/libpthread-0.9.29.so 755 0 0
+slink /lib/libresolv.so.0 /lib/libresolv-0.9.29.so 755 0 0
+slink /lib/librt.so.0 /lib/librt-0.9.29.so 755 0 0
+slink /lib/libthread_db.so.1 lib/libthread_db-0.9.29.so 755 0 0
+slink /lib/libutil.so.0 /lib/libutil-0.9.29.so 755 0 0
+
+file /sbin/e2fsck ../arc_initramfs/sbin/e2fsck 755 0 0
+
+file /arc_bin/hlfs ../arc_initramfs/arc_bin/hlfs 755 0 0
+
+slink /sbin/adjtimex /bin/busybox 755 0 0
+slink /sbin/arp /bin/busybox 755 0 0
+slink /sbin/fdisk /bin/busybox 755 0 0
+slink /sbin/findfs /bin/busybox 755 0 0
+slink /sbin/freeramdisk /bin/busybox 755 0 0
+slink /sbin/fsck /bin/busybox 755 0 0
+slink /sbin/fsck.minix /bin/busybox 755 0 0
+slink /sbin/getty /bin/busybox 755 0 0
+slink /sbin/halt /bin/busybox 755 0 0
+slink /sbin/hdparm /bin/busybox 755 0 0
+slink /sbin/hwclock /bin/busybox 755 0 0
+slink /sbin/ifconfig /bin/busybox 755 0 0
+slink /sbin/ifdown /bin/busybox 755 0 0
+slink /sbin/ifenslave /bin/busybox 755 0 0
+slink /sbin/ifup /bin/busybox 755 0 0
+slink /sbin/inetd /bin/busybox 755 0 0
+slink /sbin/init /bin/busybox 755 0 0
+slink /sbin/insmod /bin/busybox 755 0 0
+slink /sbin/klogd /bin/busybox 755 0 0
+slink /sbin/loadkmap /bin/busybox 755 0 0
+slink /sbin/logread /bin/busybox 755 0 0
+slink /sbin/losetup /bin/busybox 755 0 0
+slink /sbin/lsmod /bin/busybox 755 0 0
+slink /sbin/makedevs /bin/busybox 755 0 0
+slink /sbin/mdev /bin/busybox 755 0 0
+slink /sbin/mkfs.minix /bin/busybox 755 0 0
+slink /sbin/mkswap /bin/busybox 755 0 0
+slink /sbin/modprobe /bin/busybox 755 0 0
+slink /sbin/nameif /bin/busybox 755 0 0
+slink /sbin/pivot_root /bin/busybox 755 0 0
+slink /sbin/poweroff /bin/busybox 755 0 0
+slink /sbin/raidautorun /bin/busybox 755 0 0
+slink /sbin/reboot /bin/busybox 755 0 0
+slink /sbin/rmmod /bin/busybox 755 0 0
+slink /sbin/route /bin/busybox 755 0 0 
+slink /sbin/runlevel /bin/busybox 755 0 0
+slink /sbin/setconsole /bin/busybox 755 0 0
+slink /sbin/shutdown /bin/busybox 755 0 0
+slink /sbin/slattach /bin/busybox 755 0 0
+slink /sbin/start-stop-daemon /bin/busybox 755 0 0
+slink /sbin/sulogin /bin/busybox 755 0 0
+slink /sbin/swapoff /bin/busybox 755 0 0 
+slink /sbin/swapon /bin/busybox 755 0 0
+slink /sbin/switch_root /bin/busybox 755 0 0 
+slink /sbin/sysctl /bin/busybox 755 0 0
+slink /sbin/syslogd /bin/busybox 755 0 0
+slink /sbin/telnetd /bin/busybox 755 0 0
+slink /sbin/udhcpc /bin/busybox 755 0 0
+slink /sbin/vconfig /bin/busybox 755 0 0
+slink /sbin/watchdog /bin/busybox 755 0 0
+slink /sbin/zcip /bin/busybox 755 0 0 
+
+dir /usr/bin 755 0 0
+dir /usr/local 755 0 0
+dir /usr/local/sbin 755 0 0
+dir /usr/sbin 755 0 0
+dir /usr/share 755 0 0
+dir /usr/share/udhcpc 755 0 0
+
+
+slink /bin/[  /bin/busybox 755 0 0
+slink /bin/[[  /bin/busybox 755 0 0
+slink /bin/ar  /bin/busybox 755 0 0
+slink /bin/arping  /bin/busybox 755 0 0
+slink /bin/awk  /bin/busybox 755 0 0
+slink /bin/basename  /bin/busybox 755 0 0
+slink /bin/bunzip2  /bin/busybox 755 0 0
+slink /bin/bzcat  /bin/busybox 755 0 0
+slink /bin/bzip2  /bin/busybox 755 0 0
+slink /bin/cal  /bin/busybox 755 0 0
+slink /bin/chat  /bin/busybox 755 0 0
+slink /bin/chpst  /bin/busybox 755 0 0
+slink /bin/chrt  /bin/busybox 755 0 0
+slink /bin/chvt  /bin/busybox 755 0 0
+slink /bin/cksum  /bin/busybox 755 0 0
+slink /bin/clear  /bin/busybox 755 0 0
+slink /bin/cmp  /bin/busybox 755 0 0
+slink /bin/comm  /bin/busybox 755 0 0
+slink /bin/crontab  /bin/busybox 755 0 0
+slink /bin/cut /bin/busybox 755 0 0
+slink /bin/dc /bin/busybox 755 0 0
+slink /bin/deallocvt /bin/busybox 755 0 0
+slink /bin/diff /bin/busybox 755 0 0
+slink /bin/dirname /bin/busybox 755 0 0
+slink /bin/dos2unix /bin/busybox 755 0 0
+slink /bin/dpkg /bin/busybox 755 0 0
+slink /bin/dpkg-deb /bin/busybox 755 0 0
+slink /bin/du /bin/busybox 755 0 0
+slink /bin/dumpleases /bin/busybox 755 0 0
+slink /bin/eject /bin/busybox 755 0 0
+slink /bin/env /bin/busybox 755 0 0
+slink /bin/envdir /bin/busybox 755 0 0
+slink /bin/envuidgid /bin/busybox 755 0 0
+slink /bin/ether-wake /bin/busybox 755 0 0
+slink /bin/expand /bin/busybox 755 0 0
+slink /bin/expr /bin/busybox 755 0 0
+slink /bin/fdformat /bin/busybox 755 0 0
+slink /bin/fetchmail /bin/busybox 755 0 0
+slink /bin/find /bin/busybox 755 0 0
+slink /bin/fold /bin/busybox 755 0 0
+slink /bin/free /bin/busybox 755 0 0
+slink /bin/ftpget /bin/busybox 755 0 0
+slink /bin/ftpput /bin/busybox 755 0 0
+slink /bin/fuser /bin/busybox 755 0 0
+slink /bin/hd /bin/busybox 755 0 0
+slink /bin/head /bin/busybox 755 0 0
+slink /bin/hexdump /bin/busybox 755 0 0
+slink /bin/hostid /bin/busybox 755 0 0
+slink /bin/id /bin/busybox 755 0 0
+slink /bin/install /bin/busybox 755 0 0
+slink /bin/ipcrm /bin/busybox 755 0 0
+slink /bin/ipcs /bin/busybox 755 0 0
+slink /bin/kbd_mode /bin/busybox 755 0 0
+slink /bin/killall /bin/busybox 755 0 0
+slink /bin/killall5 /bin/busybox 755 0 0
+slink /bin/last /bin/busybox 755 0 0
+slink /bin/length /bin/busybox 755 0 0
+slink /bin/less /bin/busybox 755 0 0
+slink /bin/loadfont /bin/busybox 755 0 0
+slink /bin/logger /bin/busybox 755 0 0
+slink /bin/logname  /bin/busybox 755 0 0
+slink /bin/lpq  /bin/busybox 755 0 0
+slink /bin/lpr /bin/busybox 755 0 0
+slink /bin/lzmacat /bin/busybox 755 0 0
+slink /bin/md5sum /bin/busybox 755 0 0
+slink /bin/mesg /bin/busybox 755 0 0
+slink /bin/microcom /bin/busybox 755 0 0
+slink /bin/mkfifo /bin/busybox 755 0 0
+slink /bin/nc /bin/busybox 755 0 0
+slink /bin/nmeter /bin/busybox 755 0 0
+slink /bin/nohup /bin/busybox 755 0 0
+slink /bin/nslookup /bin/busybox 755 0 0
+slink /bin/od /bin/busybox 755 0 0
+slink /bin/openvt /bin/busybox 755 0 0
+slink /bin/passwd /bin/busybox 755 0 0
+slink /bin/patch /bin/busybox 755 0 0
+slink /bin/pgrep /bin/busybox 755 0 0
+slink /bin/pkill /bin/busybox 755 0 0
+slink /bin/printf /bin/busybox 755 0 0
+slink /bin/pscan /bin/busybox 755 0 0
+slink /bin/readlink /bin/busybox 755 0 0
+slink /bin/realpath /bin/busybox 755 0 0
+slink /bin/renice /bin/busybox 755 0 0
+slink /bin/reset /bin/busybox 755 0 0
+slink /bin/resize /bin/busybox 755 0 0
+slink /bin/rpm2cpio /bin/busybox 755 0 0
+slink /bin/rtcwake /bin/busybox 755 0 0
+slink /bin/runsv /bin/busybox 755 0 0
+slink /bin/runsvdir /bin/busybox 755 0 0
+slink /bin/rx /bin/busybox 755 0 0
+slink /bin/script /bin/busybox 755 0 0
+slink /bin/seq /bin/busybox 755 0 0
+slink /bin/setkeycodes /bin/busybox 755 0 0
+slink /bin/setsid /bin/busybox 755 0 0
+slink /bin/setuidgid /bin/busybox 755 0 0
+slink /bin/sha1sum /bin/busybox 755 0 0
+slink /bin/softlimit /bin/busybox 755 0 0
+slink /bin/sort /bin/busybox 755 0 0
+slink /bin/split /bin/busybox 755 0 0
+slink /bin/strings /bin/busybox 755 0 0
+slink /bin/sum /bin/busybox 755 0 0
+slink /bin/sv /bin/busybox 755 0 0
+slink /bin/svlogd /bin/busybox 755 0 0
+slink /bin/tac /bin/busybox 755 0 0
+slink /bin/tail /bin/busybox 755 0 0
+slink /bin/tee /bin/busybox 755 0 0
+slink /bin/telnet /bin/busybox 755 0 0
+slink /bin/test /bin/busybox 755 0 0
+slink /bin/tftp /bin/busybox 755 0 0
+slink /bin/tftpd /bin/busybox 755 0 0
+slink /bin/time /bin/busybox 755 0 0
+slink /bin/top /bin/busybox 755 0 0
+slink /bin/tr /bin/busybox 755 0 0
+slink /bin/traceroute /bin/busybox 755 0 0
+slink /bin/tty /bin/busybox 755 0 0
+slink /bin/ttysize /bin/busybox 755 0 0
+slink /bin/unexpand /bin/busybox 755 0 0
+slink /bin/uniq /bin/busybox 755 0 0
+slink /bin/unix2dos /bin/busybox 755 0 0
+slink /bin/unlzma /bin/busybox 755 0 0
+slink /bin/unzip /bin/busybox 755 0 0
+slink /bin/uptime /bin/busybox 755 0 0
+slink /bin/uudecode /bin/busybox 755 0 0
+slink /bin/uuencode /bin/busybox 755 0 0
+slink /bin/vlock /bin/busybox 755 0 0
+slink /bin/wc /bin/busybox 755 0 0
+slink /bin/wget /bin/busybox 755 0 0
+slink /bin/which /bin/busybox 755 0 0
+slink /bin/who /bin/busybox 755 0 0
+slink /bin/whoami /bin/busybox 755 0 0
+slink /bin/xargs /bin/busybox 755 0 0
+slink /bin/yes /bin/busybox 755 0 0
+
+file /usr/local/sbin/lspci ../arc_initramfs/usr/local/sbin/lspci 755 0 0 
+file /usr/local/sbin/setpci ../arc_initramfs/usr/local/sbin/setpci 755 0 0
+
+slink /usr/sbin/brctl /bin/busybox 755 0 0
+slink /usr/sbin/chpasswd /bin/busybox 755 0 0
+slink /usr/sbin/chroot /bin/busybox 755 0 0
+slink /usr/sbin/crond /bin/busybox 755 0 0
+slink /usr/sbin/dhcprelay /bin/busybox 755 0 0
+slink /usr/sbin/dnsd /bin/busybox 755 0 0
+slink /usr/sbin/fakeidentd /bin/busybox 755 0 0
+slink /usr/sbin/fbset /bin/busybox 755 0 0
+slink /usr/sbin/httpd /bin/busybox 755 0 0
+slink /usr/sbin/inetd /bin/busybox 755 0 0
+slink /usr/sbin/loadfont /bin/busybox 755 0 0
+slink /usr/sbin/lpd /bin/busybox 755 0 0
+slink /usr/sbin/rdate /bin/busybox 755 0 0
+slink /usr/sbin/rdev /bin/busybox 755 0 0
+slink /usr/sbin/readprofile /bin/busybox 755 0 0
+slink /usr/sbin/sendmail /bin/busybox 755 0 0
+slink /usr/sbin/setlogcons /bin/busybox 755 0 0
+slink /usr/sbin/svlogd /bin/busybox 755 0 0
+slink /usr/sbin/telnetd /bin/busybox 755 0 0
+slink /usr/sbin/udhcpd /bin/busybox 755 0 0
+
+file /usr/share/pci.ids ../arc_initramfs/usr/share/pci.ids 755 0 0
+file /usr/share/udhcpc/default.script ../arc_initramfs/usr/share/udhcpc/default.script 755 0 0
+
+nod /dev/console 644 0 0 c 5 1
+nod /dev/null 644 0 0 c 1 3
+nod /dev/ptmx 644 0 0 c 5 2
+nod /dev/random 644 0 0 c 1 8
+nod /dev/tty 644 0 0 c 5 0
+nod /dev/tty0 644 0 0 c 4 0
+nod /dev/ttyS0 644 0 0 c 4 64
+nod /dev/ttyS1 644 0 0 c 4 65
+nod /dev/urandom 644 0 0 c 1 9
+nod /dev/ram0 644 0 0 b 1 0
+nod /dev/hda 644 0 0  b 3 0
+nod /dev/hda1 644 0 0 b 3 1
+nod /dev/hda2 644 0 0 b 3 2
+nod /dev/mem 644 0 0 c 1 1
+nod /dev/ttyp0 644 0 0 c 3 0
+nod /dev/ptyp0 644 0 0 c 2 0
+nod /dev/zero 644 0 0 c 1 5
+nod /dev/fuse 644 0 0 c 10 229
+nod /dev/fb0 644 0 0 c 29 0
+nod /dev/hostlink 644 0 0 c 254 0
+

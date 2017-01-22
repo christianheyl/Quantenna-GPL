@@ -1,0 +1,53 @@
+/**@page mypage7 QCSAPI and the SDK
+ * @brief The QCSAPI is a key part of the SDK.  This section describes how to use the SDK and how to access the QCSAPI binary library from within the SDK.
+ *
+ * @section mysection7_1 SDK Contents
+ * The Quantenna SDK is a Linux based distribution (ARC kernel version 2.6.30). Its contents include:
+ * - Sources:
+ *  - Linux Kernel
+ *  - User-space applications
+ *  - C library programs
+ *  - Toolchain (gcc, etc.)
+ *
+ * - Binaries
+ *  - Quantenna MuC firmware
+ *  - Selected Linux drivers
+
+ * @section mysection7_2 SDK Make Environment
+ * We have tested the SDK build process on the following distributions:
+ *
+ * \ul Fedora release 8 (Werewolf) x86 PC running Linux version 2.6.26.8-57.fc8,
+ * with native mode gcc compiler version 4.1.2 (versions 4.1 - 4.4 have been tested) and make version GNU Make 3.81.
+ * \ul Ubuntu version 9.10 X86 with kernel version 2.6.31-14-generic.
+ * \ul Ubuntu version 11.04 X86 SMP with kernel version 2.6.38-8-generic.
+ *
+ * The ARC cross compiler for the Quantenna target is included in the SDK. The toolchain is created during the make fromscratch process shown below.
+ *
+ * @section mysection7_3 Installing the SDK
+ * The SDK is delivered as a compressed TAR archive.  Download the archive onto the system where the build is to be completed.
+ * It is recommended to store the archive in an empty folder, although since the SDK TAR archive stores all files in its own subfolder,
+ * an empty folder is not absolutely required.
+ *
+ * After unpacking the archive, change directory to the SDK subfolder, e.g.<br>
+ * <c>quantenna-sdk-021009</c><br>
+ * Now enter this command:<br>
+ * <c>make fromscratch</c>
+ *
+ * This completes the first comprehensive build and will take a significant amount of time, say 30 minutes.
+ * At the end of the make process, a new subfolder within the SDK subfolder will be present: <c>tftp</c>.
+ * This subfolder has the file <c>ruby-linux.img</c> (uncompressed image file), and <c>ruby-linux.img.lzma</c> (compressed image file).
+ *
+ * @section mysection7_4 QCSAPI components in the SDK
+ * The QCSAPI has two components, the header file and the binary library.  In addition the application / interface program,
+ * call_qcsapi is included.  Each is built or installed as part of the overall SDK build process.
+ *
+ * The library file will be installed in <c>buildroot/build_arc/staging_dir/lib</c>, (path relative to the top-level SDK folder, 
+ * e.g. quantenna-sdk-021009) as this is the folder the cross compiler searches by default for binary libraries.
+ * Thus to build an application that calls the QCSAPI, it is only necessary to pass the option <c>-lqcsapi</c> to the cross-linker.
+ *
+ * The header file will be installed in buildroot/include.
+ * Thus to locate this include file, when building an application to call QCSAPIs, include the path to this folder.
+ *
+ * The application <c>call_qcsapi</c> will be present in <c>/sbin/</c> when the Quantenna device boots up with a build from the SDK.
+ * Within the SDK, the contents of the QCSAPI are available in the subdirectory <c>buildroot/package/qcsapi/qcsapi-1.0.1/</c>
+ */

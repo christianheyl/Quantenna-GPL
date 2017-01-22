@@ -1,0 +1,81 @@
+#!/bin/sh
+
+hw_version=/proc/hw_revision
+security_config_file=$1
+wifi_mode=$2
+no_lock="-u"	# for reload_in_mode
+
+set_config_attr()
+{
+    attr=$1
+    value=$2
+
+    if [ -z "$attr" -o -z "$value" ]; then
+        echo "start-prod: set_config_attr error"
+        exit 1;
+    fi
+
+    grep -q '^bss=' $security_config_file
+    if [ $? -eq 0 ]; then
+        sed -i -e "1,/^bss=/ s/^bss=/$attr=$value\nbss=/" $security_config_file
+    else
+        echo "$attr=$value" >> $security_config_file
+    fi
+}
+
+# If a mandatory WPS attribute is not configured, add the value from bootcfg (if defined)
+# WPS is only supported in the first configured BSS
+configure_wps_attr()
+{
+    attr=$1
+    default_val=$2
+
+    awk "/^$attr=/ {exit 1}; /^bss=/ {exit 0}" $security_config_file
+    if [ $? -ne 1 ]; then
+        attr_val=$(call_qcsapi $no_lock get_bootcfg_param $attr)
+        if [ $? -eq 0 ]; then
+            echo "start-prod: adding \"$attr=$attr_val\" to $security_config_file"
+            set_config_attr "$attr" "$attr_val"
+        elif [ "$default_val" ]; then
+            echo "start-prod: adding default \"$attr=$default_val\" to $security_config_file"
+            set_config_attr "$attr" "$default_val"
+        fi
+    fi
+}
+
+platform_id=`qdrvcmd -proc get 0 platform_id`
+
+# Look for serial number in u-boot params as SerialNumber
+# If not found as SerialNumber, use serial_number
+# Only write parameter named "serial_number" to hostapd.conf
+default_serial_number=$(call_qcsapi $no_lock get_bootcfg_param SerialNumber)
+if [ $? -ne 0 ]
+then
+    default_serial_number=$(call_qcsapi $no_lock get_mac_addr wifi0 | sed -e "s/://g")
+fi
+
+# Check if mandatory WPS (WPS) 2.0 attributes are present in the security config
+# If not set in u-boot variables, set defaults
+
+configure_wps_attr manufacturer "Quantenna"
+configure_wps_attr device_name "Reference Design"
+if cat $hw_version | grep -q "bbic3"; then
+    configure_wps_attr model_name "Ruby"
+elif cat $hw_version | grep -q "bbic4"; then
+    configure_wps_attr model_name "Topaz"
+else
+    configure_wps_attr model_name "Unknown"
+fi
+
+hw_opt=`call_qcsapi $no_lock get_board_parameter hw_desc | awk '{print $NF} {exit}'`
+configure_wps_attr model_number "$hw_opt.$platform_id"
+configure_wps_attr serial_number $default_serial_number
+
+if [ "$wifi_mode" = "sta" ]; then
+    configure_wps_attr pairing_id "Customer_ID"
+fi
+
+if [ "$wifi_mode" = "ap" ]; then
+    configure_wps_attr friendly_name "UPnP Access Point"
+    configure_wps_attr device_type "6-0050F204-1"
+fi

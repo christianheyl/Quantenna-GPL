@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ "$1" == "start" ] ; then
+	iwpriv wifi0 genpcap $(((1 << 16) + ($2 << 8) + ($3 << 0)))
+	exit
+fi
+
+if [ "$1" == "stop" ] ; then
+	iwpriv wifi0 genpcap $(((2 << 16)))
+	exit
+fi
+
+if [ "$1" == "free" ] ; then
+	iwpriv wifi0 genpcap $(((3 << 16)))
+	exit
+fi
+
+echo '$0 usage:'
+echo "    $0 start <pktsz_s> <pktcnt_s>       eg $0 start 14 10"
+echo "    $0 stop && cat /proc/pcap > /var/www/pcap"
+echo "    $0 free"
+

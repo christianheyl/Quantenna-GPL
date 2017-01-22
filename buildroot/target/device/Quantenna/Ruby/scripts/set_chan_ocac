@@ -1,0 +1,28 @@
+#!/bin/sh
+
+new_chan=$1
+cur_chan=`call_qcsapi -u get_channel wifi0`
+reg_region=`get_wifi_config wifi0 region`
+cur_chan_is_dfs=`call_qcsapi -u is_channel_dfs $reg_region $cur_chan`
+new_chan_is_dfs=`call_qcsapi -u is_channel_dfs $reg_region $new_chan`
+
+if [ "$new_chan" -eq "0" ]
+then
+        echo "auto mode is not supported"
+        exit 1
+fi
+
+call_qcsapi -u -q stop_dfs_s_radio wifi0
+
+if [ "$cur_chan_is_dfs" -eq "0" ]
+then
+        if [ "$new_chan_is_dfs" -eq "1" ]
+        then
+                call_qcsapi -u -q start_dfs_s_radio wifi0 $new_chan
+        else
+                call_qcsapi -u -q set_channel wifi0 $new_chan
+        fi
+else
+        call_qcsapi -u -q set_channel wifi0 $new_chan
+fi
+

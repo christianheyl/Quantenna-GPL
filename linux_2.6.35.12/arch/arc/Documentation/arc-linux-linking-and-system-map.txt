@@ -1,0 +1,27 @@
+SDRAM/DDR Placement in System Memory Map when running ARC Linux
+===============================================================
+
+For ARC700, the 32 bit address space (4G) is split as 2G:2G
+-The lower 2G (0 to 0x7FFF_FFFF) is translated by MMU and thus suitable for
+    implementing user address space.
+-The upper 2G (0x8000_0000 to 0xFFFF_FFFF) is not translated and is implicitly
+    available in each task's address space - thus suitable for kernel code/data
+    which is why ARC Linux by default is linked at 0x8000_0000;
+    all kernel logical addresses (in objdump/readelf) are 0x8zs based.
+    This is driven by CONFIG_LINUX_LINK_BASE, which trickles all the way
+    down to linker-map file "arch/arc/vmlinux.lds.S"
+
+From a board designer's perspective this implies wiring the SDRAM/DDR
+at high-address 0x8000_0000. However certain boards could have RAM at a
+different address, because some other peripheral is wired there.
+To ensure that this doesn't conflict with Linux layout, CONFIG_LINUX_LINK_BASE
+needs to be adjusted.
+
+While CONFIG_LINUX_LINK_BASE indicated start of external RAM wiring,
+CONFIG_SDRAM_SIZE captures the RAM size (used primarlily by page accounting
+sub-system of kernel)
+
+Note that irrespective of where the kernel code/data is laid-out there's a
+"universal kernel constant" PAGE_OFFSET which remains 0x8000_0000, describing
+the above-mentioned ARC700 hardware divide of 2G:2G.
+

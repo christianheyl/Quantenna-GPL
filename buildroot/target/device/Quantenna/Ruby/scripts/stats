@@ -1,0 +1,61 @@
+#!/bin/sh
+
+bin=${0##*/}
+stats_cmd="stats"
+wait_secs=2
+
+usage() {
+	echo "Usage: "
+	echo "    $bin [ lhost | muc_rx | muc_tx | phy | auc | dsp ] [ -l ]"
+	echo "Parameters"
+	echo "    lhost         display LHost stats (default)"
+	echo "    muc_rx        display MuC Rx stats"
+	echo "    muc_tx        display MuC Tx stats"
+	echo "    phy           display PHY stats"
+	echo "    auc           display AuC stats"
+	echo "    dsp           display DSP stats"
+	echo "    -l            execute in a continuous loop"
+	exit 1
+}
+
+while [ "$1" != "" ]; do
+	case "$1" in
+	"lhost")
+		stats_cmd="stats"
+		;;
+	"muc_rx")
+		stats_cmd="uc_rx_stats"
+		;;
+	"muc_tx")
+		stats_cmd="uc_tx_stats"
+		;;
+	"phy")
+		stats_cmd="muc_stats"
+		;;
+	"auc")
+		stats_cmd="auc_stats"
+		;;
+	"dsp")
+		stats_cmd="dsp_stats"
+		;;
+	"-l")
+		loop=1
+		;;
+	*)
+		usage
+		;;
+	esac
+	shift
+done
+
+while [ 1 ]; do
+	echo "get 0 $stats_cmd" > /sys/devices/qdrv/control
+	if [ ! "$stats_cmd" = "muc_stats" ]; then
+		cat /proc/qdrvdata
+	fi
+	if [ ! "$loop" ]; then
+		break;
+	fi
+	sleep 2
+done
+

@@ -1,0 +1,16 @@
+#! /bin/sh
+
+if [ "$1" == "-nc" ] ; then
+	no_commit=1
+	shift
+fi
+
+var=$1
+val=$2
+
+echo "$var $val" > /proc/bootcfg/env
+
+if [ "$no_commit" != "1" ] ; then
+	cat /proc/bootcfg/pending
+fi
+

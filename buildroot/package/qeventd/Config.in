@@ -1,0 +1,5 @@
+config BR2_PACKAGE_QEVENTD
+	bool "Quantenna private events daemon"
+	default y
+	help
+	  A daemon to manage Quantenna private events

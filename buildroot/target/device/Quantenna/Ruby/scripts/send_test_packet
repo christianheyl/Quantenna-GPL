@@ -1,0 +1,30 @@
+#! /bin/sh
+
+num_pkt=$1
+if [ "$num_pkt" == "" ]
+then
+	num_pkt=0
+fi
+if [ "$2" == "" ]	#no parameter => same bw as set_test_mode
+then
+	bw_only=99
+else
+	if [ $2 -eq 80 ]
+	then
+		bw_only=2
+	else
+		if [ $2 -eq 40 ]
+		then
+			bw_only=1
+		else
+			if [ $2 -eq 20 ]
+			then
+				bw_only=0
+			else
+				bw_only=99
+			fi
+		fi
+	fi
+fi
+
+echo "calcmd 8 0 8 0 1 $num_pkt 2 $bw_only" > /sys/devices/qdrv/control

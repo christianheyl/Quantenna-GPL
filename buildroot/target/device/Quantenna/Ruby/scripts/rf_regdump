@@ -1,0 +1,2 @@
+#! /bin/sh
+echo "rf_regdump 0" > /sys/devices/qdrv/control

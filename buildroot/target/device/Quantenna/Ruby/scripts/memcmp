@@ -1,0 +1,10 @@
+#!/bin/sh
+
+cmd_file=/sys/devices/mem_dbg/command
+
+if [ ! -f $cmd_file ]
+then
+	modprobe mem_dbg
+fi
+
+echo "memcmp $*" > $cmd_file

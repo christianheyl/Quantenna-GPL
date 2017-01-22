@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Create character and block device nodes for each flash partition
+for n in `cat /proc/mtd | grep -E '^mtd' | sed -e 's/\:.*//' -e 's/^[a-z]*//'` ; do
+	mknod -m 640 /dev/mtd$n c 90 $(($n * 2))
+	mknod -m 640 /dev/mtdblock$n b 31 $n
+done
+

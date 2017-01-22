@@ -1,0 +1,14 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_57_TO_v37_4_0_58 Version v37.4.0.57 to version v37.4.0.58 changes
+ *
+ * \subsection v37_4_0_57_TO_v37_4_0_58Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.57 and v37.4.0.58
+ * \li \ref qcsapi_wifi_get_threshold_of_neighborhood_type
+ * \li \ref qcsapi_wifi_set_parameter
+ * \li \ref qcsapi_wifi_is_weather_channel
+ * \li \ref qcsapi_wifi_get_parameter
+ */
+

@@ -1,0 +1,63 @@
+#! /bin/sh
+
+# only applicable for Quantenna reference boards
+
+default_persistent_path=/mnt/jffs2/
+config_file=per_ssid_config.txt
+scratch_pad=/tmp/${config_file}
+base_scripts="/scripts"
+
+if [ $# -lt 3 ]
+then
+    echo "$0 requires a VAP (e.g. wifi0), a parameter name and its (updated) value"
+    exit 1
+fi
+
+vap=$1
+parameter_name=$2
+parameter_value=$3
+
+path_to_persistence=`call_qcsapi -u get_file_path security`
+error_check=`echo $path_to_persistence | cut -b 1-13`
+if [ "$error_check" == "QCS API error" ]
+then
+    config_path=${default_persistent_path}/${config_file}
+else
+    config_path=${path_to_persistence}/${config_file}
+fi
+
+if [ ! -f $config_path ]
+then
+    touch $config_path
+fi
+
+# awk script does the real work(update_ssid_param).
+cat /dev/null >$scratch_pad
+ssid_found=0
+while read LINE
+do
+	line_process=$LINE
+	comment_line=`expr substr "$line_process" 1 1`
+	if [ "$comment_line" == "#" ]
+	then
+		echo $LINE >>$scratch_pad
+		continue
+	fi
+
+	interface=`echo $line_process | awk -F":" '{print $1}'`
+	param_list=`echo $line_process | awk -F":" '{print $2}'`
+	if [ -z $interface -o "$interface" != "$vap" ]
+	then
+		echo $LINE >>$scratch_pad
+		continue
+	fi
+	ssid_found=1
+
+	$base_scripts/update_ssid_param "$param_list" $vap $parameter_name $parameter_value
+done < ${config_path}
+if [ $ssid_found -eq 0 ]
+then
+$base_scripts/update_ssid_param "" $vap $parameter_name $parameter_value
+fi
+mv -f ${config_path} ${config_path}.bak
+mv -f ${scratch_pad} ${config_path}

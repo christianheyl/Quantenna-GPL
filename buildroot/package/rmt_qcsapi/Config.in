@@ -1,0 +1,5 @@
+config BR2_PACKAGE_RMT_QCSAPI
+	bool "rmt_qcsapi"
+	default n
+	help
+	  Remote Qcsapi Client for Quantenna MII Module

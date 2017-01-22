@@ -1,0 +1,17 @@
+#!/bin/ash
+
+interval=30
+if [ x$1 != x ]
+then
+    if [ $1 -ne 0 ]
+    then
+        interval=$1
+    fi
+fi
+
+while [ 1 ]
+do
+    echo "calcmd 3 0 4 0" > /sys/devices/qdrv/control
+    sleep $interval
+done
+

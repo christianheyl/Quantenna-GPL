@@ -1,0 +1,97 @@
+#!/bin/sh
+
+base_scripts="/scripts"
+
+start_for_pcie() {
+	udp_rpcd=0
+	call_udp_rpcd=0
+	pcie_rpcd=0
+	# FIXME: currently only one RPC server can register to pcie driver.
+	if [ -f /sbin/qcsapi_rpcd ]
+	then
+		$base_scripts/launch start 1 /sbin/qcsapi_rpcd --tcp --raw --bind pcie0
+		$base_scripts/launch start 1 /sbin/qcsapi_rpcd --tcp
+		udp_rpcd=$?
+		$base_scripts/launch start 1 /sbin/qcsapi_rpcd --pcie
+		pcie_rpcd=$?
+	fi
+	if [ -f /sbin/call_qcsapi_rpcd ]
+	then
+		$base_scripts/launch start 1 /sbin/call_qcsapi_rpcd --tcp
+		call_udp_rpcd=$?
+		$base_scripts/launch start 1 /sbin/call_qcsapi_rpcd --pcie
+		call_pcie_rpcd=$?
+	fi
+	if [ $udp_rpcd -ne 0 -o $call_udp_rpcd -ne 0 -o $pcie_rpcd -ne 0 \
+				-o $call_pcie_rpcd -ne 0] ; then
+		set_sys_status rpcd
+	fi
+}
+
+start_for_non_pcie() {
+	if [ -f /var/lock/subsys/portmap ]
+	then
+		svc_flags="--tcp --raw --bind eth1_0"
+		if [ -f /sbin/qcsapi_rpcd ]
+		then
+			$base_scripts/launch start 1 /sbin/qcsapi_rpcd $svc_flags
+			if [ $? -ne 0 ] ; then
+				set_sys_status rpcd
+			fi
+		fi
+
+		if [ -f /sbin/call_qcsapi_rpcd ]
+		then
+			$base_scripts/launch start 1 /sbin/call_qcsapi_rpcd $svc_flags
+			if [ $? -ne 0 ] ; then
+				set_sys_status rpcd
+			fi
+		fi
+	fi
+
+	if [ -f /sbin/rmt_qcsapi_server ]
+	then
+		/scripts/cmdloop /sbin/rmt_qcsapi_server &
+	fi
+}
+
+start() {
+	export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/scripts:/usr/local/bin
+	export LD_LIBRARY_PATH=/lib:/usr/lib
+
+	pcie_in_use=`get_board_config bd_pcie`
+	if [ "$pcie_in_use" != "" -a $pcie_in_use -ge 1 -a $pcie_in_use -lt 4 ]
+	then
+		start_for_pcie
+	else
+		start_for_non_pcie
+	fi
+}
+
+stop() {
+	echo "Stopping RPC services..."
+	kill `ps | grep -E 'qcsapi_rpc|rmt_qcsapi' | grep -v grep | awk '{print $1}'`
+}
+
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart|reload)
+		restart
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart}"
+		exit 1
+esac
+
+exit $?
+

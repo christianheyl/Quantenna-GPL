@@ -1,0 +1,79 @@
+#!/bin/sh
+
+# This script is to start, stop and check the status of qevt_server.
+
+check_status() {
+	pid=`pidof "$1"`
+	if [ -n "$pid" ]
+	then
+		echo "$qevt_server service is running"
+	else
+		echo "$qevt_server service is not running"
+	fi
+}
+
+start() {
+	export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/scripts:/usr/local/bin
+	export LD_LIBRARY_PATH=/lib:/usr/lib
+
+	qevt_enabled=`get_wifi_config wifi0 qevt`
+
+	if [ "$qevt_enabled" == "0" ]
+	then
+		echo "$qevt_server is not enabled in wireless_conf.txt"
+	else
+		if [ -f $qevt_server_path/$qevt_server ]
+		then
+			echo "Starting $qevt_server"
+			$base_scripts/launch start 0 $qevt_server &
+		else
+			echo "$qevt_server_path/$qevt_server not found"
+			exit 1
+		fi
+	fi
+}
+
+stop() {
+	$base_scripts/launch stop $qevt_server
+}
+
+status() {
+	qevt_enabled=`get_wifi_config wifi0 qevt`
+
+	if [ "$qevt_enabled" == "0" ]
+	then
+		echo "$qevt_server is not enabled in wireless_conf.txt"
+	else
+		check_status "$qevt_server"
+	fi
+}
+
+restart() {
+	stop
+	start
+}
+
+qevt_server_path="/sbin"
+qevt_server="qevt_server"
+
+base_scripts="/scripts"
+
+case "$1" in
+  start)
+       start
+        ;;
+  stop)
+       stop
+        ;;
+  status)
+       status
+        ;;
+  restart|reload)
+       restart
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart|status}"
+        exit 1
+esac
+
+exit $?

@@ -1,0 +1,10 @@
+The content of this repository corresponds to the content of O2_GPL_acR4311.rar file, which is provided within the HomeBox 2 6441 (1.01.30) GPL-Release by Arcadyan (Astoria).
+
+Out-of-the-box this content is unusable! Following main points where found:
+
+- missing (external) toolchain!
+- HELL of permission errors (all files within the .rar archive have 0644 permission)
+- missing symlinks
+- missing files (in kernel-folder)
+
+Before the initial commit most of the permission errors were fixed. It is not known if there are more (because I only diffed to an older Release of a Quantenna GPL Release (for Netgear R7500) with another target).

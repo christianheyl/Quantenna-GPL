@@ -1,0 +1,43 @@
+#! /bin/sh
+
+# We mount sysfs on /sys
+sysfs=/sys
+
+# We keep our firmware images here
+fwpath=/etc/firmware
+
+lpath=$sysfs/$DEVPATH
+fw=$fwpath/$FIRMWARE
+
+#
+# We only support firmware subsystem
+#
+if [ "$1" != "firmware" ]
+then
+	exit 0
+fi
+
+case "$ACTION" in
+	add) 
+		if [ ! -e $lpath/loading ]
+		then
+			sleep 1
+		fi
+
+		if [ -f $fw ]
+		then
+			echo 1 > $lpath/loading
+			cp $fw $lpath/data
+			echo 0 > $lpath/loading
+		else
+			echo -1 > $lpath/loading
+		fi
+		;;
+	remove) 
+		;;
+	*)
+		exit 1
+		;;
+esac
+
+exit 0

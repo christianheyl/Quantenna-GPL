@@ -1,0 +1,68 @@
+#! /bin/sh
+
+channel=$1
+antenna=$2
+mcs=$3
+bw=$4
+pktsize=$5
+legacy=$6
+bfconfig=$7
+
+if [ "$bw" == "" ]
+then
+	bw=20
+fi
+
+if [ "$channel" == "" ]
+then
+	echo "Missing channel Number, set to default chan 36"
+	channel=36
+fi
+
+if [ "$mcs" == "" ]
+then
+	mcs=14
+fi
+
+if [ "$pktsize" == "" ]
+then
+	pktsize=40
+fi
+
+if [ "$legacy" == "" ]
+then
+	legacy=1
+fi
+
+if [ "$antenna" == "" ]
+then
+        antenna=127
+fi
+
+if [ "$bfconfig" == "" ]
+then
+        bfconfig=0
+fi
+
+pkt_size=$(($pktsize * 100))
+
+echo "Test mode configuration"
+echo "============================"
+echo "Channel      -->  $channel"
+echo "Antenna      -->  $antenna"
+echo "MCS Level    -->  $mcs"
+echo "Bandwidth    -->  $bw"
+echo "Packet Size  -->  $pkt_size"
+echo "11N signal?  -->  $legacy"
+echo "BF Config    -->  $bfconfig"
+echo "============================"
+
+echo "calcmd 12 0 16 0 1 $antenna 2 $mcs 3 $bw 4 $pktsize 5 $legacy 6 $bfconfig" > /sys/devices/qdrv/control
+
+if [ $channel -lt 15 ]
+then
+    echo "calcmd 1 0 8 0 1 0 2 $channel" > /sys/devices/qdrv/control
+else
+    echo "calcmd 1 0 8 0 1 1 2 $channel" > /sys/devices/qdrv/control
+fi
+

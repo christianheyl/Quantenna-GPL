@@ -1,0 +1,177 @@
+#!/bin/sh
+
+# Warning: Because qweaction can be invoked by QCSAPI, to avoid deadlock, any QCSAPI invoked by qweaction must be done in subprocess
+
+WPS_STATUS_INIT=0
+WPS_STATUS_START=1
+WPS_STATUS_SUCCESS=2
+WPS_STATUS_ERROR=3
+WPS_STATUS_TIMEOUT=4
+WPS_STATUS_OVERLAP=5
+WPS_STATUS_CANCEL=6
+WPS_STATUS_UNKNOW=7
+
+usage_and_exit() {
+	cat <<EOF
+Usage: $0 <device> <command> [<argument>]
+Devices:
+	wlan0|wlan1|wlan2	: wlan device
+Commands:
+	load_driver		: load driver
+	unload_driver		: unload driver
+	down			: down the wlan
+	up			: up the wlan
+	commit			: take effect the settings
+	scan			: start scan and print scan result
+	status <argument>	: show current status
+		version		:: show version
+		channel		:: show current channel
+		bandwidth	:: show current bandwidth
+		wps		:: show WPS process status
+		rootap		:: show the information of the associated AP, only valid under Bridge or Repeater mode
+		<interface>	:: show interface status
+	wps <argument>		: wps action
+		pbc		:: start WPS PBC method
+		<pinnumber>	:: start WPS PIN method
+		stop		:: stop WPS process
+		get_state	:: get runtime WPS state(disable | configured | unconfigured)
+		set_dual_band	:: set to dual band forcibly
+		set_single_band	:: set to single band forcibly
+	list <argument>		: list more information
+		capability	:: list capability
+		allchannels	:: list all available channels
+	stainfo <interface>	: show the information of the assocaited station
+	stats <interface>	: show the statistic
+	showhwaddr <interface>	: show the HW address of the interface
+	setuuid <uuid>		: set the uuid to wps daemon
+EOF
+	exit 1
+}
+
+check_wps_argv() {
+	[ $# != 3 ] && usage_and_exit
+	case $3 in
+	    pbc|stop|get_state|set_dual_band|set_single_band|[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]) ;;
+	    *) echo "Error argument: $3" >&2; exit 1 ;;
+	esac
+}
+
+check_list_argv() {
+	[ $# != 3 ] && usage_and_exit
+	case $3 in
+	    capability|allchannels) ;;
+	    *) echo "Error argument: $3" >&2; exit 1 ;;
+	esac
+}
+
+check_status_argv() {
+	[ $# != 3 ] && usage_and_exit
+	case $3 in
+	    version|rf|ap|vap[0-3]|channel|bandwidth|wps) ;;
+	    rootap)
+		if [ "x$(qweconfig getrunning mode.$1)" = "x0" ]; then
+			echo "Argument rootap is invalid under AP mode" >&2
+			exit 1
+		fi
+		;;
+	    *) echo "Error argument: $3" >&2; exit 1 ;;
+	esac
+}
+
+check_argv_interface() {
+	mode=$(qweconfig getrunning mode.$1)
+	[ "$2" = "stats" -a "$3" = "rf" ] && return
+	case $mode in
+	    0)
+		case $3 in
+		    ap|vap[0-3]) ;;
+		    sta) echo "Interface sta is invalid under AP mode" >&2; exit 1 ;;
+		    *) echo "Error argument: $3" >&2; exit 1 ;;
+		esac
+		;;
+	    1)
+		if [ "$2" = "stainfo" ]; then
+			echo "Command stainfo is invalid under Bridge mode" >&2
+			exit 1
+		fi
+		case $3 in
+		    ap|vap[0-3]) echo "Interface $3 is invalid under Bridge mode" >&2; exit 1 ;;
+		    sta) ;;
+		    *) echo "Error argument: $3" >&2; exit 1 ;;
+		esac
+		;;
+	    2)
+		if [ "$2" = "stainfo" -a "$3" = "sta" ]; then
+			echo "Interface sta is invalid for command stainfo" >&2
+			exit 1
+		fi
+		case $3 in
+		    ap|sta) ;;
+		    vap[0-3]) echo "Interface $3 is invalid under Repeater mode" >&2; exit 1 ;;
+		    *) echo "Error argument: $3" >&2; exit 1 ;;
+		esac
+		;;
+	    *) echo "Fail to get $1's running mode, maybe $1 is not up" >&2; exit 1 ;;
+	esac
+}
+
+check_stainfo_argv() {
+	[ $# != 3 ] && usage_and_exit
+	check_argv_interface $@
+}
+
+check_stats_argv() {
+	[ $# != 3 ] && usage_and_exit
+	check_argv_interface $@
+}
+
+check_showhwaddr_argv() {
+	[ $# != 3 ] && usage_and_exit
+	check_argv_interface $@
+}
+
+check_setuuid_argv() {
+	[ $# != 3 ] && usage_and_exit
+}
+
+if [ $# -lt 2 ]; then
+	usage_and_exit
+fi
+
+all_qwe_wlan=$(ls /lib/wlan/wlan[0-9].sh 2>/dev/null | xargs basename 2>/dev/null | sed 's/.sh//g')
+if [ "x$all_qwe_wlan" = "x" ]; then
+	echo "This platform don't extend any wireless adapter" >&2
+	exit 1
+fi
+
+found=0
+for wlan in $all_qwe_wlan; do
+	if [ $1 = $wlan ]; then
+		found=1
+		break
+	fi
+done
+
+if [ $found = 0 ]; then
+	echo "Don't find device $1, available device: $all_qwe_wlan" >&2
+	exit 1
+fi
+
+. /lib/wlan/$1.sh
+
+case $2 in
+    load_driver) load_driver ;;
+    unload_driver) unload_driver ;;
+    down) wlandown; (sync_wps_band &); update_pm_state ;;
+    up) wlanup; qweconfig backuprunning; (sync_wps_band &) ;;
+    commit) commit; qweconfig backuprunning; (sync_wps_band &) ;;
+    scan) scan ;;
+    wps) check_wps_argv $@; wps $3 ;;
+    list) check_list_argv $@; list $3 ;;
+    stainfo) check_stainfo_argv $@; stainfo $3 ;;
+    status) check_status_argv $@; status $3 ;;
+    stats) check_stats_argv $@; stats $3 ;;
+    showhwaddr) check_showhwaddr_argv $@; showhwaddr $3 ;;
+    setuuid) check_setuuid_argv $@; setuuid $3 ;;
+    *) usage_and_exit ;;
+esac

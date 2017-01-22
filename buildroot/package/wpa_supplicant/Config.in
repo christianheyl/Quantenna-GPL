@@ -1,0 +1,6 @@
+config BR2_PACKAGE_WPASUPPLICANT
+	bool "wpa_supplicant"
+	default y
+	help
+	  EAP client
+

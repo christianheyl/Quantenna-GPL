@@ -1,0 +1,57 @@
+#!/bin/sh
+
+# This script is to start and stop sigma CA and DUT service.
+
+kill_process() {
+        pid_name=$1
+        pid=`ps | grep "$pid_name" | grep -v "grep $name" | awk '{print $1}'`
+        # Checking pid is empty
+        if [ -n "$pid" ]; then
+        kill $pid
+        fi
+}
+
+start() {
+	export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/scripts:/usr/local/sbin/:/usr/local/bin
+	export LD_LIBRARY_PATH=/lib:/usr/lib
+
+	if [ -f /usr/bin/qtn_dut ] ; then
+
+		echo "Starting sigma DUT"
+		qtn_dut -i lo -p WFA_DUT_PORT_PLACEHOLDER -l 7 &
+
+		echo "Starting sigma CA"
+		## have to wait a bit to make sure that qtn_dut is started
+		sleep 5
+		qtn_ca -i br0 -p WFA_CA_PORT_PLACEHOLDER -I 127.0.0.1 -P WFA_DUT_PORT_PLACEHOLDER -l 7 &
+	fi
+}
+stop() {
+        echo "Stopping qtn_dut"
+        kill_process "qtn_dut"
+
+	echo "Stopping qtn_ca"
+	kill_process "qtn_ca"
+}
+
+restart() {
+        stop
+        start
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        restart
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

@@ -1,0 +1,58 @@
+#! /bin/sh
+
+echo "Memory Dump :"
+echo "TXQ"
+readmem_multi e5050400 4
+echo "BBIRQ"
+readmem e6000320
+dumpirq
+echo "mac rx interrupt status"
+readmem e5052034
+echo "TCM"
+#dump_tcm
+dump e5040000 800
+dump e5040800 800
+dump e5041000 800
+dump e5041800 800
+echo "PKTM"
+#dump_pktm
+dump e5030000 800
+dump e5030800 800
+dump e5031000 800
+dump e5031800 800
+echo "SRAM-everything except MUC code"
+#dump_sram
+dump 88020000 1000
+dump 88021000 1000
+dump 88022000 1000
+dump 88023000 1000
+dump 88024000 1000
+dump 88025000 1000
+dump 88026000 1000
+dump 88027000 1000
+dump 88028000 1000
+dump 88029000 1000
+dump 8802A000 1000
+dump 8802B000 1000
+dump 8802C000 1000
+dump 8802D000 1000
+dump 8802E000 1000
+dump 8802F000 1000
+dump 88030000 1000
+dump 88031000 1000
+dump 88032000 1000
+dump 88033000 1000
+dump 88034000 1000
+dump 88035000 1000
+dump 88036000 1000
+dump 88037000 1000
+dump 88038000 1000
+dump 88039000 1000
+dump 8803A000 1000
+dump 8803B000 1000
+dump 8803C000 1000
+dump 8803D000 1000
+dump 8803E000 1000
+dump 8803F000 1000
+echo "BB-MAC Registers"
+dump_bb_mac_regs

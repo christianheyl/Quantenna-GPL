@@ -1,0 +1,20 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_35_TO_v37_4_0_36 Version v37.4.0.35 to version v37.4.0.36 changes
+ *
+ * \subsection v37_4_0_35_TO_v37_4_0_36Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.35 and v37.4.0.36
+ * \li \ref qcsapi_wifi_get_multicast_list
+ * \li \ref qcsapi_wifi_add_multicast
+ * \li \ref qcsapi_wifi_del_multicast
+ *
+ * \subsection v37_4_0_35_TO_v37_4_0_36Proto Function prototype changes
+ *
+ * The following function prototypes were modified between versions v37.4.0.35 and v37.4.0.36
+ *  - \ref qcsapi_qtm_safe_get_strm
+ *    - Old prototype: int qcsapi_qtm_safe_get_strm(const char *ifname, struct qcsapi_int_array1024 *entries, unsigned int max_entries, int show_all);
+ *    - New prototype: int qcsapi_qtm_safe_get_strm(const char *ifname, struct qvsp_strms *strms, int show_all);
+ */
+

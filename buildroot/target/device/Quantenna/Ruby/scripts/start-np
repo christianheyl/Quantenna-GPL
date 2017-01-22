@@ -1,0 +1,47 @@
+#!/bin/sh
+#
+# Scripts to start on a Network Processor board
+#
+
+base_scripts="/scripts"
+
+. $base_scripts/start-helpers.sh
+
+ifconfig br0:1 1.1.1.1
+brctl ssdp_flood br0 on
+
+rgmii_reset_gpio=14
+rgmii_reset_gpio_sysctl_path=/sys/devices/virtual/gpio/gpio$rgmii_reset_gpio
+
+echo $rgmii_reset_gpio > /sys/class/gpio/export
+
+if [ -e $rgmii_reset_gpio_sysctl_path ] ; then
+	echo Power cycling RGMII daughter board, gpio $rgmii_reset_gpio
+	echo out > $rgmii_reset_gpio_sysctl_path/direction
+	echo 0 > $rgmii_reset_gpio_sysctl_path/value
+	echo 1 > $rgmii_reset_gpio_sysctl_path/value
+else
+	echo Error exporting gpio $rgmii_reset_gpio
+fi
+
+# monitor the Reset Device push button
+# GPIO pin is 5, active low
+monitor_reset_device 5 0 &
+
+# RF kill is GPIO 12 - high is "RF enabled", low is "RF kill"
+monitor_rfenable 12 1 &
+
+#start http server
+if [ ! -f /mnt/jffs2/minihttpd.conf ] ; then
+	cp -f /etc/minihttpd.conf /mnt/jffs2/minihttpd.conf
+fi
+
+if [ ! -f /mnt/jffs2/admin.conf ] ; then
+	cp -f /etc/admin.conf /mnt/jffs2/admin.conf
+fi
+
+if [ -f /sbin/mini_httpd ] ; then
+	/sbin/mini_httpd -u root -C /mnt/jffs2/minihttpd.conf
+fi
+
+start-stateless-slave &

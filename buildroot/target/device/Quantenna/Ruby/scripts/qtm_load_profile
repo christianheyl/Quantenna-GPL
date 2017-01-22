@@ -1,0 +1,47 @@
+#!/bin/sh
+# Configure Quantenna Traffic Management Profile
+
+usage()
+{
+	echo "Usage: qtm_load_profile <profile>"
+	echo ""
+	echo "Parameters"
+	echo "    <profile> profile to be loaded"
+	echo "        0 or off: disable qtm"
+	echo "        1 or on:  same as profile gcn"
+	echo "        gcn:      greatest cost node first"
+	echo "        ns:       newest stream first"
+}
+
+if [ $# -ne 1 ]; then
+	usage
+	exit 1
+fi
+profile=$1
+
+if [ "$profile" = "0" -o "$profile" = "off" ]; then
+	echo "QTM: load profile off"
+	qtm set enabled 0
+	qtm rule del
+	exit 0
+fi
+
+if [ "$profile" = "1" -o "$profile" = "on" ]; then
+	profile=gcn
+fi
+
+if [ "$profile" != "0" -a "$profile" != "off" ]; then
+	profile_name=qtm_profile.$profile
+	if [ -f /scripts/$profile_name ]; then
+		profile_name=/scripts/$profile_name
+	elif [ -f /mnt/jffs2/$profile_name ]; then
+		profile_name=/mnt/jffs2/$profile_name
+	else
+		usage
+		exit 1
+	fi
+fi
+
+echo "QTM: load profile $profile"
+sh $profile_name
+

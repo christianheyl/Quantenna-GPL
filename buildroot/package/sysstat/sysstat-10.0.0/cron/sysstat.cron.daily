@@ -1,0 +1,5 @@
+#!/bin/sh
+# Generate a daily summary of process accounting.  Since this will probably
+# get kicked off in the morning, it would probably be better to run against
+# the previous days data.
+/home/jwang/sourcecode/Perforce/workspace/jxwang_linux-fc8/dev/ruby/soc/branches/main4_adm/buildroot/build_arc/root/lib/sa/sa2 -A &

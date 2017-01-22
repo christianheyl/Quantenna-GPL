@@ -1,0 +1,3 @@
+#!/bin/sh
+echo rifs disable > /sys/devices/qdrv/control
+

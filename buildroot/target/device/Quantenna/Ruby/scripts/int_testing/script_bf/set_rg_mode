@@ -1,0 +1,4 @@
+#!/bin/ash
+# For argument 0 hw sets the dur update, for argument 0 sw sets dur update
+# to max value
+iwpriv wifi0 setparam 70 $1

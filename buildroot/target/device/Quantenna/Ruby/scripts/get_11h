@@ -1,0 +1,7 @@
+temp=`iwpriv wifi0 getparam 30 | cut -d: -f2`
+if [ $temp -eq 1 ]
+then
+	echo "ENABLED"
+else
+	echo "DISABLED"
+fi

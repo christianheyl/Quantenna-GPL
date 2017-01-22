@@ -1,0 +1,7 @@
+config BR2_PACKAGE_WLANCONFIG
+	bool "wlanconfig"
+	default n
+	help
+	  A program for creating virtual wireless interfaces.
+
+	  Sourced from the MadWifi driver.

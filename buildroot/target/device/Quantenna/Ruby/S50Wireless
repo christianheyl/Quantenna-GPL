@@ -1,0 +1,101 @@
+#!/bin/sh
+#
+
+base_scripts="/scripts"
+
+. $base_scripts/start-helpers.sh
+
+start() {
+	export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/scripts:/usr/local/bin
+	export LD_LIBRARY_PATH=/lib:/usr/lib
+
+	echo "" > /mnt/jffs2/enable_autostart
+
+	if [ -f /mnt/jffs2/enable_autostart ]
+	then
+
+		calstate=`get_bootval calstate`
+		wifi_hw=`get_board_config wifi_hw`
+		hw_id=`get_bootval hw_config_id`
+		platform_id=`cat $base_scripts/platform_id`
+		# 4 = QTN_RUBY_WIFI_NONE
+
+		if [ $hw_id == "1229" ]
+		then
+			echo "Starting wireless... start-bb"
+			#set_sys_status calstate
+			#start-prod
+		elif [ "$wifi_hw" != "" -a $wifi_hw -eq 4 ]
+		then
+			echo "Network processor image; not starting wireless"
+			set_sys_status calstate
+			start-np
+		elif [ $calstate == "3" ]
+		then
+			echo "Starting wireless..."
+			set_sys_status calstate
+
+			if [ "$platform_id" == "464" ]
+			then
+				# Send system start-prod event
+				qevt_send_event "System start-prod ready"
+			fi
+
+			if [ "${STATELESS}" = "y" ]; then
+				start-stateless
+			else
+				start-prod
+			fi
+
+			if [ "$platform_id" == "464" ]
+			then
+				# Send system boot event
+				qevt_send_event "System bootup"
+			fi
+		elif [ $calstate == "1" ]
+		then
+			echo "Setting up for RF calibration..."
+			start-cal
+		elif [ $calstate == "0" ]
+		then
+			echo "Automatic startup of wireless services disabled when calstate is set to 0"
+		else
+			echo "Value of boot environmental variable calstate of $calstate is not recognized."
+			echo "Wireless services not started automatically."
+		fi
+	else
+		echo "Automatic startup of wireless services not enabled."
+	fi
+
+	if [ -f /scripts/user_mtest ]
+	then
+		/scripts/user_mtest &
+	fi
+}
+
+stop() {
+	echo "Stopping wireless services not supported"
+}
+
+restart() {
+	stop
+	start
+}	
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  restart|reload)
+  	restart
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

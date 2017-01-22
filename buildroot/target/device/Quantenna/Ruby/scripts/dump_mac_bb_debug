@@ -1,0 +1,28 @@
+#!/bin/sh
+# (C)2011 Quantenna Communications
+
+echo "MAC CTXQ:"
+readmem_multi 0xe5050400 4
+
+echo "BBINTR:"
+dumpirq
+
+echo "DMA regs:"
+md e503ffb0
+
+echo "TCM:"
+md 0xe5040000
+
+echo "Queue pointers:"
+md 0xe5050400
+
+echo "TX PHY swap ctrl:"
+readmem 0xe5050478
+
+echo "MAC RX interrupt status:"
+readmem 0xe5052034
+
+echo "Beacon queue:"
+readmem_multi e5050500 4
+echo "...and again:"
+readmem_multi e5050500 4

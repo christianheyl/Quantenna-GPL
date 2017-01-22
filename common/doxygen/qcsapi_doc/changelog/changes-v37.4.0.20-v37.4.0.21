@@ -1,0 +1,11 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_20_TO_v37_4_0_21 Version v37.4.0.20 to version v37.4.0.21 changes
+ *
+ * \subsection v37_4_0_20_TO_v37_4_0_21Removed Removed functions
+ *
+ * The following functions were removed between versions v37.4.0.20 and v37.4.0.21
+ * \li \ref qcsapi_enable_vlan_pass_through
+ */
+

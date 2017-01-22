@@ -1,0 +1,55 @@
+#!/bin/sh
+
+revnum_file=/scripts/rev_num
+platform_id_file=/scripts/platform_id
+
+if [ -f .Make.kernel_version ]
+then
+	kver=`sed 's/ //g' .Make.kernel_version 2>/dev/null | awk -F'=' '{print $2}'`
+else
+	kver=`uname -r`
+fi
+
+if [ "$kver" == "2.6.35.12" ]
+then
+	separator="n"
+else
+	separator="p"
+fi
+
+if [ $# -gt 0 -a "x$1" == "x-separator" ]
+then
+	echo $separator
+	exit
+fi
+
+if [ ! -f $revnum_file ]
+then
+	revnum="undefined"
+else
+	revnum=`cat $revnum_file`
+fi
+
+if [ -n "`which qharvestd`" ]
+then
+    addonver="-"`qharvestd -V`
+fi
+
+if [ $# -gt 0 -a "x$1" == "x-p" ]
+then
+	qdrv_support=`lsmod | grep -c "qvsp"`
+	if [ $qdrv_support -gt 0 ]
+	then
+		platform_id=`qdrvcmd -proc get 0 platform_id`
+	else
+		if [ ! -f $platform_id_file ]
+		then
+			platform_id="undefined"
+		else
+			platform_id=`cat $platform_id_file`
+		fi
+	fi
+	echo "revision number with platform ID is ${revnum}${separator}${platform_id}${addonver}"
+else
+	echo "revision number is $revnum"
+fi

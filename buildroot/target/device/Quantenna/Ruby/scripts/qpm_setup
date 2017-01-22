@@ -1,0 +1,20 @@
+#!/bin/sh
+
+qpm_default_conf=/mnt/jffs2/qpm.conf
+
+qpm_load_conf()
+{
+	cat $1 | sed 's/\#.*//' | grep -vE '^\s*$' | qpm setup
+}
+
+if [ $# = 0 ] ; then
+	if [ -e $qpm_default_conf ] ; then
+		qpm_load_conf $qpm_default_conf
+	fi
+elif [ ! -e $1 ] ; then
+	echo "$0: conf file '$1' doesn't exist" 1>&2
+	exit 1
+else
+	qpm_load_conf $1
+fi
+

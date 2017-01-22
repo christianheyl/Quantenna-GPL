@@ -1,0 +1,29 @@
+#! /bin/sh
+
+logfile=/var/log/messages
+rolloverfile=/var/log/messages.0
+child_cmd="tail -f $logfile"
+
+trap_sigint()
+{
+    kill -1 $child_pid
+    exit 1
+}
+
+trap trap_sigint SIGINT
+
+$child_cmd &
+child_pid=$!
+
+while true
+do
+    if [ -f $rolloverfile ]
+    then
+        rm -f $rolloverfile
+        kill -1 $child_pid
+        $child_cmd &
+        child_pid=$!
+    fi
+    
+    sleep 4
+done

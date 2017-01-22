@@ -1,0 +1,39 @@
+#! /bin/sh
+
+linux_live_mtd=`grep '\"linux_live\"' /proc/mtd | awk -F: '{print $1}'`
+flash_device=/dev/$linux_live_mtd
+
+if [ x$1 = x ]
+then
+    new_file=/tmp/ruby-linux.lzma.img
+else
+    new_file=$1
+fi
+
+if [ ! -f $new_file ]
+then
+    echo $0: $new_file does not exist
+    exit 1
+fi
+
+validate_image -v $new_file
+if [ $? != 0 ]
+then 
+	echo $0: image $new_file is invalid
+	exit 1
+fi
+
+echo "Updating flash device $flash_device with:"
+ls -l $new_file
+echo "Press <Enter> to confirm upgrade: "
+read a
+
+echo "Upgrade with $new_file"
+echo "Flash device: $flash_device"
+
+echo "erase $flash_device"
+flash_eraseall $flash_device
+
+echo "Update $flash_device with $new_file"
+cat $new_file >$flash_device
+

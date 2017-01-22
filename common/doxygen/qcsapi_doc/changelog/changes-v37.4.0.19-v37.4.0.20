@@ -1,0 +1,18 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_19_TO_v37_4_0_20 Version v37.4.0.19 to version v37.4.0.20 changes
+ *
+ * \subsection v37_4_0_19_TO_v37_4_0_20Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.19 and v37.4.0.20
+ * \li \ref qcsapi_wifi_get_24g_bw
+ * \li \ref qcsapi_wifi_set_24g_bw
+ *
+ * \subsection v37_4_0_19_TO_v37_4_0_20Removed Removed functions
+ *
+ * The following functions were removed between versions v37.4.0.19 and v37.4.0.20
+ * \li \ref qcsapi_wifi_get_2_4ghz_bw
+ * \li \ref qcsapi_wifi_set_2_4ghz_bw
+ */
+

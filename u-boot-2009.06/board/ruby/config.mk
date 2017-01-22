@@ -1,0 +1,2 @@
+CONFIG_LZMA = y
+

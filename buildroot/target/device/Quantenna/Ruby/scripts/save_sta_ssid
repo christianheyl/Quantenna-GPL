@@ -1,0 +1,20 @@
+#!/bin/sh
+# Configure for WPS and enable PIN
+
+# If we are in station mode
+if test -e /tmp/wpa_supplicant
+then
+	# Copy the wpa_supplicant config to flash so it is persistent
+	cp /scripts/wpa_supplicant.conf /mnt/jffs2/wpa_supplicant.conf
+	# Extract the SSID name and save it into the wireless config
+	cp /mnt/jffs2/wireless_conf.txt /tmp/conf.txt
+	ssid=`grep ssid /scripts/wpa_supplicant.conf | sed -e 's/.*ssid=//' | sed -e 's/"//g'`
+	sed -i -e "s/\(ssid=\)[^&]*/\1$ssid/g" /tmp/conf.txt
+        cp /tmp/conf.txt /mnt/jffs2/wireless_conf.txt
+	rm -fr /tmp/conf.txt
+	sync
+	echo "OK"
+else
+	echo "Failed - not in station mode"
+fi
+

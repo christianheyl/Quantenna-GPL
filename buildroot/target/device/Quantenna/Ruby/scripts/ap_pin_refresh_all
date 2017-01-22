@@ -1,0 +1,30 @@
+#! /bin/sh
+# (c) 2015 Quantenna Communications, Inc.
+#
+# desc:
+#       re-generate all WPS-enabled BSS's ap pin
+#
+# usage:
+#       $program
+
+i=0
+bss_by_index=
+bss_ap_pin=
+
+while [ $i -lt 8 ]
+do
+        bss_by_index=`call_qcsapi get_interface_by_index $i`
+        if echo $bss_by_index | grep -q "error"; then
+                i=`expr $i + 1`
+                continue
+        fi
+
+        bss_ap_pin=`call_qcsapi get_wps_ap_pin $bss_by_index 1`
+        if  echo $bss_ap_pin | grep -q "DISABLED"; then
+                i=`expr $i + 1`
+                continue
+        fi
+        call_qcsapi save_wps_ap_pin $bss_by_index && \
+                echo "Update $bss_by_index's AP PIN : $bss_ap_pin"
+        i=`expr $i + 1`
+done

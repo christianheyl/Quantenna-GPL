@@ -1,0 +1,26 @@
+/lib/modules/2.6.35.12/extra/auc/auc_fw.ko:
+/lib/modules/2.6.35.12/extra/qtndbg/qtn_debug.ko:
+/lib/modules/2.6.35.12/extra/qdrv/qdrv.ko: /lib/modules/2.6.35.12/extra/qvsp/qvspmod.ko /lib/modules/2.6.35.12/extra/wlan/wlan.ko /lib/modules/2.6.35.12/extra/radar/radar.ko /lib/modules/2.6.35.12/extra/qtndbg/qtn_debug.ko /lib/modules/2.6.35.12/extra/auc/auc_fw.ko /lib/modules/2.6.35.12/extra/topaz/switch_emac.ko /lib/modules/2.6.35.12/extra/fwt/fwt_ctrl.ko /lib/modules/2.6.35.12/extra/topaz/switch_tqe.ko /lib/modules/2.6.35.12/extra/topaz/switch_vlan.ko /lib/modules/2.6.35.12/extra/topaz/fwt_if.ko /lib/modules/2.6.35.12/extra/topaz/dpi.ko /lib/modules/2.6.35.12/extra/bootcfg/bootcfg.ko /lib/modules/2.6.35.12/extra/ruby/emaclib.ko /lib/modules/2.6.35.12/extra/ruby/rtl8367b/rtl8367b.ko /lib/modules/2.6.35.12/extra/se95sensor/qtsens.ko
+/lib/modules/2.6.35.12/extra/radar/radar.ko: /lib/modules/2.6.35.12/extra/qtndbg/qtn_debug.ko /lib/modules/2.6.35.12/extra/bootcfg/bootcfg.ko
+/lib/modules/2.6.35.12/extra/qvsp/qvspmod.ko: /lib/modules/2.6.35.12/extra/ruby/emaclib.ko /lib/modules/2.6.35.12/extra/ruby/rtl8367b/rtl8367b.ko /lib/modules/2.6.35.12/extra/wlan/wlan.ko /lib/modules/2.6.35.12/extra/fwt/fwt_ctrl.ko /lib/modules/2.6.35.12/extra/topaz/switch_tqe.ko /lib/modules/2.6.35.12/extra/topaz/switch_vlan.ko /lib/modules/2.6.35.12/extra/topaz/fwt_if.ko
+/lib/modules/2.6.35.12/extra/topaz/fwt_if.ko:
+/lib/modules/2.6.35.12/extra/topaz/switch_tqe.ko: /lib/modules/2.6.35.12/extra/topaz/switch_vlan.ko
+/lib/modules/2.6.35.12/extra/topaz/switch_vlan.ko:
+/lib/modules/2.6.35.12/extra/topaz/switch_emac.ko: /lib/modules/2.6.35.12/extra/ruby/emaclib.ko /lib/modules/2.6.35.12/extra/ruby/rtl8367b/rtl8367b.ko /lib/modules/2.6.35.12/extra/fwt/fwt_ctrl.ko /lib/modules/2.6.35.12/extra/topaz/switch_tqe.ko /lib/modules/2.6.35.12/extra/topaz/switch_vlan.ko /lib/modules/2.6.35.12/extra/topaz/fwt_if.ko /lib/modules/2.6.35.12/extra/topaz/dpi.ko
+/lib/modules/2.6.35.12/extra/topaz/dpi.ko:
+/lib/modules/2.6.35.12/extra/pm_interval/pm_interval.ko:
+/lib/modules/2.6.35.12/extra/fwt/fwt_ctrl.ko: /lib/modules/2.6.35.12/extra/topaz/switch_tqe.ko /lib/modules/2.6.35.12/extra/topaz/switch_vlan.ko /lib/modules/2.6.35.12/extra/topaz/fwt_if.ko
+/lib/modules/2.6.35.12/extra/ruby/rtl8367b/rtl8367b.ko:
+/lib/modules/2.6.35.12/extra/ruby/emac.ko: /lib/modules/2.6.35.12/extra/ruby/emaclib.ko /lib/modules/2.6.35.12/extra/ruby/rtl8367b/rtl8367b.ko
+/lib/modules/2.6.35.12/extra/ruby/emaclib.ko: /lib/modules/2.6.35.12/extra/ruby/rtl8367b/rtl8367b.ko
+/lib/modules/2.6.35.12/extra/i2cbus/i2cbus.ko:
+/lib/modules/2.6.35.12/extra/bootcfg/bootcfg.ko:
+/lib/modules/2.6.35.12/extra/wlan/wlan_scan_ap.ko: /lib/modules/2.6.35.12/extra/wlan/wlan.ko /lib/modules/2.6.35.12/extra/fwt/fwt_ctrl.ko /lib/modules/2.6.35.12/extra/topaz/switch_tqe.ko /lib/modules/2.6.35.12/extra/topaz/switch_vlan.ko /lib/modules/2.6.35.12/extra/topaz/fwt_if.ko
+/lib/modules/2.6.35.12/extra/wlan/wlan_scan_sta.ko: /lib/modules/2.6.35.12/extra/wlan/wlan.ko /lib/modules/2.6.35.12/extra/fwt/fwt_ctrl.ko /lib/modules/2.6.35.12/extra/topaz/switch_tqe.ko /lib/modules/2.6.35.12/extra/topaz/switch_vlan.ko /lib/modules/2.6.35.12/extra/topaz/fwt_if.ko
+/lib/modules/2.6.35.12/extra/wlan/wlan.ko: /lib/modules/2.6.35.12/extra/fwt/fwt_ctrl.ko /lib/modules/2.6.35.12/extra/topaz/switch_tqe.ko /lib/modules/2.6.35.12/extra/topaz/switch_vlan.ko /lib/modules/2.6.35.12/extra/topaz/fwt_if.ko
+/lib/modules/2.6.35.12/extra/wlan/wlan_tkip.ko: /lib/modules/2.6.35.12/extra/wlan/wlan.ko /lib/modules/2.6.35.12/extra/fwt/fwt_ctrl.ko /lib/modules/2.6.35.12/extra/topaz/switch_tqe.ko /lib/modules/2.6.35.12/extra/topaz/switch_vlan.ko /lib/modules/2.6.35.12/extra/topaz/fwt_if.ko
+/lib/modules/2.6.35.12/extra/wlan/wlan_ccmp.ko: /lib/modules/2.6.35.12/extra/wlan/wlan.ko /lib/modules/2.6.35.12/extra/fwt/fwt_ctrl.ko /lib/modules/2.6.35.12/extra/topaz/switch_tqe.ko /lib/modules/2.6.35.12/extra/topaz/switch_vlan.ko /lib/modules/2.6.35.12/extra/topaz/fwt_if.ko
+/lib/modules/2.6.35.12/extra/wlan/wlan_xauth.ko: /lib/modules/2.6.35.12/extra/wlan/wlan.ko /lib/modules/2.6.35.12/extra/fwt/fwt_ctrl.ko /lib/modules/2.6.35.12/extra/topaz/switch_tqe.ko /lib/modules/2.6.35.12/extra/topaz/switch_vlan.ko /lib/modules/2.6.35.12/extra/topaz/fwt_if.ko
+/lib/modules/2.6.35.12/extra/se95sensor/qtsens.ko:
+/lib/modules/2.6.35.12/kernel/drivers/net/bonding/bonding.ko:
+/lib/modules/2.6.35.12/kernel/net/netfilter/xt_mark.ko:

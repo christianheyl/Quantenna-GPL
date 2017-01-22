@@ -1,0 +1,16 @@
+#!/bin/sh
+
+base_scripts="/scripts"
+
+qproc_monitor_cmd="/sbin/qproc_mon"
+
+platform_id=`cat $base_scripts/platform_id`
+if [ "$platform_id" == "464" ]; then
+	if [ -x $qproc_monitor_cmd ]; then
+		while true; do
+			echo $0 starting $qproc_monitor_cmd, at `uptime`
+			$qproc_monitor_cmd
+		done
+	fi
+fi
+

@@ -1,0 +1,13 @@
+# Configure interfaces
+auto lo eth1_0 eth1_1
+iface lo inet loopback
+iface eth1_0 inet static
+	address 0.0.0.0
+	netmask 255.255.255.0
+iface eth1_1 inet static
+	address 0.0.0.0
+	netmask 255.255.255.0
+iface br0 inet static
+	address 192.168.0.10
+	netmask 255.255.255.0
+

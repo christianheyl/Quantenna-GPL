@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# Start qwe
+#
+
+base_scripts="/scripts"
+
+. $base_scripts/start-helpers.sh
+
+start() {
+	for wlan in $(ls /lib/wlan/wlan[0-9].sh 2>/dev/null | xargs basename | sed 's/.sh//g'); do
+		qweaction $wlan load_driver
+		if [ "$STATELESS" != "y" ]; then
+			qweaction $wlan up
+		fi
+	done
+	# add qwe PM QoS requirement
+	echo "add qwe -1" > /proc/soc_pm
+	qweeventd &
+}
+stop() {
+	for wlan in $(ls /lib/wlan/wlan[0-9].sh 2>/dev/null | xargs basename | sed 's/.sh//g'); do
+		qweaction $wlan down
+		qweaction $wlan unload_driver
+	done
+	# remove qwe PM QoS requirement
+	echo "remove qwe" > /proc/soc_pm
+	killall qweeventd
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+    start)
+        start
+	;;
+    stop)
+	stop
+	;;
+    restart|reload)
+	restart
+	;;
+    *)
+	echo $"Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

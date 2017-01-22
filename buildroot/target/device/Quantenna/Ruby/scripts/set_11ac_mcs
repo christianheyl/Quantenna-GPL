@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ $# -ne 1 ]; then
+	echo The command set_11ac_mcs needs exactly 1 argument...
+	exit 1
+fi
+
+if [ ${1#0[xX]*} != $1 ]; then
+	hexval=$1
+else
+	hexval=$(echo $1 | awk '{ nss=substr($0, 1, 1); mcs=substr($0, 3, 1); print "0x"(nss-1)mcs; }')
+fi
+
+iwpriv wifi0 set_11ac_mcs $hexval

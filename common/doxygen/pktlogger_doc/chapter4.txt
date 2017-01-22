@@ -1,0 +1,93 @@
+/**@page mypage4 Analyzing results
+ *
+ * Analyzing the results from pktlogger can be done in many different ways. The following sections show some of
+ * the methods used.
+ *
+ * @section mysection4_1 Excel graphing of CSV files
+ *
+ * The simplest method to analyse shorter test runs is to use Microsoft Excel (or another spreadsheet program)
+ * to quickly analyse rows/columns of data, and graph trends in the data.
+ *
+ * Each file generated from pktlogger is stored in two forms. The first is an incremental CSV (comma separated
+ * value) format. The second is a raw data CSV format.
+ *
+ * The incremental CSV format file is a post-processed version of the raw data file, and contains the difference
+ * from one sample of data to the next. The raw CSV file format contains the raw data as received by the data source.
+ * For example, see the following image showing some fields from both the raw and incremental CSV files for
+ * comparison.
+ *
+ * \anchor raw-processed-csv
+ * \image latex raw-processed-csv.png "Raw CSV (left) and processed CSV (right)" width=\textwidth
+ *
+ * \note For the processed CSV file, the first row of data will generally contain a large value. For plotting and
+ * analysing data, this row should be ommitted to prevent skewing of data.
+ *
+ * \note Even in the incremental CSV format, some fields are kept as raw values. For example: tx_channel is constant
+ * at it is not an incremental stat.
+ *
+ * An example of a graph created in excel is shown in the following figure.
+ *
+ * \anchor sys-temp-excel-graph
+ * \image latex sys-temp-graph-excel.png "Example graph of system temperature" width=\textwidth
+ *
+ * The different fields within the CSV file are defined in section [ref].
+ *
+ * @subsection mysection_4_1_1 CSV file formats
+ *
+ * This section details the format of the various pktlogger CSV files generated.
+ *
+ * @subsubsection mysection_4_1_2 Stat logger file format
+ *
+ * The format of the CSV file for the stat logger (the 'traditional' pktlogger) is as per the following diagram:
+ *
+ * \anchor packetlogger-main-format
+ * \image latex packetlogger-main-format.png "Main packetlogger CSV format" width=\textwidth
+ * 
+ * The following table details where to find additional documentation for the different parts of the CSV file.
+ *
+ * <TABLE>
+ * <TR> <TH>Section name</TH><TH>Description</TH><TH>C structure</TH></TR>
+ * <TR> <TD>Common header</TD><TD>Shared header across some different pktlogger formats.</TD>
+ * <TD><c>struct qdrv_netdebug_hdr</c></TD></TR>
+ * <TR> <TD>stats_muc_rx</TD><TD>Statistics on the RX path from the MuC.</TD>
+ * <TD><c>struct muc_rx_stats</c></TD></TR>
+ * <TR> <TD>rates_muc_rx</TD><TD>RX MCS packet counts from the MuC.</TD>
+ * <TD><c>struct muc_rx_rates</c></TD></TR>
+ * <TR> <TD>stats_muc_tx</TD><TD>Statistics on the TX path from the MuC.</TD>
+ * <TD><c>struct muc_tx_stats</c></TD></TR>
+ * <TR> <TD>stats_qdisc</TD><TD>Statistics from the LHost QDisc (queue discipline).</TD>
+ * <TD><c>struct qdrv_qdisc_stats</c></TD></TR>
+ * <TR> <TD>stats_emac</TD><TD>Statistics from the EMAC (Ethernet).</TD>
+ * <TD><c>struct qdrv_emac_stats</c></TD></TR>
+ * <TR> <TD>stats_wlan_rx</TD><TD>Statistics from the WLAN driver for the RX path.</TD>
+ * <TD><c>struct qdrv_wlan_rx_stats</c></TD></TR>
+ * <TR> <TD>stats_wlan_tx</TD><TD>Statistics from the WLAN driver for the TX path.</TD>
+ * <TD><c>struct qdrv_wlan_tx_stats</c></TD></TR>
+ * <TR> <TD>stats_wlan_sm</TD><TD>Statistics from the WLAN 802.11 state machine.</TD>
+ * <TD><c>struct qdrv_wlan_sm_stats</c></TD></TR>
+ * <TR> <TD>stats_phy_rx</TD><TD>Statistics from the PHY RX.</TD>
+ * <TD><c>struct qtn_rx_stats</c></TD></TR>
+ * <TR> <TD>stats_phy_tx</TD><TD>Statistics from the PHY TX.</TD>
+ * <TD><c>struct qtn_tx_stats</c></TD></TR>
+ * <TR> <TD>stats_mem</TD><TD>Statistics from the LHost memory subsystem.</TD>
+ * <TD><c>struct qdrv_mem_stats</c></TD></TR>
+ * <TR> <TD>stats_evm</TD><TD>Statistics from the MuC EVM calculations.</TD>
+ * <TD><c>struct qdrv_rx_evm_array</c></TD></TR>
+ * <TR> <TD>stats_skb_qdrv</TD><TD>Statistics the QDRV for Linux skb usage.</TD>
+ * <TD><c>struct qtn_skb_recycle_stats</c></TD></TR>
+ * <TR> <TD>stats_skb_kfree</TD><TD>Statistics the QDRV for Linux skb usage.</TD>
+ * <TD><c>struct qtn_skb_recycle_stats</c></TD></TR>
+ * </TABLE>
+ *
+ * @subsubsection mysection_4_1_3 Rate logger file format
+ *
+ * The format of the CSV file for the rate logger is as per the following diagram:
+ *
+ * \anchor ratelogger-csv-format
+ * \image latex ratelogger-csv-format.png "Ratelogger CSV format" width=\textwidth
+ *
+ * @section mysection4_2 Packetlogger parser
+ *
+ * For each test run performed, the pktlogger parser script can be run across the resultant pktlogger logs to
+ * generate graphs, and perform rudimentary analysis of the results.
+ */

@@ -1,0 +1,319 @@
+#!/bin/sh
+
+#Load ntpclient Config file
+ntpclient_file=/mnt/jffs2/ntpclient.conf
+ntpstatus_file=/tmp/ntpstatus
+
+# if no configuration file, copy default one
+if [ ! -f $ntpclient_file ]
+then
+	cp /etc/ntpclient.conf $ntpclient_file
+fi
+
+# check again. if no file, ntp client is not supported
+if [ ! -f $ntpclient_file ]
+then
+	echo "Disabled" > $ntpstatus_file
+	exit
+fi
+
+# check if ntp client is enabled
+ntpclient_enable=`cat $ntpclient_file | grep Enable | awk -F '=' '{print $2}'`
+
+if [ "$ntpclient_enable" == "0" ]
+then
+	echo "Disabled" > $ntpstatus_file
+	exit
+fi
+
+ntpserver1=`cat $ntpclient_file | grep "NTPServer=" | awk -F '=' '{print $2}'`
+ntpserver2=`cat $ntpclient_file | grep "NTPServer2=" | awk -F '=' '{print $2}'`
+timezone_name=`cat $ntpclient_file | grep TimeZone | awk -F '=' '{print $2}'`
+
+# Timezone are not set correctly
+if [ ! -n "$timezone_name" ]
+then
+	echo "Error" > $ntpstatus_file
+	exit
+fi
+
+# write timezone into /etc/TZ
+case $timezone_name in
+InternationalDateLineWest)
+	timezone=UTC12
+	;;
+MidwayIsland)
+	timezone=UTC11
+	;;
+Hawaii)
+	timezone=UTC10
+	;;
+Alaska)
+	timezone=NAST9NADT
+	;;
+PacificTime)
+	timezone=PST8PDT
+	;;
+Arizona)
+	timezone=MST7
+	;;
+Chihuahua)
+	timezone=MST7MDT
+	;;
+MountainTime)
+	timezone=MST7MDT
+	;;
+CentralAmerica)
+	timezone=UTC6
+	;;
+CentralTime)
+	timezone=CST6CDT
+	;;
+Guadalajara)
+	timezone=CST6CDT
+	;;
+Saskatchewan)
+	timezone=UTC6
+	;;
+Bogota)
+	timezone=UTC5
+	;;
+EasternTime)
+	timezone=EST5EDT
+	;;
+Indiana)
+	timezone=EST5
+	;;
+AtlanticTime)
+	timezone=AST4ADT
+	;;
+Caracas)
+	timezone=UTC4
+	;;
+Santiago)
+	timezone=UTC4
+	;;
+Newfoundland)
+	timezone=NST3:30NDT
+	;;
+Brasilia)
+	timezone=UTC3
+	;;
+BuenosAires)
+	timezone=UTC3
+	;;
+Greenland)
+	timezone=UTC3
+	;;
+MidAtlantic)
+	timezone=UTC2
+	;;
+Azores)
+	timezone=EUT1EUTDST
+	;;
+CapeVerdeIsland)
+	timezone=UTC1
+	;;
+Casablanca)
+	timezone=UTC0
+	;;
+GreenwichMeanTime)
+	timezone=UTC0
+	;;
+Dublin)
+	timezone=GMT0BST
+	;;
+Amsterdam)
+	timezone=MET-1METDST
+	;;
+Belgrade)
+	timezone=MET-1METDST
+	;;
+Brussels)
+	timezone=MET-1METDST
+	;;
+Sarajevo)
+	timezone=MET-1METDST
+	;;
+WestCentralAfrica)
+	timezone=UTC-1
+	;;
+Athens)
+	timezone=EET-2EETDST
+	;;
+Bucharest)
+	timezone=EET-2EETDST
+	;;
+Cairo)
+	timezone=EST-2EDT
+	;;
+Harare)
+	timezone=UTC-2
+	;;
+Helsinki)
+	timezone=EET-2EETDST
+	;;
+Jerusalem)
+	timezone=IST-2IDT
+	;;
+Baghdad)
+	timezone=IST-3IDT
+	;;
+Kuwait)
+	timezone=UTC-3
+	;;
+Moscow)
+	timezone=MST-3MDT
+	;;
+Nairobi)
+	timezone=UTC-3
+	;;
+Tehran)
+	timezone=UTC-3:30
+	;;
+AbuDhabi)
+	timezone=UAEST-4
+	;;
+Baku)
+	timezone=UTC-4
+	;;
+Kabul)
+	timezone=UTC-4:30
+	;;
+Ekaterinburg)
+	timezone=RFT-5RFTDST
+	;;
+Islamabad)
+	timezone=UTC-5
+	;;
+Chennai)
+	timezone=UTC-5:30
+	;;
+Kathmandu)
+	timezone=UTC-5:45
+	;;
+Almaty)
+	timezone=EUT-6EUTDST
+	;;
+Astana)
+	timezone=UTC-6
+	;;
+SriJayawardenepura)
+	timezone=UTC-6
+	;;
+Rangoon)
+	timezone=UTC-6:30
+	;;
+Bangkok)
+	timezone=UTC-7
+	;;
+Krasnoyarsk)
+	timezone=RFT-7RFTDST
+	;;
+Beijing)
+	timezone=UTC-8
+	;;
+Irkutsk)
+	timezone=RFT-8RFTDST
+	;;
+KualaLumpur)
+	timezone=UTC-8
+	;;
+Perth)
+	timezone=UTC-8
+	;;
+Taipei)
+	timezone=UTC-8
+	;;
+Osaka)
+	timezone=UTC-9
+	;;
+Seoul)
+	timezone=UTC-9
+	;;
+Yakutsk)
+	timezone=RFT-9RFTDST
+	;;
+Adelaide)
+	timezone=UTC-9:30
+	;;
+Darwin)
+	timezone=UTC-9:30
+	;;
+Brisbane)
+	timezone=UTC-10
+	;;
+Canberra)
+	timezone=UTC-10
+	;;
+Guam)
+	timezone=UTC-10
+	;;
+Hobart)
+	timezone=UTC-10
+	;;
+Vladivostok)
+	timezone=RFT-10RFTDST
+	;;
+Magadan)
+	timezone=RFT-11RFTDST
+	;;
+Solomon)
+	timezone=UTC-11
+	;;
+Auckland)
+	timezone=UTC-12
+	;;
+Fiji)
+	timezone=UTC-12
+	;;
+*)
+	timezone=UTC0
+	;;
+esac
+
+echo $timezone > /etc/TZ
+
+# add into crontab
+crondir=/tmp/cron/crontabs
+crontab=$crondir/cron.update
+cronroot=$crondir/root
+
+if [ ! -d $crondir ]
+then
+	mkdir -p $crondir
+fi
+
+if [ ! -f $crontab ]
+then
+	echo "root" > $crontab
+fi
+
+if [ ! -f $cronroot ]
+then
+	touch $cronroot
+fi
+
+# Check if we have ntpserver set
+# if so, try it. And we'll use another one next time
+if [ -n "$ntpserver1" ]
+then
+	ntpserver=$ntpserver1
+	ntpindex=1
+elif [ -n "$ntpserver2" ]
+then
+	ntpserver=$ntpserver2
+	ntpindex=2
+else
+	echo "Error" > $ntpstatus_file
+	exit
+fi
+
+# Start ntp client next minute to check status
+echo "#NTP Client Start#" >> $cronroot
+echo "* * * * * /scripts/ntpclient.sh $ntpindex" >> $cronroot
+echo "#NTP Client End#" >> $cronroot
+
+/usr/sbin/ntpclient -s -h $ntpserver &
+
+echo "Initialized" > $ntpstatus_file

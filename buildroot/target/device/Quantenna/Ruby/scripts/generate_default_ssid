@@ -1,0 +1,8 @@
+#!/bin/sh
+while read data ; do
+	mac3=`echo $data | cut -d ":" -f4`
+	mac4=`echo $data | cut -d ":" -f5`
+	mac5=`echo $data | cut -d ":" -f6`
+	ssid=Quantenna-$mac3$mac4$mac5
+	echo $ssid
+done

@@ -1,0 +1,13 @@
+/**
+ * \page ChangeLog
+ *
+ * \section v37_4_0_49_TO_v37_4_0_50 Version v37.4.0.49 to version v37.4.0.50 changes
+ *
+ * \subsection v37_4_0_49_TO_v37_4_0_50Added Added functions
+ *
+ * The following functions were added between versions v37.4.0.49 and v37.4.0.50
+ * \li \ref qcsapi_wifi_authorize_mac_address_list_ext
+ * \li \ref qcsapi_wifi_deny_mac_address_list_ext
+ * \li \ref qcsapi_wifi_remove_mac_address_list_ext
+ */
+

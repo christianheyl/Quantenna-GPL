@@ -1,0 +1,2 @@
+#!/bin/ash
+echo "get 0 debug_flag" > /sys/devices/qdrv/control

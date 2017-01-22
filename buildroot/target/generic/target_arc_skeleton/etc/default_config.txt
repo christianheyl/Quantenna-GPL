@@ -1,0 +1,1 @@
+staticip=1&mode=ap&bw=80&vht=1&region=de&channel=0&bf=1&pwr=19&scs=0&vsp=0&band=11ac

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+interval=$1
+
+cpumon_read_proc()
+{
+	cat /proc/ruby_cpumon
+}
+
+cpumon_diff()
+{
+	(echo $1 $2) | awk '{
+		secs = ($8 - $2) / 1000;
+		dsleep = $10 - $4;
+		dawake = $12 - $6;
+		pct = dawake * 100 / (dsleep + dawake);
+		printf("CPU: %.3f%% (%.3fs)\n", pct, secs);
+	}'
+}
+
+if [ "$interval" = "" ] ; then
+	interval=1
+fi
+
+pre=`cpumon_read_proc`
+while true ; do
+	sleep $interval
+	post=`cpumon_read_proc`
+	cpumon_diff "$pre" "$post"
+	pre=$post
+done
+

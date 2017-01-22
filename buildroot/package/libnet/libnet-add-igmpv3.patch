@@ -1,0 +1,145 @@
+diff -dur Libnet-1.0.2a.orig/configure Libnet-1.0.2a/configure
+--- Libnet-1.0.2a.orig/configure	2001-01-18 07:59:33.000000000 +1100
++++ Libnet-1.0.2a/configure	2011-09-27 15:35:27.360405076 +1000
+@@ -1939,12 +1939,12 @@
+             }
+             else
+             {
+-                printf("?\n");
++                printf("L\n");
+             }
+             return (EXIT_SUCCESS);
+         }
+ EOF
+-        ${CC-cc} -o conftest $CFLAGS $CPPFLAGS $LDFLAGS conftest.c $LIBS > /dev/null 2>&1
++        gcc -o conftest $CFLAGS $CPPFLAGS $LDFLAGS conftest.c $LIBS > /dev/null 2>&1
+         # Oopz 4.3 BSD doesn't have this.  Sorry.
+         if test ! -x conftest ; then
+             ac_cv_libnet_endianess=unknown
+diff -dur Libnet-1.0.2a.orig/include/libnet/libnet-functions.h Libnet-1.0.2a/include/libnet/libnet-functions.h
+--- Libnet-1.0.2a.orig/include/libnet/libnet-functions.h	2001-01-08 05:33:49.000000000 +1100
++++ Libnet-1.0.2a/include/libnet/libnet-functions.h	2011-09-27 15:35:27.286457852 +1000
+@@ -391,6 +391,11 @@
+     u_char *            /* Pointer to packet header memory */
+     );
+ 
++int
++libnet_build_igmpv3(u_char type, u_char max_resp_code, u_long group_ip, u_char flags,
++		u_char querier_query_int,
++		u_short num_sources, u_long *sources, const u_char *payload,
++		int payload_s, u_char *buf);
+ 
+ /*
+  *  IPv4 packet assembler.
+diff -dur Libnet-1.0.2a.orig/include/libnet/libnet-headers.h Libnet-1.0.2a/include/libnet/libnet-headers.h
+--- Libnet-1.0.2a.orig/include/libnet/libnet-headers.h	2000-12-14 07:38:40.000000000 +1100
++++ Libnet-1.0.2a/include/libnet/libnet-headers.h	2011-09-27 15:35:27.286457852 +1000
+@@ -47,6 +47,7 @@
+ #define LIBNET_ICMP_REDIRECT_H 0x8     /* ICMP_REDIRECT header: 8 bytes */
+ #define LIBNET_ICMP_TS_H       0x14    /* ICMP_TIMESTAMP headr:20 bytes */
+ #define LIBNET_IGMP_H          0x8     /* IGMP header:          8 bytes */
++#define LIBNET_IGMPV3_H        0x8     /* IGMP v3 header base: 16 bytes */
+ #define LIBNET_IP_H            0x14    /* IP header:           20 bytes */
+ /* See libnet-ospf.h for OSPF related header sizes */
+ #define LIBNET_RIP_H           0x18    /* RIP header base:     24 bytes */
+@@ -366,6 +367,24 @@
+     struct in_addr igmp_group;
+ };
+ 
++/*
++ *  IGMP v3 header.
++ */
++struct libnet_igmpv3_hdr
++{
++    u_char igmp_type;
++#ifndef IGMP_MEMBERSHIP_QUERY
++#define IGMP_MEMBERSHIP_QUERY           0x22    /* Membership query */
++#endif
++    u_char igmp_max_resp_code;
++    u_short igmp_sum;
++    u_long group_addr;
++    u_char igmp_flags;
++    u_char qqic;
++    u_short igmp_ns;
++    u_long source_addr;
++};
++
+ 
+ /* 
+  *  Ethernet packet header prototype.  Too many O/S's define this differently.
+diff -dur Libnet-1.0.2a.orig/include/libnet.h Libnet-1.0.2a/include/libnet.h
+--- Libnet-1.0.2a.orig/include/libnet.h	2001-02-07 10:19:25.000000000 +1100
++++ Libnet-1.0.2a/include/libnet.h	2011-09-27 15:35:27.286457852 +1000
+@@ -84,8 +84,8 @@
+ #define LIBNET_VERSION  "1.0.2a"
+ 
+ #if (!LIBNET_LIL_ENDIAN && !LIBNET_BIG_ENDIAN)
+-#error "byte order has not been specified, you'll
+-need to #define either LIBNET_LIL_ENDIAN or LIBNET_BIG_ENDIAN.  See the
++#error "byte order has not been specified, you'll \
++need to #define either LIBNET_LIL_ENDIAN or LIBNET_BIG_ENDIAN.  See the \
+ documentation regarding the libnet-config script."
+ #endif
+ 
+diff -dur Libnet-1.0.2a.orig/src/libnet_build_igmp.c Libnet-1.0.2a/src/libnet_build_igmp.c
+--- Libnet-1.0.2a.orig/src/libnet_build_igmp.c	2000-12-13 05:09:51.000000000 +1100
++++ Libnet-1.0.2a/src/libnet_build_igmp.c	2011-09-27 15:35:27.324921501 +1000
+@@ -47,7 +47,7 @@
+     }
+ 
+     igmp_hdr.igmp_type         = type;    /* packet type */
+-    igmp_hdr.igmp_code         = code;    /* packet code */
++    igmp_hdr.igmp_code = code;    /* packet code */
+     igmp_hdr.igmp_group.s_addr = ip;      /* group address or 0 */       
+ 
+     if (payload && payload_s)
+@@ -63,4 +63,49 @@
+     return (1);
+ }
+ 
++int
++libnet_build_igmpv3(u_char type, u_char max_resp_code, u_long group_ip, u_char flags,
++		u_char querier_query_int,
++		u_short num_sources, u_long *sources, const u_char *payload,
++		int payload_s, u_char *buf)
++{
++    struct libnet_igmpv3_hdr *igmp_hdr;
++    int igmp_len = sizeof(*igmp_hdr) - sizeof(u_long) + (num_sources * sizeof(u_long));
++
++    if (!buf)
++    {
++        return (-1);
++    }
++
++    igmp_hdr = malloc(sizeof(*igmp_hdr) + num_sources * sizeof(u_long));
++
++    igmp_hdr->igmp_type = type;    /* packet type */
++    igmp_hdr->igmp_max_resp_code = max_resp_code;    /* packet code */
++    igmp_hdr->group_addr = group_ip;      /* group address or 0 */       
++    igmp_hdr->igmp_flags = flags;
++    igmp_hdr->qqic = querier_query_int;
++    igmp_hdr->igmp_ns = htons(num_sources);
++    if (num_sources) {
++	int i;
++	u_long *cp = &igmp_hdr->source_addr;
++	for (i = 0; i < num_sources; i++) {
++	    *cp = sources[i];
++	    cp++;
++	}
++    }
++
++    if (payload && payload_s)
++    {
++        /*
++         *  Unchecked runtime error for buf + IGMP_H + payload to be greater
++         *  than the allocated heap memory.
++         */
++        memcpy(buf + igmp_len, payload, payload_s);
++    }
++    memcpy(buf, igmp_hdr, igmp_len);
++    free(igmp_hdr);
++
++    return (1);
++}
++
+ /* EOF */

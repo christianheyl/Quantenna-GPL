@@ -1,0 +1,40 @@
+/**@page mypage1 Overview
+ * This document describes the Quantenna Configuration and Status API (QCSAPI).
+ *
+ * The document contains a general overview, specific information on the SDK, details on the RPC mechanism used for remote control,
+ * and detailed API usage and data structures used in QCSAPI. In addition to this, a sample application, <c>call_qcsapi</c> is detailed.
+ */
+
+/**@page ChangeLog Revision history
+ */
+
+/**@page mypage2 References
+ * - Quantenna Software Architecture (Software Integration Guide)
+ * - TR-098: Internet Gateway Device Data Model for TR-069<br>
+ *	Issue: 1 Amendment 2<br>
+ *	Issue Date: September 2008
+ */
+
+/**@page mypage3 Background
+ * The Quantenna WiFi device includes a number of configuration parameters, e.g. the MAC address or the current WiFi channel.
+ * In addition a variety of other parameters can be monitored, including counters and status.
+ *
+ * Prior to introducing the QCSAPI, reviewing the current configuration, making changes and monitoring the system required accessing several user-level
+ * commands, including ifconfig, iwconfig, iwpriv and iwlist.
+ *
+ * While workable for casual access, for more systematic programmable access, some drawbacks are present.
+ * First, required information is distributed over several commands or interfaces; no single point of access is available.
+ * Second, accessing the configuration is heavy, for the desired command must be executed as a shell process,
+ * with the output typically then parsed using a shell script or an awk program.
+ * A second child process is thus usually required to interpret the output from the original command.
+ * And any changes to the underlying configuration or monitoring command would likely require changes in this interface programming.
+ * 
+ * The Quantenna Configuration and Status APIs (QCSAPI) address these drawbacks.  
+ * They offer the application programmer a series of C-callable APIs to access and modify the current configuration.
+ * All configuration parameters can be read and updated through this API.  Statistics and other monitoring parameters are also available.
+ * And the APIs will not change, regardless of changes to the underlying programming, including the user-level interface commands.
+ * 
+ * The figure below shows selected software components on the Quantenna WiFI device and their interrelationships:<br>
+ * @image latex qcsapi_image1.jpg " " width=\textwidth
+ */
+
