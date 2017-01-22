@@ -1,10 +1,43 @@
+
+--------------------
+General information:
+--------------------
+
 The content of this repository corresponds to the content of O2_GPL_acR4311.rar file, which is provided within the HomeBox 2 6441 (1.01.30) GPL-Release by Arcadyan (Astoria).
 
-Out-of-the-box this content is unusable! Following main points where found:
+Out-of-the-box this content is unusable! Following main points were found:
 
 - missing (external) toolchain!
 - HELL of permission errors (all files within the .rar archive have 0644 permission)
 - missing symlinks
 - missing files (in kernel-folder)
 
-Before the initial commit most of the permission errors were fixed. It is not known if there are more (because I only diffed to an older Release of a Quantenna GPL Release (for Netgear R7500) with another target).
+Before the initial commit most of the permission errors were fixed. It is not known if there are more (because I only diffed to an older Release of a Quantenna GPL Release (for Netgear R7500), with another target).
+
+
+-----------------------------
+Missing (external toolchain):
+-----------------------------
+
+To obtain (the pre-compiled, external) toolchain you can either inquire it from Arcadyan (Astoria), mail to opensource@arcadyan.com, or you can use one from another QTN-based/QTN-using device, like Netgear R7500 (URL: http://www.downloads.netgear.com/files/GPL/R7500-and_qtn_gpl_src_V1.0.0.94.zip) or ZyXEL VMG9823-B10A (you have to inquire it yourself)
+
+For testing and compilation of this source code the external toolchain from Netgear's R7500 was used. You need the QEnvInstaller.bin file (rename it to Qenvinstaller.bin) from the Quantenna GPL tarball.
+
+
+----------------------
+Howto install/compile:
+----------------------
+
+1. git clone https://github.com/christianheyl/Quantenna-GPL.git quantenna-GPL
+2. cd quantenna-GPL
+3. copy Qenvinstaller.bin to this folder
+4. chmod a+x Qenvinstaller.bin
+5. ./Qenvinstaller.bin
+6. make topaz_rgmii_config
+7. make fromscratch
+
+Note!: You might need to sudo (step 4 and 5) to install the toolchain. After installation it's located in '/usr/local/ARC/gcc/'
+
+For debug logs, while building, you can use 'make V=99'. After build is completed, all built files can be found in tftp-folder.
+
+
