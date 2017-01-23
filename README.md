@@ -63,10 +63,8 @@ The following procedure describes a build with additional packages. It is assume
 1. cd quantenna-GPL
 2. cd ./builtroot
 3. make menuconfig
-
-   select the packages you like to add and save
-
-4. cd ..
+  select the packages you like to add and save
+4. cd \.\.
 5. make topaz_rgmii_config
 6. make image
 
@@ -77,7 +75,7 @@ Important Note: Step 4 (leave buildroot-folder to root-folder) and 5 are mandato
 Current problems:
 -----------------
 
-When trying to build with additional packages, the build fails. This happen on 64bit and 32bit Ubunutu (14.04) systems! For example if `iptables` package is added, the following error message occurs
+When trying to build with additional packages, the build fails. This happens on 64bit and on 32bit Ubunutu (14.04) systems as well! For example if `iptables` package is added, the following error message occurs
 
 32bit Ubuntu:
 
@@ -129,7 +127,7 @@ make[1]: Verzeichnis »/home/freetz/Quantenna-GPL« wird verlassen
 make: *** [image] Fehler 2
 ```
 
-
+\
 64bit Ubuntu:
 
 ```
