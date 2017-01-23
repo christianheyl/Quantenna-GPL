@@ -127,7 +127,7 @@ make[1]: Verzeichnis »/home/freetz/Quantenna-GPL« wird verlassen
 make: *** [image] Fehler 2
 ```
 
-\
+
 64bit Ubuntu:
 
 ```
