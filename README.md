@@ -79,9 +79,10 @@ Current problems:
 
 When trying to build with additional packages, the build fails. This happen on 64bit and 32bit Ubunutu (14.04) systems! For example if `iptables` package is added, the following error message occurs
 
-`32bit Ubuntu`
+32bit Ubuntu:
 
-```bzcat /home/freetz/Quantenna-GPL/buildroot/dl/iptables-1.3.7.tar.bz2 | tar -C /home/freetz/Quantenna-GPL/buildroot/build_arc   -xf -
+```
+bzcat /home/freetz/Quantenna-GPL/buildroot/dl/iptables-1.3.7.tar.bz2 | tar -C /home/freetz/Quantenna-GPL/buildroot/build_arc   -xf -
 touch /home/freetz/Quantenna-GPL/buildroot/build_arc/iptables-1.3.7/.unpacked
 # Allow patches.  Needed for openwrt for instance.
 toolchain/patch-kernel.sh /home/freetz/Quantenna-GPL/buildroot/build_arc/iptables-1.3.7 package/iptables/ iptables\*.patch
@@ -129,9 +130,10 @@ make: *** [image] Fehler 2
 ```
 
 
-`64bit Ubuntu`
+64bit Ubuntu:
 
-```bzcat /home/chris/test/buildroot/dl/iptables-1.3.7.tar.bz2 | tar -C /home/chris/test/buildroot/build_arc   -xf -
+```
+bzcat /home/chris/test/buildroot/dl/iptables-1.3.7.tar.bz2 | tar -C /home/chris/test/buildroot/build_arc   -xf -
 touch /home/chris/test/buildroot/build_arc/iptables-1.3.7/.unpacked
 # Allow patches.  Needed for openwrt for instance.
 toolchain/patch-kernel.sh /home/chris/test/buildroot/build_arc/iptables-1.3.7 package/iptables/ iptables\*.patch
