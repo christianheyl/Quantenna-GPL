@@ -12,7 +12,9 @@
 
 AVAHI_VER:=0.6.14
 AVAHI_DIR:=$(BUILD_DIR)/avahi-$(AVAHI_VER)
-AVAHI_SITE:=http://www.avahi.org/download/
+#AVAHI_SITE:=http://www.avahi.org/download/
+# temp. new dl site
+AVAHI_SITE:=http://mirror2.openwrt.org/sources/
 AVAHI_SOURCE:=avahi-$(AVAHI_VER).tar.gz
 AVAHI_CAT:=$(ZCAT)
 
