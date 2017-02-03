@@ -4,7 +4,9 @@
 #
 #############################################################
 
-DNSMASQ_SITE=http://thekelleys.org.uk/dnsmasq
+# DNSMASQ_SITE=http://thekelleys.org.uk/dnsmasq
+# new dl URL
+DNSMASQ_SITE=http://thekelleys.org.uk/dnsmasq/archive
 ifeq ($(filter $(TARGETS),dnsmasq1),)
 DNSMASQ_UPVER=2.22
 DNSMASQ_VER=dnsmasq2
