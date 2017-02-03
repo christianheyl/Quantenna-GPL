@@ -44,6 +44,7 @@ $(DROPBEAR_DIR)/.configured: $(DROPBEAR_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		--with-shared \
+		--disable-zlib \
 	);
 ifeq ($(strip $(BR2_PACKAGE_DROPBEAR_URANDOM)),y)
 	$(SED) 's,^#define DROPBEAR_RANDOM_DEV.*,#define DROPBEAR_RANDOM_DEV \"/dev/urandom\",' \
@@ -74,7 +75,7 @@ $(TARGET_DIR)/$(DROPBEAR_TARGET_BINARY): $(DROPBEAR_DIR)/$(DROPBEAR_BINARY)
 	cp $(DROPBEAR_DIR)/S50dropbear $(TARGET_DIR)/etc/init.d/
 	chmod a+x $(TARGET_DIR)/etc/init.d/S50dropbear
 
-dropbear: uclibc zlib $(TARGET_DIR)/$(DROPBEAR_TARGET_BINARY)
+dropbear: uclibc $(TARGET_DIR)/$(DROPBEAR_TARGET_BINARY)
 
 dropbear-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) $(TARGET_CONFIGURE_OPTS) \
