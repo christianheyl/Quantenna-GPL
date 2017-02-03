@@ -1,0 +1,27 @@
+diff -Naur net-snmp-5.1.2/config.guess net-snmp-5.1.2-patched/config.guess
+--- net-snmp-5.1.2/config.guess	2003-02-10 16:57:57.000000000 +0100
++++ net-snmp-5.1.2-patched/config.guess	2017-01-29 11:33:57.756921231 +0100
+@@ -795,6 +795,9 @@
+     arm*:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-gnu
+ 	exit 0 ;;
++    arc*:Linux:*:*)
++	echo ${UNAME_MACHINE}-unknown-linux-gnu
++	exit 0 ;;
+     ia64:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-gnu
+ 	exit 0 ;;
+diff -Naur net-snmp-5.1.2/config.sub net-snmp-5.1.2-patched/config.sub
+--- net-snmp-5.1.2/config.sub	2003-02-10 16:57:58.000000000 +0100
++++ net-snmp-5.1.2-patched/config.sub	2017-01-29 11:36:19.259639109 +0100
+@@ -118,7 +118,9 @@
+ # Here we must recognize all the valid KERNEL-OS combinations.
+ maybe_os=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\2/'`
+ case $maybe_os in
+-  nto-qnx* | linux-gnu* | freebsd*-gnu* | storm-chaos* | os2-emx* | windows32-* | rtmk-nova*)
++  nto-qnx* | linux-gnu* | linux-dietlibc | linux-uclibc* | uclinux-uclibc* | uclinux-gnu* | \
++  kfreebsd*-gnu* | knetbsd*-gnu* | netbsd*-gnu* | freebsd*-gnu* | storm-chaos* | os2-emx* | \
++  windows32-* | rtmk-nova*)
+     os=-$maybe_os
+     basic_machine=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\1/'`
+     ;;

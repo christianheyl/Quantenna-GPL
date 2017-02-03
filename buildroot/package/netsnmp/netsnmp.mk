@@ -4,11 +4,15 @@
 #
 #############################################################
 
-NETSNMP_URL:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/net-snmp/
+#NETSNMP_URL:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/net-snmp/
+#new dl URL
+NETSNMP_URL:=https://sourceforge.net/projects/net-snmp/files/OldFiles/net-snmp-5.1.x/5.1.2/
 NETSNMP_DIR:=$(BUILD_DIR)/net-snmp-5.1.2
 NETSNMP_SOURCE:=net-snmp-5.1.2.tar.gz
 NETSNMP_PATCH1:=net-snmp_5.1.2-6.2.diff.gz
-NETSNMP_PATCH1_URL:=http://ftp.debian.org/debian/pool/main/n/net-snmp/
+#NETSNMP_PATCH1_URL:=http://ftp.debian.org/debian/pool/main/n/net-snmp/
+#new dl URL
+NETSNMP_PATCH1_URL:=http://archive.debian.org/debian/pool/main/n/net-snmp/
 
 $(DL_DIR)/$(NETSNMP_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NETSNMP_URL)/$(NETSNMP_SOURCE)
@@ -42,7 +46,7 @@ $(NETSNMP_DIR)/.configured: $(NETSNMP_DIR)/.unpacked
 		--disable-static \
 		--with-logfile=none \
 		--without-rpm \
-		--with-openssl \
+		--with-openssl=$(STAGING_DIR) \
 		--without-dmalloc \
 		--without-efence \
 		--without-rsaref \
@@ -82,11 +86,14 @@ $(TARGET_DIR)/usr/sbin/snmpd: $(NETSNMP_DIR)/agent/snmpd
 	cp $(NETSNMP_DIR)/debian/snmpd.default $(TARGET_DIR)/etc/default/snmpd
 	# Remove the unsupported snmpcheck program
 	rm $(TARGET_DIR)/usr/bin/snmpcheck
+	# remove mod_*.la after file installation
+	find $(TARGET_DIR)/lib $(TARGET_DIR)/usr/lib \( -name 'libnet*.a' -o -name 'libnet*.la' -o -name 'libsnmp*.la' \) -print0 | xargs -0 rm -f
 	# Install the "broken" headers
 	cp $(NETSNMP_DIR)/agent/mibgroup/struct.h $(STAGING_DIR)/include/net-snmp/agent
 	cp $(NETSNMP_DIR)/agent/mibgroup/util_funcs.h $(STAGING_DIR)/include/net-snmp
 	cp $(NETSNMP_DIR)/agent/mibgroup/mibincl.h $(STAGING_DIR)/include/net-snmp/library
 	cp $(NETSNMP_DIR)/agent/mibgroup/header_complex.h $(STAGING_DIR)/include/net-snmp/agent
+	$(INSTALL) -D -m 0755 package/netsnmp/S59snmpd $(TARGET_DIR)/etc/init.d/S59snmpd
 
 netsnmp: openssl $(TARGET_DIR)/usr/sbin/snmpd
 
