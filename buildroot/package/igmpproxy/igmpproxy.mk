@@ -6,12 +6,14 @@
 
 IGMPPROXY_VERSION:=0.1
 IGMPPROXY_SOURCE:=igmpproxy-$(IGMPPROXY_VERSION).tar.gz
-IGMPPROXY_SITE:=http://sourceforge.net/projects/igmpproxy/files/igmpproxy/0.1/igmpproxy-0.1.tar.gz/download
+# IGMPPROXY_SITE:=http://sourceforge.net/projects/igmpproxy/files/igmpproxy/0.1/igmpproxy-0.1.tar.gz/download
+# new (direct) dl site
+IGMPPROXY_SITE:=https://netix.dl.sourceforge.net/project/igmpproxy/igmpproxy/0.1/igmpproxy-0.1.tar.gz
 IGMPPROXY_DIR:=$(BUILD_DIR)/igmpproxy-$(IGMPPROXY_VERSION)
 IGMPPROXY_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(IGMPPROXY_SOURCE):
-	$(WGET) -P $(DL_DIR) $(IGMPPROXY_SITE)/
+	$(WGET) -P $(DL_DIR) $(IGMPPROXY_SITE)
 
 $(IGMPPROXY_DIR)/.unpacked: $(DL_DIR)/$(IGMPPROXY_SOURCE)
 	$(IGMPPROXY_CAT) $(DL_DIR)/$(IGMPPROXY_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
