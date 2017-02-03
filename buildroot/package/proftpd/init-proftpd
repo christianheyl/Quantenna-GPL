@@ -1,8 +1,10 @@
 #!/bin/sh 
 
 DAEMON=/usr/sbin/proftpd
-trap "" 1
-trap "" 15
+#trap "" 1
+#trap "" 15
+trap "" HUP
+trap "" TERM
 test -f $DAEMON || exit 0
 [ ! -d /var/run/proftpd ] && mkdir /var/run/proftpd
 [ ! -f /var/log/wtmp ] && touch /var/log/wtmp
