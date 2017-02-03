@@ -5,7 +5,7 @@
 #############################################################
 RSYNC_VER:=2.6.9
 RSYNC_SOURCE:=rsync-$(RSYNC_VER).tar.gz
-RSYNC_SITE:=http://rsync.samba.org/ftp/rsync/
+RSYNC_SITE:=https://rsync.samba.org/ftp/rsync/src/
 RSYNC_DIR:=$(BUILD_DIR)/rsync-$(RSYNC_VER)
 RSYNC_CAT:=$(ZCAT)
 RSYNC_BINARY:=rsync
@@ -25,6 +25,7 @@ $(RSYNC_DIR)/.configured: $(RSYNC_DIR)/.unpacked
 	(cd $(RSYNC_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
