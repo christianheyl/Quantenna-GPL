@@ -102,7 +102,7 @@ $(STAGING_DIR)/lib/libcurl.so: $(LIBCURL_DIR)/$(LIBCURL_LIBRARY)
 
 $(TARGET_DIR)/$(LIBCURL_TARGET_LIBRARY): $(STAGING_DIR)/lib/libcurl.so
 	cp -dpf $(STAGING_DIR)/lib/libcurl.so* $(TARGET_DIR)/usr/lib/
-#	cp -dpf $(STAGING_DIR)/usr/bin/curl $(TARGET_DIR)/usr/bin/curl
+	cp -dpf $(STAGING_DIR)/usr/bin/curl $(TARGET_DIR)/usr/bin/curl
 #	cp -dpf $(STAGING_DIR)/usr/bin/curl-config $(TARGET_DIR)/usr/bin/curl-config
 
 libcurl: uclibc $(LIBCURL_DEPENDENCIES) $(LIBCURL_TARGET)
@@ -111,6 +111,7 @@ libcurl-source: $(DL_DIR)/$(LIBCURL_SOURCE)
 
 libcurl-clean:
 	-rm $(TARGET_DIR)/usr/lib/libcurl.so*
+	-rm $(TARGET_DIR)/usr/bin/curl
 	-$(MAKE) -C $(LIBCURL_DIR) clean
 
 libcurl-dirclean:
