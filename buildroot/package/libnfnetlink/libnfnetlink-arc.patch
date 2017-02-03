@@ -1,0 +1,13 @@
+diff -Naur libnfnetlink-1.0.0/config.guess libnfnetlink-1.0.0-patched/config.guess
+--- libnfnetlink-1.0.0/config.guess	2008-02-17 21:10:30.000000000 +0100
++++ libnfnetlink-1.0.0-patched/config.guess	2017-01-31 05:43:33.812649463 +0100
+@@ -845,6 +845,9 @@
+ 	    echo ${UNAME_MACHINE}-unknown-linux-gnueabi
+ 	fi
+ 	exit ;;
++    arc*:Linux:*:*)
++	echo ${UNAME_MACHINE}-unknown-linux-gnu
++	exit 0 ;;
+     avr32*:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-gnu
+ 	exit ;;

@@ -1,0 +1,13 @@
+diff -Naur iptables-1.4.9/config.guess iptables-1.4.9-patched/config.guess
+--- iptables-1.4.9/config.guess	2010-08-03 16:59:32.000000000 +0200
++++ iptables-1.4.9-patched/config.guess	2017-01-30 16:29:02.782381069 +0100
+@@ -882,6 +882,9 @@
+ 	    echo ${UNAME_MACHINE}-unknown-linux-gnueabi
+ 	fi
+ 	exit ;;
++    arc*:Linux:*:*)
++	echo ${UNAME_MACHINE}-unknown-linux-gnu
++	exit 0 ;;
+     avr32*:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-gnu
+ 	exit ;;
