@@ -9,9 +9,13 @@ SOCAT_VERSION=1.4.0.3
 # Don't alter below this line unless you (think) you know
 # what you are doing! Danger, Danger!
 
-SOCAT_SOURCE=socat-$(SOCAT_VERSION).tar.bz2
-SOCAT_CAT:=$(BZCAT)
-SOCAT_SITE=http://www.dest-unreach.org/socat/download/
+#SOCAT_SOURCE=socat-$(SOCAT_VERSION).tar.bz2
+SOCAT_SOURCE=socat-$(SOCAT_VERSION).tar.gz
+#SOCAT_CAT:=$(BZCAT)
+SOCAT_CAT:=$(ZCAT)
+#SOCAT_SITE=http://www.dest-unreach.org/socat/download/
+#new dl site
+SOCAT_SITE=http://www.dest-unreach.org/socat/download/Archive
 #SOCAT_DIR=$(BUILD_DIR)/${shell basename $(SOCAT_SOURCE) .tar.bz2}
 SOCAT_DIR=$(BUILD_DIR)/socat-1.4
 #SOCAT_WORKDIR=$(BUILD_DIR)/socat_workdir
