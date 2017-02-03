@@ -3,10 +3,14 @@
 # lsof
 #
 #############################################################
-LSOF_SOURCE:=lsof_4.77.tar.bz2
-LSOF_SITE:=ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/
-LSOF_CAT:=$(BZCAT)
-LSOF_DIR:=$(BUILD_DIR)/lsof_4.77
+#LSOF_SOURCE:=lsof_4.77.tar.bz2
+#LSOF_SITE:=ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/
+# TMP Site for test, because ourdue.edu is down
+LSOF_VER:=4.77
+LSOF_SOURCE:=lsof_$(LSOF_VER).tar.gz
+LSOF_SITE:=https://launchpad.net/lsof/main/4.77/+download
+LSOF_DIR:=$(BUILD_DIR)/lsof_$(LSOF_VER)
+LSOF_CAT:=$(ZCAT)
 LSOF_BINARY:=lsof
 LSOF_TARGET_BINARY:=bin/lsof
 
