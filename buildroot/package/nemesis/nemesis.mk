@@ -6,12 +6,14 @@
 
 NEMESIS_VERSION:=1.4
 NEMESIS_SOURCE:=nemesis-$(NEMESIS_VERSION).tar.gz
-NEMESIS_SITE:=http://sourceforge.net/projects/nemesis/files/nemesis/$(NEMESIS_VERSION)/nemesis-$(NEMESIS_VERSION).tar.gz/download
+# NEMESIS_SITE:=http://sourceforge.net/projects/nemesis/files/nemesis/$(NEMESIS_VERSION)/nemesis-$(NEMESIS_VERSION).tar.gz/download
+# new (direct) dl site
+NEMESIS_SITE:=https://netix.dl.sourceforge.net/project/nemesis/nemesis/1.4/nemesis-1.4.tar.gz
 NEMESIS_DIR:=$(BUILD_DIR)/nemesis-$(NEMESIS_VERSION)
 NEMESIS_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(NEMESIS_SOURCE):
-	$(WGET) -P $(DL_DIR) $(NEMESIS_SITE)/
+	$(WGET) -P $(DL_DIR) $(NEMESIS_SITE)
 
 $(NEMESIS_DIR)/.unpacked: $(DL_DIR)/$(NEMESIS_SOURCE)
 	$(NEMESIS_CAT) $(DL_DIR)/$(NEMESIS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
