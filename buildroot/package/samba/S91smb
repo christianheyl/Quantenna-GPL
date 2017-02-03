@@ -9,6 +9,7 @@
 # Make directories.
 mkdir -p /var/cache/samba
 mkdir -p /var/log/samba
+mkdir -p /var/lock/subsys
 
 RETVAL=0
 
@@ -77,3 +78,4 @@ case "$1" in
 esac
 
 exit $?
+

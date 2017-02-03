@@ -1,11 +1,10 @@
-diff -ur samba-3.0.23c/source/configure.in samba-3.0.23c-patched/source/configure.in
---- samba-3.0.23c/source/configure.in	2006-07-21 11:22:57.000000000 -0500
-+++ samba-3.0.23c-patched/source/configure.in	2006-11-09 10:23:26.000000000 -0600
-@@ -1399,38 +1399,6 @@
+--- a/source/configure.in	2009-04-01 13:48:54.000000000 +0200
++++ b/source/configure.in	2009-04-20 13:08:42.000000000 +0200
+@@ -1219,38 +1219,6 @@
  AC_DEFINE(HAVE_PRCTL, 1, [Whether prctl is available]),[])
  
  #
--# 
+-#
 -#
 -case "$host_os" in
 -    *linux*)
@@ -40,3 +39,4 @@ diff -ur samba-3.0.23c/source/configure.in samba-3.0.23c-patched/source/configur
  # stat64 family may need <sys/stat.h> on some systems, notably ReliantUNIX
  #
  
+
