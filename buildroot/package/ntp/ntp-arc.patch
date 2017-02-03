@@ -1,0 +1,13 @@
+diff -Naur ntp-4.2.4/config.guess ntp-4.2.4-patched/config.guess
+--- ntp-4.2.4/config.guess	2006-02-24 12:07:25.000000000 +0100
++++ ntp-4.2.4-patched/config.guess	2017-01-29 12:37:43.672974005 +0100
+@@ -817,6 +817,9 @@
+     arm*:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-gnu
+ 	exit ;;
++    arc*:Linux:*:*)
++	echo ${UNAME_MACHINE}-unknown-linux-gnu
++	exit 0 ;;
+     cris:Linux:*:*)
+ 	echo cris-axis-linux-gnu
+ 	exit ;;
