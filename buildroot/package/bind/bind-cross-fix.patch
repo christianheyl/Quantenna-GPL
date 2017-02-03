@@ -1,11 +1,15 @@
---- bind-9.3.2/lib/dns/Makefile.in
-+++ bind-9.3.2/lib/dns/Makefile.in
-@@ -156,7 +156,7 @@
+diff -Naur bind-9.3.2/lib/dns/Makefile.in ./bind-9.3.2-patched/lib/dns/Makefile.in
+--- bind-9.3.2/lib/dns/Makefile.in	2004-12-09 05:07:15.000000000 +0100
++++ bind-9.3.2-patched/lib/dns/Makefile.in	2017-01-29 07:14:36.187818707 +0100
+@@ -156,7 +156,10 @@
  	./gen -s ${srcdir} > code.h
  
  gen: gen.c
 -	${CC} ${ALL_CFLAGS} ${LDFLAGS} -o $@ ${srcdir}/gen.c ${LIBS}
-+	cc ${ALL_CFLAGS} -o $@ ${srcdir}/gen.c
++	# we need to manipulate Flags here. If build with ${ALL_CFLAGS}, ${CFLAGS} would be included
++	# If build with ${CFLAGS} build will fail. It's NOT a proper solution, more a 'hack'
++	# Future ToDo: find a better solution to spare ${CFLAGS} form ${ALL_CFLAGS} (in Makefile)
++	cc ${EXT_CFLAGS} ${ALL_CPPFLAGS} ${ALWAYS_WARNINGS} ${STD_CWARNINGS} ${CWARNINGS} -o $@ ${srcdir}/gen.c
  
  rbtdb64.@O@: rbtdb.c
  

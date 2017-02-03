@@ -1,0 +1,13 @@
+diff -ur bind-9.3.2/config.guess bind-9.3.2-patched/config.guess
+--- bind-9.3.2/config.guess	2006-03-12 05:52:51.000000000 +0100
++++ bind-9.3.2-patched/config.guess	2017-01-26 17:51:50.088399540 +0100
+@@ -821,6 +821,9 @@
+     arm*:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-gnu
+ 	exit 0 ;;
++    arc*:Linux:*:*)
++	echo ${UNAME_MACHINE}-unknown-linux-gnu
++	exit 0 ;;
+     cris:Linux:*:*)
+ 	echo cris-axis-linux-gnu
+ 	exit 0 ;;
