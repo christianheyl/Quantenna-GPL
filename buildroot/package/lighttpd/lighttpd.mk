@@ -35,13 +35,14 @@ $(LIGHTTPD_DIR)/.configured: $(LIGHTTPD_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
-		--libdir=/lib \
+		--libdir=/usr/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--with-openssl \
 		--without-pcre \
 		--program-prefix="" \
+		--disable-static \
 	);
 	touch  $(LIGHTTPD_DIR)/.configured
 
@@ -50,7 +51,10 @@ $(LIGHTTPD_DIR)/$(LIGHTTPD_BINARY): $(LIGHTTPD_DIR)/.configured
     
 $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY): $(LIGHTTPD_DIR)/$(LIGHTTPD_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(LIGHTTPD_DIR) install
-	$(INSTALL) -m 0755 -D $(LIGHTTPD_DIR)/debian/init.d $(TARGET_DIR)/etc/init.d/S99lighttpd
+	# remove mod_*.la after file installation
+	find $(TARGET_DIR)/lib $(TARGET_DIR)/usr/lib \( -name 'mod_*.a' -o -name 'mod_*.la' \) -print0 | xargs -0 rm -f
+	$(INSTALL) -m 0755 -D $(LIGHTTPD_DIR)/openwrt/S51lighttpd $(TARGET_DIR)/etc/init.d/
+	$(INSTALL) -m 0644 -D $(LIGHTTPD_DIR)/openwrt/lighttpd.conf $(TARGET_DIR)/etc/
 
 lighttpd: uclibc openssl $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY)
 

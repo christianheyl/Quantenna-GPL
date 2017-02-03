@@ -1,0 +1,27 @@
+diff -ur lighttpd-1.4.13/config.guess lighttpd-1.4.13-patched/config.guess
+--- lighttpd-1.4.13/config.guess	2006-03-12 05:52:51.000000000 +0100
++++ lighttpd-1.4.13-patched/config.guess	2017-01-26 17:51:50.088399540 +0100
+@@ -797,6 +797,9 @@
+     arm*:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-gnu
+ 	exit 0 ;;
++    arc*:Linux:*:*)
++	echo ${UNAME_MACHINE}-unknown-linux-gnu
++	exit 0 ;;
+     cris:Linux:*:*)
+ 	echo cris-axis-linux-gnu
+ 	exit 0 ;;
+
+diff -ur lighttpd-1.4.13/config.sub lighttpd-1.4.13-patched/config.sub
+--- lighttpd-1.4.13/config.sub	2006-03-12 05:52:51.000000000 +0100
++++ lighttpd-1.4.13-patched/config.sub-new	2017-01-26 18:15:02.160133859 +0100
+@@ -118,7 +118,8 @@
+ # Here we must recognize all the valid KERNEL-OS combinations.
+ maybe_os=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\2/'`
+ case $maybe_os in
+-  nto-qnx* | linux-gnu* | freebsd*-gnu* | netbsd*-gnu* | storm-chaos* | os2-emx* | rtmk-nova*)
++  nto-qnx* | linux-gnu* | linux-dietlibc | linux-uclibc* | uclinux-uclibc* | uclinux-gnu* | \
++  kfreebsd*-gnu* | knetbsd*-gnu* | netbsd*-gnu* | storm-chaos* | os2-emx* | rtmk-nova*)
+     os=-$maybe_os
+     basic_machine=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\1/'`
+     ;;
