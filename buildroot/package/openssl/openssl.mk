@@ -46,15 +46,15 @@ $(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE)
 
 $(OPENSSL_DIR)/Makefile: $(OPENSSL_DIR)/.unpacked
 	(cd $(OPENSSL_DIR); \
-	CFLAGS="-DOPENSSL_NO_KRB5 -DOPENSSL_NO_IDEA -DOPENSSL_NO_MDC2 -DOPENSSL_NO_RC5 -DOPENSSL_NO_BF \
-               -DOPENSSL_NO_CAST -DOPENSSL_NO_EC -DOPENSSL_NO_MD2 -DOPENSSL_NO_RIPEMD -DOPENSSL_NO_CAMELLIA -DOPENSSL_NO_ENGINE \
+	CFLAGS="-DOPENSSL_NO_KRB5 -DOPENSSL_NO_IDEA -DOPENSSL_NO_MDC2 -DOPENSSL_NO_RC5 \
+               -DOPENSSL_NO_EC -DOPENSSL_NO_MD2 -DOPENSSL_NO_RIPEMD -DOPENSSL_NO_CAMELLIA -DOPENSSL_NO_ENGINE \
                -DOPENSSL_NO_CAMELLIA -DOPENSSL_NO_SSL2 -DOPENSSL_NO_JPAKE -DOPENSSL_NO_TLSEXT -DSSL_OP_NO_TICKET -DOPENSSL_NO_DES \
                -DOPENSSL_NO_SSL1 -DOPENSSL_NO_SHA512 \
                $(TARGET_CFLAGS)" \
 	PATH=$(TARGET_PATH) ./Configure linux-$(OPENSSL_TARGET_ARCH) --prefix=/ \
 		--openssldir=/usr/lib/ssl -L$(STAGING_DIR)/lib -ldl \
 		-I$(STAGING_DIR)/include $(OPENSSL_OPTS) no-threads \
-		shared no-idea no-mdc2 no-rc5 no-bf no-cast no-ec no-md2 no-rc2\
+		shared no-idea no-mdc2 no-rc5 no-ec no-md2 no-rc2\
         no-ripemd no-camellia no-hw no-sse2)
 
 $(OPENSSL_DIR)/apps/openssl: $(OPENSSL_DIR)/Makefile
