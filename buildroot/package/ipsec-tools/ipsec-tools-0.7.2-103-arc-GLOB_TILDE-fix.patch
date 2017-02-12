@@ -1,0 +1,32 @@
+diff -Naur ipsec-tools-0.7.2/src/racoon/cftoken.c ipsec-tools-0.7.2-patched/src/racoon/cftoken.c
+--- ipsec-tools-0.7.2/src/racoon/cftoken.c	2017-02-12 11:29:46.470968022 +0100
++++ ipsec-tools-0.7.2-patched/src/racoon/cftoken.c	2017-02-12 11:32:58.258815590 +0100
+@@ -4713,7 +4713,11 @@
+ 		return -1;
+ 	}
+ 
+-	if (glob(path, GLOB_TILDE, NULL, &incstack[incstackp].matches) != 0 ||
++#ifdef GLOB_TILDE
++ 	if (glob(path, GLOB_TILDE, NULL, &incstack[incstackp].matches) != 0 ||
++#else
++	if (glob(path, 0, NULL, &incstack[incstackp].matches) != 0 ||
++#endif
+ 	    incstack[incstackp].matches.gl_pathc == 0) {
+ 		plog(LLV_ERROR, LOCATION, NULL,
+ 			"glob found no matches for path \"%s\"\n", path);
+diff -Naur ipsec-tools-0.7.2/src/racoon/cftoken.l ipsec-tools-0.7.2-patched/src/racoon/cftoken.l
+--- ipsec-tools-0.7.2/src/racoon/cftoken.l	2017-02-12 11:29:25.464469850 +0100
++++ ipsec-tools-0.7.2-patched/src/racoon/cftoken.l	2017-02-12 11:33:40.167759933 +0100
+@@ -715,7 +715,11 @@
+ 		return -1;
+ 	}
+ 
+-	if (glob(path, GLOB_TILDE, NULL, &incstack[incstackp].matches) != 0 ||
++#ifdef GLOB_TILDE
++ 	if (glob(path, GLOB_TILDE, NULL, &incstack[incstackp].matches) != 0 ||
++#else
++	if (glob(path, 0, NULL, &incstack[incstackp].matches) != 0 ||
++#endif
+ 	    incstack[incstackp].matches.gl_pathc == 0) {
+ 		plog(LLV_ERROR, LOCATION, NULL,
+ 			"glob found no matches for path \"%s\"\n", path);

@@ -1,0 +1,58 @@
+diff -Naur ipsec-tools-0.7.2/src/libipsec/Makefile.am ipsec-tools-0.7.2-patched/src/libipsec/Makefile.am
+--- ipsec-tools-0.7.2/src/libipsec/Makefile.am	2008-07-23 08:43:05.000000000 +0200
++++ ipsec-tools-0.7.2-patched/src/libipsec/Makefile.am	2017-02-10 18:00:46.543123297 +0100
+@@ -26,7 +26,6 @@
+ # version is current:revision:age.
+ # See: http://www.gnu.org/manual/libtool-1.4.2/html_chapter/libtool_6.html#SEC32
+ libipsec_la_LDFLAGS = -version-info 0:1:0
+-libipsec_la_LIBADD = $(LEXLIB)
+ 
+ noinst_HEADERS = ipsec_strerror.h
+ 
+diff -Naur ipsec-tools-0.7.2/src/racoon/cftoken.l ipsec-tools-0.7.2-patched/src/racoon/cftoken.l
+--- ipsec-tools-0.7.2/src/racoon/cftoken.l	2007-09-03 20:07:29.000000000 +0200
++++ ipsec-tools-0.7.2-patched/src/racoon/cftoken.l	2017-02-10 18:02:07.143405208 +0100
+@@ -106,6 +106,8 @@
+ static int yy_first_time = 1;
+ %}
+ 
++%option noyywrap
++
+ /* common seciton */
+ nl		\n
+ ws		[ \t]+
+diff -Naur ipsec-tools-0.7.2/src/racoon/Makefile.am ipsec-tools-0.7.2-patched/src/racoon/Makefile.am
+--- ipsec-tools-0.7.2/src/racoon/Makefile.am	2008-07-23 13:48:40.000000000 +0200
++++ ipsec-tools-0.7.2-patched/src/racoon/Makefile.am	2017-02-10 18:01:19.619654080 +0100
+@@ -38,7 +38,7 @@
+ 	cftoken.l cfparse.y prsa_tok.l prsa_par.y 
+ EXTRA_racoon_SOURCES = isakmp_xauth.c isakmp_cfg.c isakmp_unity.c throttle.c \
+ 	isakmp_frag.c nattraversal.c security.c $(MISSING_ALGOS)
+-racoon_LDADD = $(CRYPTOBJS) $(HYBRID_OBJS) $(NATT_OBJS) $(FRAG_OBJS) $(LEXLIB) \
++racoon_LDADD = $(CRYPTOBJS) $(HYBRID_OBJS) $(NATT_OBJS) $(FRAG_OBJS) \
+ 	 $(SECCTX_OBJS) vmbuf.o sockmisc.o misc.o ../libipsec/libipsec.la
+ racoon_DEPENDENCIES = \
+ 	$(CRYPTOBJS) $(HYBRID_OBJS) $(NATT_OBJS) $(FRAG_OBJS) $(SECCTX_OBJS) \
+diff -Naur ipsec-tools-0.7.2/src/setkey/Makefile.am ipsec-tools-0.7.2-patched/src/setkey/Makefile.am
+--- ipsec-tools-0.7.2/src/setkey/Makefile.am	2008-07-23 10:28:02.000000000 +0200
++++ ipsec-tools-0.7.2-patched/src/setkey/Makefile.am	2017-02-10 18:02:24.648153623 +0100
+@@ -13,7 +13,6 @@
+ 
+ setkey_LDFLAGS = ../libipsec/libipsec.la
+ setkey_DEPENDENCIES = ../libipsec/libipsec.la
+-setkey_LDADD = $(LEXLIB)
+ 
+ noinst_HEADERS = vchar.h extern.h
+ man8_MANS = setkey.8
+diff -Naur ipsec-tools-0.7.2/src/setkey/token.l ipsec-tools-0.7.2-patched/src/setkey/token.l
+--- ipsec-tools-0.7.2/src/setkey/token.l	2007-08-01 13:52:23.000000000 +0200
++++ ipsec-tools-0.7.2-patched/src/setkey/token.l	2017-02-10 18:02:56.039842368 +0100
+@@ -88,6 +88,8 @@
+ #endif
+ %}
+ 
++%option noyywrap
++
+ /* common section */
+ nl		\n
+ ws		[ \t]+

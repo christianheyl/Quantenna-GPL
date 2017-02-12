@@ -1,0 +1,13 @@
+diff -Naur ipsec-tools-0.7.2/config.guess ipsec-tools-0.7.2-patched/config.guess
+--- ipsec-tools-0.7.2/config.guess	2009-04-21 16:41:44.000000000 +0200
++++ ipsec-tools-0.7.2-patched/config.guess	2017-02-12 07:02:26.006612896 +0100
+@@ -845,6 +845,9 @@
+ 	    echo ${UNAME_MACHINE}-unknown-linux-gnueabi
+ 	fi
+ 	exit ;;
++    arc*:Linux:*:*)
++	echo ${UNAME_MACHINE}-unknown-linux-gnu
++	exit 0 ;;
+     avr32*:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-gnu
+ 	exit ;;
