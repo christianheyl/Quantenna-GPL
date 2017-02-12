@@ -28,9 +28,16 @@ BVARS=PREDEFINES='-D_PATH_DHCPD_DB=\"/var/lib/dhcp/dhcpd.leases\" \
 	VARDB=/var/lib/dhcp
 DHCP_CONF_ENV = ac_cv_file__dev_random=yes
 
+# if dhcrelay should b built, we no to configure with --enable-tracing=yes
+ifeq ($(BR2_PACKAGE_DHCP_RELAY),y)
+ENABLE_TRACING:=--enable-tracing=yes
+else
+ENABLE_TRACING:=--enable-tracing=no
+endif
+
 DHCP_CONF_OPT = \
 	--localstatedir=/var/lib/dhcp \
-	--enable-tracing=no \
+	$(ENABLE_TRACING) \
 	--enable-failover=no \
 	--enable-FEATURE=no \
 	--enable-debug=no \
@@ -90,10 +97,11 @@ lib_dependancy:$(DHCP_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) $(BVARS) -C $(DHCP_DIR)/minires
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) $(BVARS) -C $(DHCP_DIR)/dst
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) $(BVARS) -C $(DHCP_DIR)/omapip
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) $(BVARS) -C $(DHCP_DIR)/dhcpctl
 
 $(TARGET_DIR)/$(DHCP_SERVER_TARGET_BINARY): lib_dependancy
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) $(BVARS) -C $(DHCP_DIR)/server
-	$(STRIP) $(DHCP_DIR)/$(DHCP_SERVER_TARGET_BINARY)
+	$(STRIP) $(DHCP_DIR)/$(DHCP_SERVER_BINARY)
 	(cd $(TARGET_DIR)/var/lib; ln -snf /tmp dhcp)
 	$(INSTALL) -m 0755 -D $(DHCP_DIR)/$(DHCP_SERVER_BINARY) $(TARGET_DIR)/$(DHCP_SERVER_TARGET_BINARY)
 	$(INSTALL) -m 0755 -D package/dhcp/init-server $(TARGET_DIR)/etc/init.d/S80dhcp-server
